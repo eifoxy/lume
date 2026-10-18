@@ -1,5 +1,14 @@
 # Histórico
 
+## Android 1.0.2 · 2026-10-18
+
+- Trata a identidade Wi-Fi como 12 bytes opacos, conforme a cópia feita pelo Pled original, sem exigir texto hexadecimal ASCII.
+- Preserva esses mesmos bytes ao montar comandos e os dois pacotes de configuração; mantém compatibilidade com identidades ASCII já suportadas.
+- Rejeita explicitamente o identificador da própria consulta de busca, inclusive ecos com padding diferente, e identidades vazias.
+- Diagnóstico distingue cabeçalho, comando, tamanho, eco e identidade vazia; mostra somente os dois bytes de cabeçalho quando incompatíveis, sem despejar pacotes/credenciais.
+- Responde ao diagnóstico de datagramas de descoberta recebidos e não reconhecidos. A captura anterior não incluía a identidade/cabeçalho completos; a causa exata e o resultado desta atualização ainda dependem do reteste no aparelho.
+- 55 verificações Java e 16 do editor passaram localmente; APK assinado com a chave anterior para atualização sem desinstalar.
+
 ## Android 1.0.1 · 2026-10-18
 
 - Busca também pelo gateway da interface Wi-Fi, além dos broadcasts da sub-rede e limitado; escuta por oito segundos.

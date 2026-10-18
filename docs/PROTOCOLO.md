@@ -21,6 +21,7 @@ Esta descrição deriva da análise do executável fornecido e dos testes simula
 - Descoberta: prefixo `55 AA 17 00 00 03 DD EE FF`, byte 61 `E3`. A resposta fornece identidade nos bytes 4–15 e o IP vem do datagrama.
 - Resposta de comando: cabeçalho `55 AA`, comando ecoado no byte 2 e estado de confirmação no byte 4. A implementação filtra origem, porta, tamanho e confirmação. Prazo de comando: 2,5 s.
 - No Android 1.0.1, a descoberta aceita qualquer porta de origem para uma resposta válida da mesma sub-rede, conforme o receptor do Pled original. `Discovery.java` monta os destinos (gateway, broadcast da sub-rede e limitado) e rejeita eco próprio, endereço de rede/broadcast e origens externas. Os filtros das respostas a comandos de gravação não foram alterados.
+- No Android 1.0.2, o campo de identificação é preservado como 12 bytes opacos, inclusive valores binários e texto não hexadecimal. A representação interna `raw:` seguida de 24 dígitos hexadecimais serializa esses bytes no JSON; ela é decodificada para os 12 bytes originais nos quadros de saída, sem enviar o texto dessa representação. IDs ASCII hexadecimais antigos continuam compatíveis. O Windows 0.5.0 ainda pressupõe ASCII hexadecimal para esse campo.
 
 | Operação | Payload / comando | Confirmação |
 |---|---|---|

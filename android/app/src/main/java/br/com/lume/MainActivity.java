@@ -54,7 +54,7 @@ public final class MainActivity extends Activity {
   @JavascriptInterface public void cancel(){cancelled=true;DatagramSocket s=activeSocket;if(s!=null)s.close();}
   @JavascriptInterface public void copyDiagnostic(){runOnUiThread(()->{android.content.ClipboardManager clipboard=(android.content.ClipboardManager)getSystemService(CLIPBOARD_SERVICE);clipboard.setPrimaryClip(ClipData.newPlainText("Diagnóstico Lume",lastDiagnostic));event("success","Diagnóstico copiado. Ele não contém senha nem nome da rede.");});}
   @JavascriptInterface public void discover(String direct){job(()->{
-   StringBuilder report=new StringBuilder("Lume Android 1.0.1 · API "+Build.VERSION.SDK_INT+" · "+Build.MANUFACTURER+" "+Build.MODEL+"\n");
+   StringBuilder report=new StringBuilder("Lume Android 1.0.2 · API "+Build.VERSION.SDK_INT+" · "+Build.MANUFACTURER+" "+Build.MODEL+"\n");
    WifiManager.MulticastLock lock=null;int received=0,rejected=0,sent=0;Map<String,JSONObject> found=new LinkedHashMap<>();
    try{
     WifiManager wm=(WifiManager)getApplicationContext().getSystemService(WIFI_SERVICE);lock=wm.createMulticastLock("lume-discovery");lock.acquire();
@@ -70,7 +70,7 @@ public final class MainActivity extends Activity {
       try{
        route.socket.receive(packet);received++;String id=Discovery.device(packet,route.address.getAddress(),route.address.getPrefixLength());
        if(id!=null){JSONObject d=new JSONObject().put("id",id).put("ip",packet.getAddress().getHostAddress());found.put(id.toUpperCase(Locale.ROOT),d);event("devices",new JSONArray(found.values()));if(received<=8)report.append("Resposta reconhecida de ").append(packet.getAddress().getHostAddress()).append(":").append(packet.getPort()).append("\n");}
-       else{rejected++;if(rejected<=6){report.append("Resposta não reconhecida: ").append(packet.getLength()).append(" bytes, porta ").append(packet.getPort());if(!Discovery.host(route.address.getAddress(),route.address.getPrefixLength(),packet.getAddress()))report.append(" · origem própria/fora da rede");else if(packet.getLength()>2)report.append(" · comando ").append(bytes[2]&255);report.append("\n");}}
+       else{rejected++;if(rejected<=6){report.append("Resposta não reconhecida: ").append(packet.getLength()).append(" bytes, porta ").append(packet.getPort());if(!Discovery.host(route.address.getAddress(),route.address.getPrefixLength(),packet.getAddress()))report.append(" · origem própria/fora da rede");else report.append(" · ").append(Protocol.discoveryRejection(bytes,packet.getLength()));report.append("\n");}}
       }catch(SocketTimeoutException ignored){}
       progress("Buscando no Wi-Fi · "+found.size()+" encontrada(s)",(int)Math.min(99,elapsed*100/duration));
      }

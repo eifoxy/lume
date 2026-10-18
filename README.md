@@ -7,7 +7,7 @@ Editor de iluminação para controladoras de aquário compatíveis com TC420 e c
 [![Verificações](https://github.com/eifoxy/lume/actions/workflows/checks.yml/badge.svg)](https://github.com/eifoxy/lume/actions/workflows/checks.yml)
 [![Licença MIT](https://img.shields.io/badge/licen%C3%A7a-MIT-91e3c7)](LICENSE)
 
-> **Prévia em desenvolvimento:** testes automatizados e simulação de comunicação passaram. Gravação, sincronização do relógio e configuração Wi-Fi ainda precisam ser confirmadas na controladora física. O Android 1.0.1 aguarda reteste no telefone após o relato de falha na descoberta Wi-Fi. Confira a [matriz de compatibilidade](docs/COMPATIBILIDADE.md) antes de enviar uma programação.
+> **Prévia em desenvolvimento:** testes automatizados e simulação de comunicação passaram. Gravação, sincronização do relógio e configuração Wi-Fi ainda precisam ser confirmadas na controladora física. O Android 1.0.2 aguarda reteste no telefone após o relato de falha na descoberta Wi-Fi. Confira a [matriz de compatibilidade](docs/COMPATIBILIDADE.md) antes de enviar uma programação.
 
 ## Baixar e instalar
 
@@ -15,7 +15,7 @@ Editor de iluminação para controladoras de aquário compatíveis com TC420 e c
 |---|---|---|
 | Windows x64 · 0.5.0 | [ZIP completo, com .NET incluído](https://github.com/eifoxy/lume/releases/download/preview-2026.10.18/Lume-Windows-0.5.0-win-x64.zip) | Extraia tudo e abra `Lume.exe`. |
 | Windows · 0.5.0 | [ZIP leve, requer .NET Desktop Runtime 8](https://github.com/eifoxy/lume/releases/download/preview-2026.10.18/Lume-Windows-0.5.0-portable.zip) | Instale o runtime, extraia tudo e abra `Lume.exe`. |
-| Android 8+ · 1.0.1 | [APK](https://github.com/eifoxy/lume/releases/download/android-v1.0.1/Lume-Android-1.0.1.apk) | Baixe no telefone e abra pelo gerenciador de arquivos. |
+| Android 8+ · 1.0.2 | [APK](https://github.com/eifoxy/lume/releases/download/android-v1.0.2/Lume-Android-1.0.2.apk) | Baixe no telefone e abra pelo gerenciador de arquivos. |
 
 [Todas as versões e checksums](https://github.com/eifoxy/lume/releases) · [Tutorial Windows](docs/INSTALACAO-WINDOWS.md) · [Tutorial Android](docs/INSTALACAO-ANDROID.md) · [Configurar Wi-Fi](docs/WIFI.md)
 

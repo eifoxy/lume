@@ -66,7 +66,7 @@ Não é necessário expor a porta 5000 na internet ou criar encaminhamento de po
 
 ### Android: o aparelho apita, mas a lista fica vazia
 
-O apito pode indicar recebimento de uma consulta; sozinho não comprova que a resposta chegou ao telefone. Atualize para [Android 1.0.1](https://github.com/eifoxy/lume/releases/tag/android-v1.0.1), instalando o APK sobre a versão anterior, sem desinstalar.
+O apito pode indicar recebimento de uma consulta; sozinho não comprova que a resposta chegou ao telefone. Atualize para [Android 1.0.2](https://github.com/eifoxy/lume/releases/tag/android-v1.0.2), instalando o APK sobre a versão anterior, sem desinstalar.
 
 Permaneça na rede do aparelho mesmo com o aviso de ausência de internet. Para isolar roteamento do telefone, experimente temporariamente sem VPN e dados móveis e repita a busca. Isso é um teste de diagnóstico, não uma confirmação da causa.
 

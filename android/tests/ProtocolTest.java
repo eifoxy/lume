@@ -34,6 +34,18 @@ public final class ProtocolTest {
   response[2]=1;discovered.setAddress(gateway);ok(Discovery.device(discovered,phone,24)==null,"other command is not discovery");response[2]=0x17;
   response[0]=0;ok(Discovery.device(discovered,phone,24)==null,"bad magic rejected independent of port");response[0]=0x55;
   ok(Discovery.targets(phone,24,Collections.emptyList(),null).size()==2,"no gateway still searches broadcasts");
+  byte[] rawId={(byte)0x80,0x01,0x2a,0x00,(byte)0xf1,0x32,0x11,(byte)0xaa,0x7f,0x23,(byte)0xe0,0x09};
+  byte[] rawReply=new byte[64];rawReply[0]=0x55;rawReply[1]=(byte)0xaa;rawReply[2]=0x17;System.arraycopy(rawId,0,rawReply,4,12);
+  String rawIdentity=Protocol.discovered(rawReply,rawReply.length);ok(rawIdentity!=null&&rawIdentity.startsWith("raw:")&&Arrays.equals(Protocol.identity(rawIdentity),rawId),"opaque binary identity is discovered without ASCII loss");
+  ok(Arrays.equals(Arrays.copyOfRange(Protocol.frame(new byte[]{3,8},rawIdentity),49,61),rawId),"control frame preserves exact binary identity bytes");
+  byte[][] rawSetup=Protocol.provision(rawIdentity,"TEST-SSID","password123",true,true);ok(Arrays.equals(Arrays.copyOfRange(rawSetup[0],49,61),rawId)&&Arrays.equals(Arrays.copyOfRange(rawSetup[1],49,61),rawId),"both provisioning stages preserve binary identity");
+  byte[] textId="KITELIGHT123".getBytes("US-ASCII");System.arraycopy(textId,0,rawReply,4,12);String nonHex=Protocol.discovered(rawReply,64);ok(nonHex!=null&&Arrays.equals(Protocol.identity(nonHex),textId),"non-hex ASCII identity supported exactly");
+  Arrays.fill(rawReply,4,16,(byte)0);ok(Protocol.discovered(rawReply,64)==null&&Protocol.discoveryRejection(rawReply,64).contains("vazia"),"zero identity rejected with reason");
+  Arrays.fill(rawReply,4,16,(byte)0xff);ok(Protocol.discovered(rawReply,64)==null,"all-FF binary identity rejected");
+  rejects(()->Protocol.identity("raw:abcd"));rejects(()->Protocol.identity("raw:000000000000000000000000"));
+  ok(Protocol.discovered(null,64)==null&&Protocol.discovered(new byte[4],64)==null,"malformed lengths cannot crash parser");
+  byte[] echo=Protocol.discovery();echo[63]=1;ok(Protocol.discovered(echo,64)==null&&Protocol.discoveryRejection(echo,64).contains("eco"),"request identity never becomes discovered device even with different padding");
+  System.arraycopy(rawId,0,rawReply,4,12);rawReply[0]=0x12;rawReply[1]=0x34;ok(Protocol.discovered(rawReply,64)==null&&Protocol.discoveryRejection(rawReply,64).contains("12 34"),"unsupported header reported precisely");
   System.out.println(count+" checks passed (including real loopback UDP)");
  }
 }
