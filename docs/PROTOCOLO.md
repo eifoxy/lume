@@ -20,6 +20,7 @@ Esta descrição deriva da análise do executável fornecido e dos testes simula
 - Comandos comuns: checksum = `0xFF + soma(payload)`, módulo 256, sem incluir a identidade.
 - Descoberta: prefixo `55 AA 17 00 00 03 DD EE FF`, byte 61 `E3`. A resposta fornece identidade nos bytes 4–15 e o IP vem do datagrama.
 - Resposta de comando: cabeçalho `55 AA`, comando ecoado no byte 2 e estado de confirmação no byte 4. A implementação filtra origem, porta, tamanho e confirmação. Prazo de comando: 2,5 s.
+- No Android 1.0.1, a descoberta aceita qualquer porta de origem para uma resposta válida da mesma sub-rede, conforme o receptor do Pled original. `Discovery.java` monta os destinos (gateway, broadcast da sub-rede e limitado) e rejeita eco próprio, endereço de rede/broadcast e origens externas. Os filtros das respostas a comandos de gravação não foram alterados.
 
 | Operação | Payload / comando | Confirmação |
 |---|---|---|

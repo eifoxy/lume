@@ -1,5 +1,14 @@
 # Histórico
 
+## Android 1.0.1 · 2026-10-18
+
+- Busca também pelo gateway da interface Wi-Fi, além dos broadcasts da sub-rede e limitado; escuta por oito segundos.
+- Descoberta aceita resposta válida de uma porta de origem diferente de 5000, como o receptor do Pled original; mantém validação de quadro, identidade e origem na mesma rede.
+- Exclui redes VPN da seleção de interface Wi-Fi.
+- Diagnóstico persistente da última busca: endereço local, destinos, contagens e motivos resumidos de rejeição, com botão para copiar. Não guarda senha, SSID ou conteúdo bruto dos pacotes e não envia diagnósticos automaticamente.
+- Diferencia ausência de respostas de respostas não reconhecidas. A falha relatada no hardware ainda precisa ser retestada com este APK; não há confirmação de qual condição ocorreu no telefone.
+- 44 verificações Java e 16 do editor passaram localmente; assinatura preservada para atualizar sobre a versão anterior.
+
 ## Prévia pública · 2026-10-18
 
 Publicação conjunta dos aplicativos, tutoriais de instalação/uso/rede, código-fonte, licença MIT, testes e CI. Os downloads públicos começam com exemplos genéricos; bibliotecas pessoais e chaves de assinatura ficam fora do repositório.

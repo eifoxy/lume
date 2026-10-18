@@ -15,7 +15,7 @@ No Android, **Conexão → Abrir redes Wi-Fi** abre o painel do sistema. No Wind
 - Windows: **Conectar por Wi-Fi → Buscar na rede**.
 - Android: **Conexão → Buscar aparelhos**.
 
-A busca dura aproximadamente cinco segundos. Ela envia consultas UDP na rede local e mostra identificação e endereço IP dos aparelhos que responderem. Não grava horários nem troca a configuração da luz.
+A busca dura aproximadamente cinco segundos no Windows e oito segundos no Android 1.0.1. Ela envia consultas UDP na rede local e mostra identificação e endereço IP dos aparelhos que responderem. No Android, consulta também o gateway da interface Wi-Fi e usa dois destinos de broadcast, sem varrer endereços/portas. Não grava horários nem troca a configuração da luz.
 
 Selecione a controladora correta. No Windows, finalize com **Usar esta controladora** quando quiser começar a operá-la; para a configuração inicial, use os campos do roteador na própria janela.
 
@@ -63,5 +63,17 @@ No Android, a seleção do dispositivo é descartada ao retornar de outra tela/a
 Não é necessário expor a porta 5000 na internet ou criar encaminhamento de portas no roteador. O uso previsto é restrito à rede local.
 
 ## O que foi realmente testado
+
+### Android: o aparelho apita, mas a lista fica vazia
+
+O apito pode indicar recebimento de uma consulta; sozinho não comprova que a resposta chegou ao telefone. Atualize para [Android 1.0.1](https://github.com/eifoxy/lume/releases/tag/android-v1.0.1), instalando o APK sobre a versão anterior, sem desinstalar.
+
+Permaneça na rede do aparelho mesmo com o aviso de ausência de internet. Para isolar roteamento do telefone, experimente temporariamente sem VPN e dados móveis e repita a busca. Isso é um teste de diagnóstico, não uma confirmação da causa.
+
+Se não aparecer, abra **Diagnóstico da última busca → Copiar diagnóstico**. “Datagramas recebidos: 0” distingue ausência de recepção de respostas que chegaram mas foram rejeitadas por formato ou origem. O relatório mostra IPs locais, gateway, destinos, modelo/versão do Android e contagens; não inclui SSID, senha ou bytes brutos e não é transmitido automaticamente. Revise-o antes de compartilhar.
+
+O Android 1.0.1 removeu a exigência de porta de origem 5000 somente na descoberta, alinhando-a ao receptor original. Os comandos de configuração e gravação continuam com suas validações anteriores.
+
+### Evidência disponível
 
 Os pacotes foram identificados no executável Pled V2.2 fornecido e testados com respostas simuladas, inclusive comunicação UDP real em loopback. A busca feita na rede do PC original encontrou zero aparelhos porque o Wi-Fi da controladora ainda não estava configurado. A descoberta na rede do aparelho, ingresso no roteador e gravação física continuam pendentes de validação. [Estado detalhado →](COMPATIBILIDADE.md)

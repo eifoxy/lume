@@ -37,11 +37,13 @@
 ## Testes locais
 
 - **Windows:** 77 verificações funcionais de modelo, arquivos, pacotes, transferências, erros e UDP; 24 verificações de interface com renderização fora da tela.
-- **Android:** 32 verificações Java de pacotes, checksums, nomes, validação, subnet, confirmações e timeout, incluindo UDP real em loopback com um aparelho simulado; 16 verificações JavaScript do editor.
+- **Android 1.0.1:** 44 verificações Java de pacotes, checksums, nomes, validação, subnet, alvos de busca, portas de origem, confirmações e timeout, incluindo UDP real em loopback com um aparelho simulado; 16 verificações JavaScript do editor. Na 1.0.0 eram 32 verificações Java.
 - **APK:** compilação javac/D8/aapt2, alinhamento e assinaturas v2/v3 conferidos.
 - **Interface Android:** revisão no navegador em largura de celular, incluindo persistência após recarregar, ciclo, curvas, recife e conexão.
 
 Esses resultados não equivalem a instalação no Android, teste por um rádio Wi-Fi real, leitura de retorno da memória ou validação do firmware. Os testes de loopback usam dados fictícios e não modificam a controladora.
+
+Após a publicação inicial, houve relato de teste Android em que o aparelho apitou durante a busca, mas não apareceu na lista. Isso não confirma descoberta ou gravação física. A versão 1.0.1 amplia os destinos de consulta, remove um filtro de porta incompatível com o receptor original e acrescenta diagnóstico; o resultado no telefone ainda precisa ser confirmado.
 
 ## Limites
 

@@ -12,8 +12,8 @@ Não é necessário cabo, PC conectado ao telefone, conta ou serviço na nuvem. 
 
 ## Instalar o APK
 
-1. No telefone, abra a [versão publicada](https://github.com/eifoxy/lume/releases/tag/preview-2026.10.18).
-2. Baixe **`Lume-Android-1.0.0.apk`** na área **Assets**.
+1. No telefone, abra a [versão Android publicada](https://github.com/eifoxy/lume/releases/tag/android-v1.0.1).
+2. Baixe **`Lume-Android-1.0.1.apk`** na área **Assets**. Se já usa a 1.0.0, instale por cima, sem desinstalar, para manter os perfis.
 3. Abra o download pelo gerenciador de arquivos ou pela notificação de conclusão.
 4. Se o Android pedir, permita que **esse navegador ou gerenciador de arquivos** instale aplicativos. O nome da tela varia entre fabricantes.
 5. Toque em **Instalar** e abra **Lume**.
