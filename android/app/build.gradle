@@ -1,0 +1,7 @@
+plugins { id 'com.android.application' }
+android {
+ namespace 'br.com.lume'
+ compileSdk 36
+ defaultConfig { applicationId 'br.com.lume.aquario'; minSdk 26; targetSdk 36; versionCode 100; versionName '1.0.0' }
+ compileOptions { sourceCompatibility JavaVersion.VERSION_1_8; targetCompatibility JavaVersion.VERSION_1_8 }
+}

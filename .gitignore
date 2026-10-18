@@ -1,0 +1,38 @@
+# Local builds and IDEs
+**/bin/
+**/obj/
+**/build/
+.gradle/
+.idea/
+.vs/
+*.user
+local.properties
+artifacts/
+.tools/
+# Private signing material and credentials
+*.p12
+*.pfx
+*.jks
+*.keystore
+*.pem
+*.key
+signing/
+.env
+.env.*
+# User libraries, logs and original vendor binaries
+**/data/
+*.log
+*.lmf
+*.lcm
+**/biblioteca.json*
+**/Biblioteca-migrada.json
+**/Seus-perfis-Pled.json
+LEDControl*.exe
+test-results.txt
+test-failure.txt
+ui-test-results.txt
+ui-test-failure.txt
+wifi-scan-results.txt
+*.apk
+*.idsig
+*.pdb

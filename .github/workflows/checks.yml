@@ -1,0 +1,58 @@
+name: Compilar e testar
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  windows:
+    runs-on: windows-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Compilar distribuições
+        shell: pwsh
+        run: ./scripts/build-windows.ps1
+      - name: Verificar modelo, protocolos, UDP e interface
+        shell: pwsh
+        run: ./scripts/test-windows.ps1 -AppDirectory ./artifacts/windows-x64
+      - uses: actions/upload-artifact@v4
+        with:
+          name: lume-windows
+          path: |
+            artifacts/Lume-Windows-*.zip
+            artifacts/windows-x64/*test-results.txt
+          if-no-files-found: error
+  android:
+    runs-on: windows-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - uses: android-actions/setup-android@v3
+      - name: Preparar SDK
+        shell: pwsh
+        run: sdkmanager 'platforms;android-36' 'build-tools;36.0.0'
+      - name: Testes de protocolo, UDP e editor
+        shell: pwsh
+        run: ./scripts/test-android.ps1 -Jdk $env:JAVA_HOME
+      - name: Compilar e verificar APK de desenvolvimento
+        shell: pwsh
+        run: |
+          ./android/build.ps1 -Jdk $env:JAVA_HOME -BuildTools "$env:ANDROID_HOME/build-tools/36.0.0" -Platform "$env:ANDROID_HOME/platforms/android-36" -SigningKey "$env:RUNNER_TEMP/lume-signing/local.p12" -BuildDirectory ./artifacts/android-build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: lume-android-development
+          path: android/Lume-Android.apk
+          if-no-files-found: error
