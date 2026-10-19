@@ -1,6 +1,6 @@
 # Compatibility and validation
 
-[Home](../../README.md) · **English** · [Português (Brasil)](../COMPATIBILIDADE.md)
+[Home](../../README.en.md) · **English** · [Português (Brasil)](../COMPATIBILIDADE.md)
 
 ## Platforms
 
@@ -57,6 +57,6 @@ See the [protocol analysis](SMART-WIFI-TIMER-ANALYSIS.md) for packet-level evide
 
 ## Limits
 
-Five channels, 48 half-hour points, integer intensities 0–100; 100 local profiles and 16 upload slots. Device names use at most seven ASCII characters. Local IPv4/UDP 5000 only, with no remote internet control. SSID 1–32 and password 8–32 ASCII characters; WPA/WPA2 and AES/TKIP; no WPA3.
+Five channels, 48 half-hour points, integer intensities 0-100; 100 local profiles and 16 upload slots. Device names use at most seven ASCII characters. Local IPv4/UDP 5000 only, with no remote internet control. SSID 1-32 and password 8-32 ASCII characters; WPA/WPA2 and AES/TKIP; no WPA3.
 
 No full memory readback, physical rollback, firmware updates, Bluetooth discovery, Android USB, or cloud telemetry. A failure after erasure can leave device memory empty or partial. Automatic upload recovery is bounded to the same indexed Smart point or initial header before points begin, only for timeout without a valid reply, up to three total attempts. Erasure is never automatically repeated.

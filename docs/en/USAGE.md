@@ -1,6 +1,6 @@
 # Curves, profiles, and uploads
 
-[Home](../../README.md) · **English** · [Português (Brasil)](../USO.md)
+[Home](../../README.en.md) · **English** · [Português (Brasil)](../USO.md)
 
 The released apps use Brazilian Portuguese. Button names below match the interface.
 
@@ -8,7 +8,7 @@ The released apps use Brazilian Portuguese. Button names below match the interfa
 
 Each profile has **five channels and 48 points**, every 30 minutes from 00:00 to 23:30. Points store integer percentages from 0 to 100. The preview interpolates between points, including from 23:30 to 00:00.
 
-Names and colors identify channels without changing physical CH1–CH5 wiring order. Rename them to match your fixture. Example intensities are illustrative, not lighting recommendations for particular species.
+Names and colors identify channels without changing physical CH1-CH5 wiring order. Rename them to match your fixture. Example intensities are illustrative, not lighting recommendations for particular species.
 
 ## Edit
 

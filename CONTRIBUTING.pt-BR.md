@@ -4,7 +4,7 @@
 
 Correções, melhorias de acessibilidade, testes e validação de compatibilidade são bem-vindos. Veja [como compilar e testar](docs/DESENVOLVIMENTO.md) e abra uma issue para discutir mudanças no protocolo ou novos modelos antes de implementá-las.
 
-O Lume é um projeto pessoal gratuito, feito com vibe coding e ampla assistência de IA para resolver um problema real, sem fins lucrativos. Mantenha a documentação padrão em inglês e ofereça uma versão em português brasileiro, com links entre os idiomas. Descreva a assistência de IA, a validação e os limites com transparência. Essa finalidade não acrescenta restrições à licença MIT.
+O Lume é um projeto pessoal gratuito, feito com vibe coding e ampla assistência de IA para resolver um problema real, sem fins lucrativos. Mantenha o README principal em português brasileiro e ofereça documentação em inglês, com links entre os idiomas. Descreva a assistência de IA, a validação e os limites com transparência. Essa finalidade não acrescenta restrições à licença MIT.
 
 Para relatar um problema, inclua versão do Lume, sistema, modelo/firmware, tipo de conexão, passos para reproduzir e resultado esperado/observado. Para confirmar hardware, diga qual comando funcionou e se a confirmação veio do app ou foi conferida no aparelho. Uma resposta de pacote e uma leitura de retorno completa são evidências distintas.
 

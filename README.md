@@ -1,107 +1,106 @@
 # ◒ Lume
 
-**English** · [Português (Brasil)](README.pt-BR.md)
+**Português (Brasil)** · [English](README.en.md)
 
-> **Built with vibe coding to solve a real problem — with no profit motive.** Lume is a free, independent, open-source personal project created to make an old aquarium LED controller easier to use. It was developed with substantial AI assistance from OpenAI Codex, guided by a real user's requirements and feedback from their controller.
+> **Feito com vibe coding para resolver um problema real, sem fins lucrativos.** O Lume é um projeto pessoal, independente, gratuito e de código aberto, criado para facilitar o uso de uma controladora antiga de LEDs de aquário. Foi desenvolvido com ampla assistência de IA do Codex, da OpenAI, guiado pelos requisitos e pelo retorno de um usuário com o aparelho real.
 
-**A day of light, from sunrise to sunset.**
+**Um dia de luz, do amanhecer ao anoitecer.**
 
-![Lume's reef interface, with corals and clownfish](docs/images/recife-dia.png)
+![Lume - recife da interface, com corais e peixes-palhaço](docs/images/recife-dia.png)
 
-An aquarium lighting editor for compatible TC420 controllers and Pled V2.2 Wi-Fi modules. **Windows** and **Android** apps with five-channel curves, lighting profiles, and an animated reef that follows your schedule. The released app interfaces currently use Brazilian Portuguese; this repository's default documentation is English, with [Brazilian Portuguese also available](README.pt-BR.md).
+Editor de iluminação para controladoras de aquário compatíveis com TC420 e com o protocolo Wi-Fi do Pled V2.2. Aplicativos para **Windows** e **Android**, em português, com curvas de cinco canais, perfis e um recife animado que acompanha a programação.
 
-[![Checks](https://github.com/eifoxy/lume/actions/workflows/checks.yml/badge.svg)](https://github.com/eifoxy/lume/actions/workflows/checks.yml)
-[![MIT license](https://img.shields.io/badge/license-MIT-91e3c7)](LICENSE)
+[![Verificações](https://github.com/eifoxy/lume/actions/workflows/checks.yml/badge.svg)](https://github.com/eifoxy/lume/actions/workflows/checks.yml)
+[![Licença MIT](https://img.shields.io/badge/licen%C3%A7a-MIT-91e3c7)](LICENSE)
 
-> **Development preview:** the user confirmed Android discovery and reported good results after 1.0.5. Version 1.0.6 adds automatic discovery and reconnection, verified in local tests; these new functions still need a phone retest. See the [compatibility matrix](docs/en/COMPATIBILITY.md) for evidence and limits.
+> **Prévia em desenvolvimento:** o usuário confirmou a descoberta no Android e relatou bom funcionamento após a 1.0.5. A 1.0.6 acrescenta busca e reconexão automáticas, verificadas em testes locais; o reteste dessas funções no telefone ainda está pendente. Confira a [matriz de compatibilidade](docs/COMPATIBILIDADE.md).
 
-## Download and install
+## Baixar e instalar
 
-| App | Download | Installation |
+| Aplicativo | Download | Como instalar |
 |---|---|---|
-| Windows x64 · 0.5.0 | [Full ZIP, .NET included](https://github.com/eifoxy/lume/releases/download/preview-2026.10.18/Lume-Windows-0.5.0-win-x64.zip) | Extract everything and open `Lume.exe`. |
-| Windows · 0.5.0 | [Small ZIP, requires .NET Desktop Runtime 8](https://github.com/eifoxy/lume/releases/download/preview-2026.10.18/Lume-Windows-0.5.0-portable.zip) | Install the runtime, extract everything, and open `Lume.exe`. |
-| Android 8+ · 1.0.6 | [APK](https://github.com/eifoxy/lume/releases/download/android-v1.0.6/Lume-Android-1.0.6.apk) | Download on your phone and open it in the file manager. |
+| Windows x64 · 0.5.0 | [ZIP completo, com .NET incluído](https://github.com/eifoxy/lume/releases/download/preview-2026.10.18/Lume-Windows-0.5.0-win-x64.zip) | Extraia tudo e abra `Lume.exe`. |
+| Windows · 0.5.0 | [ZIP leve, requer .NET Desktop Runtime 8](https://github.com/eifoxy/lume/releases/download/preview-2026.10.18/Lume-Windows-0.5.0-portable.zip) | Instale o runtime, extraia tudo e abra `Lume.exe`. |
+| Android 8+ · 1.0.6 | [APK](https://github.com/eifoxy/lume/releases/download/android-v1.0.6/Lume-Android-1.0.6.apk) | Baixe no telefone e abra pelo gerenciador de arquivos. |
 
-[All releases and checksums](https://github.com/eifoxy/lume/releases) · [Windows guide](docs/en/INSTALL-WINDOWS.md) · [Android guide](docs/en/INSTALL-ANDROID.md) · [Wi-Fi setup](docs/en/WIFI.md)
+[Todas as versões e checksums](https://github.com/eifoxy/lume/releases) · [Tutorial Windows](docs/INSTALACAO-WINDOWS.md) · [Tutorial Android](docs/INSTALACAO-ANDROID.md) · [Configurar Wi-Fi](docs/WIFI.md)
 
-On Android, install updates **over the existing app, without uninstalling**, to keep your profiles.
+## Recursos
 
-## Features
+- **Cinco canais, 48 horários por dia:** intensidades de 0 a 100% e interpolação entre pontos, inclusive na passagem da meia-noite.
+- **Curva em destaque:** escolha canais, explore horários e edite com controles deslizantes ou valores numéricos. No Windows, também é possível desenhar a curva e ampliar/isolar o canal.
+- **Ciclo suave:** gere amanhecer, pico e anoitecer escolhendo horários, rampas e intensidades máximas.
+- **Perfis locais:** crie, renomeie, duplique, exclua, desfaça alterações e faça backup. Importe bibliotecas JSON e arquivos `.lmf` do Pled V2.2.
+- **Envio individual ou em lote:** grave uma posição ou substitua toda a memória por até 16 perfis. A substituição exige confirmação e mostra os nomes curtos usados no aparelho.
+- **Wi-Fi:** descoberta local, busca por IP, configuração inicial do roteador, envio de perfis, sincronização do relógio e retomada do programa.
+- **Conexão automática no Android:** busca ao abrir/retornar, seleção da única controladora e recuperação da escolha anterior pelo identificador, mesmo com outro IP. Novas tentativas quando ela não responde.
+- **Recife animado:** corais abrem com o aumento da luz simulada e recolhem quando ela diminui; três peixes-palhaço nadam pelo aquário.
+- **Salvamento com recuperação:** biblioteca local, gravação atômica e cópia antes do envio. O backup local não lê a memória da controladora.
+- **Sem conta e sem nuvem:** o editor funciona offline; a comunicação com o aparelho usa a rede local ou USB no Windows.
 
-- **Five channels, 48 points per day:** integer intensities from 0 to 100%, with preview interpolation between points and across midnight.
-- **Readable curves:** select channels and times, then edit with sliders or numbers. Windows also supports drawing, enlarging, and isolating curves.
-- **Smooth daily cycles:** create sunrise, peak light, and sunset using adjustable times, ramps, and channel peaks.
-- **Local profiles:** create, rename, duplicate, delete, undo, and back up. Import Lume JSON libraries and Pled V2.2 `.lmf` files.
-- **Individual or batch uploads:** write one slot or replace all memory with up to 16 profiles, with review and explicit confirmation before erasing.
-- **Wi-Fi:** local discovery, direct IP lookup, initial router setup, profile uploads, clock synchronization, and resume commands.
-- **Automatic connection on Android:** discover on launch/return, select a sole controller, and recover the previous choice by identifier even if its IP changes. Retry when it stops responding.
-- **Animated reef:** corals open and close with simulated light, while three clownfish swim through the aquarium.
-- **Recoverable local saves:** atomic library writes and a local copy before uploads. This backup does not read controller memory.
-- **No account or cloud:** the editor works offline; device communication uses the local network, or USB on Windows.
+### Diferenças entre os aplicativos
 
-### Platform comparison
-
-| Feature | Windows | Android |
+| Função | Windows | Android |
 |---|:---:|:---:|
-| Curves, table, cycles, five channels, profiles | ✓ | ✓ |
-| Animated reef and daily preview | ✓ | ✓ |
-| Wi-Fi discovery and setup | ✓ | ✓ |
-| Profile uploads and clock sync over Wi-Fi | ✓ | ✓ |
-| Automatic discovery and reconnection | — | ✓ |
-| USB HID | ✓ | — |
-| Instant physical LED adjustment | USB, experimental | — |
-| `.lmf` / JSON import | ✓ | ✓ |
-| `.lcm` project import | ✓ | — |
-| `.lmf` / JSON export | ✓ | JSON |
+| Curvas, tabela, ciclos, cinco canais e perfis | ✓ | ✓ |
+| Recife animado com prévia do dia | ✓ | ✓ |
+| Descoberta e configuração Wi-Fi | ✓ | ✓ |
+| Envio de perfis e relógio por Wi-Fi | ✓ | ✓ |
+| Busca e reconexão automáticas | - | ✓ |
+| USB HID | ✓ | - |
+| Ajuste instantâneo dos LEDs físicos | USB, experimental | - |
+| Importação `.lmf` / JSON | ✓ | ✓ |
+| Importação de projeto `.lcm` | ✓ | - |
+| Exportação `.lmf` / JSON | ✓ | JSON |
 
-## Reef preview
+## Uma prévia do recife
 
-<img src="docs/images/recife-celular.png" alt="Android interface preview at phone width, with corals open at noon" width="320" />
+<img src="docs/images/recife-celular.png" alt="Prévia da interface Android em largura de celular, com corais abertos ao meio-dia" width="320" />
 
-*Browser capture of the Android interface at phone width, not a capture from a physical Android device. The reef is illustrative: it does not measure PAR, spectrum, power, or animal response, and does not change the physical LEDs.*
+*Captura da interface Android no navegador em largura de celular; não é uma captura de execução num Android físico.*
 
-## Start with Wi-Fi
+*O visual é ilustrativo: não mede PAR, espectro, potência ou resposta biológica dos animais. A simulação não altera a luz física.*
 
-1. Join the controller's Wi-Fi network on your PC or phone. Stay connected even if it has no internet.
-2. On Android, wait for automatic discovery and choose a controller if there are several. On Windows, open the Wi-Fi connection dialog and search.
-3. Send your home network name and password using security settings supported by the router and module.
-4. Join that home network. Return to Lume on Android for automatic discovery; search again on Windows.
-5. Synchronize the clock and upload your reviewed profiles.
+## Começar pelo Wi-Fi
 
-This requires **compatible Wi-Fi hardware**. A standard TC420 without a Wi-Fi module cannot gain wireless connectivity through software. Android uses Wi-Fi exclusively. [Setup and troubleshooting →](docs/en/WIFI.md)
+1. Conecte o computador ou telefone à rede criada pela controladora. Aceite permanecer nessa rede mesmo sem internet.
+2. No Android, aguarde a busca automática; selecione um aparelho se houver vários. No Windows, abra a conexão Wi-Fi e faça a busca.
+3. Envie o nome e a senha da rede de casa, usando a segurança correspondente ao roteador.
+4. Conecte o computador ou telefone à rede de casa. No Android, volte ao Lume para ele buscar novamente; no Windows, faça uma nova busca.
+5. Sincronize o relógio e envie seus perfis.
 
-## Documentation
+Isso exige **hardware Wi-Fi compatível**. Uma TC420 comum, sem módulo Wi-Fi, não pode se conectar sem fio pelo aplicativo. Android funciona exclusivamente por Wi-Fi. [Tutorial com detalhes e solução de problemas →](docs/WIFI.md)
 
-- [Install and use on Windows](docs/en/INSTALL-WINDOWS.md)
-- [Install and use on Android](docs/en/INSTALL-ANDROID.md)
-- [Wi-Fi setup and discovery](docs/en/WIFI.md)
-- [Curves, profiles, and uploads](docs/en/USAGE.md)
-- [Compatibility, limits, and test evidence](docs/en/COMPATIBILITY.md)
-- [Build and test](docs/en/DEVELOPMENT.md)
-- [Architecture and protocol](docs/en/PROTOCOL.md)
-- [Analysis of the working Smart WiFi Timer APK](docs/en/SMART-WIFI-TIMER-ANALYSIS.md)
-- [References](docs/en/REFERENCES.md)
-- [Changelog](CHANGELOG.md)
-- [Contributing and reporting problems](CONTRIBUTING.md)
-- [All documentation in Brazilian Portuguese](README.pt-BR.md)
+## Documentação
 
-## Source and license
+- [Instalar e usar no Windows](docs/INSTALACAO-WINDOWS.md)
+- [Instalar e usar no Android](docs/INSTALACAO-ANDROID.md)
+- [Configurar o Wi-Fi e encontrar o aparelho](docs/WIFI.md)
+- [Editar curvas, trabalhar com perfis e enviar horários](docs/USO.md)
+- [Compatibilidade, limites e estado dos testes](docs/COMPATIBILIDADE.md)
+- [Compilar e executar testes](docs/DESENVOLVIMENTO.md)
+- [Arquitetura e protocolo](docs/PROTOCOLO.md)
+- [Análise do APK Smart WiFi Timer que funcionava](docs/ANALISE-SMART-WIFI-TIMER.md)
+- [Histórico de versões](CHANGELOG.pt-BR.md)
+- [Contribuir e relatar problemas](CONTRIBUTING.pt-BR.md)
+
+## Código
 
 ```text
-windows/src/          WPF / C# / .NET 8 app
-android/app/          Native Java + local WebView / SVG interface
-android/tests/        Protocol, UDP, editor, and reconnection tests
-docs/en/             English guides
-docs/                Brazilian Portuguese guides and shared images
-scripts/             Build and verification scripts
-.github/workflows/   Automated checks
+windows/src/          Aplicativo WPF / C# / .NET 8
+android/app/          Java nativo + interface WebView local / SVG
+android/tests/        Testes de protocolo, UDP e editor
+docs/                Tutoriais, arquitetura e imagens
+scripts/             Compilação e verificação
+.github/workflows/   Verificações automatizadas
 ```
 
-Lume's code and artwork use the [MIT license](LICENSE). The project is free to download and maintained without a profit motive; that describes its purpose and does not add restrictions to the MIT license. Proprietary Pled binaries, third-party decompiled code, signing keys, and personal profile libraries are excluded. The public Android library contains only an illustrative example.
+O código e os desenhos do Lume usam a [licença MIT](LICENSE). O programa original Pled, bibliotecas proprietárias, chaves de assinatura e bibliotecas pessoais de perfis não são distribuídos neste repositório. A biblioteca Android inicial contém apenas um exemplo ilustrativo.
 
-This is an independent project with no affiliation to controller manufacturers. Platform documentation and protocol references are listed in [References](docs/en/REFERENCES.md).
+O projeto é gratuito e mantido sem fins lucrativos. Isso descreve sua finalidade e não acrescenta restrições à licença MIT. A página inicial e os tutoriais vinculados estão em português brasileiro. Use o link English no topo para acessar a versão em inglês e seus guias. A interface dos aplicativos publicados continua em português.
 
-## Author and AI collaboration
+Projeto independente, sem afiliação com os fabricantes das controladoras. Referências de protocolo e documentação oficial estão em [REFERENCIAS.md](docs/REFERENCIAS.md).
 
-Created and maintained by [eifoxy](https://github.com/eifoxy), who supplied the idea, requirements, and hardware feedback. **Codex, OpenAI's AI assistant**, contributed Windows and Android implementation, protocol analysis, automated tests, and documentation. This credits AI assistance; it does not represent a personal GitHub account or official OpenAI endorsement.
+## Autoria e colaboração
+
+Criado e mantido por [eifoxy](https://github.com/eifoxy), responsável pela ideia, requisitos e testes no aparelho. **Codex, assistente de IA da OpenAI**, colaborou na implementação de Windows e Android, análise dos protocolos, testes automatizados e documentação. Esse crédito identifica assistência de IA; não representa uma conta pessoal no GitHub nem endosso oficial da OpenAI.

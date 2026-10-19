@@ -34,10 +34,10 @@ As alterações anteriores de porta e identificação não corrigiam essa condi�
 
 1. `Communication` abre um `DatagramSocket` na porta local UDP **5000** e mantém uma thread recebendo datagramas.
 2. `MyProtocol.SearchDevice` constrói 64 bytes zerados e define os primeiros campos como `55 AA 17 00 00 03 DD EE FF`.
-3. O byte **61** recebe a soma dos bytes **0–48**, módulo 256. No pedido de descoberta isso resulta em `E3`.
+3. O byte **61** recebe a soma dos bytes **0-48**, módulo 256. No pedido de descoberta isso resulta em `E3`.
 4. Envia o pedido para **255.255.255.255:5000** e repete a consulta após 300 ms. São consultas de descoberta, não envio de horários.
 5. Durante a janela de busca, a resposta com comando **0x17** (23 decimal) é tratada como um aparelho.
-6. `Common.GetMacFromSearch` extrai a identificação dos bytes **4–15**, doze bytes.
+6. `Common.GetMacFromSearch` extrai a identificação dos bytes **4-15**, doze bytes.
 7. O endereço IP é obtido da origem do datagrama. A lista elimina repetições pela identificação.
 
 O teste preliminar `Communication.CheckReceive` do APK é permissivo; sua forma decompilada usa uma condição alternativa sobre os dois primeiros bytes. O caminho `MyProtocol.ReceiveData` é mais claro e exige ambos os bytes `88 00`. O Lume não reproduz a condição permissiva: aceita explicitamente o cabeçalho confirmado e continua rejeitando datagramas de outra rede, ecos da consulta, identidades vazias e tamanhos incompatíveis.
@@ -50,7 +50,7 @@ O APK verifica, em `MyProtocol.ReceiveData`:
 
 - Quadro de **64 bytes** com cabeçalho **88 00**.
 - Código de resultado no byte **4**.
-- Identificação do aparelho nos bytes **49–60**, igual à do destino.
+- Identificação do aparelho nos bytes **49-60**, igual à do destino.
 
 A identidade muda de posição entre descoberta e confirmação. O Lume 1.0.3 passou a conferir essa identidade nas respostas Smart Timer; não basta receber qualquer quadro com o código esperado. A origem IP/porta também é filtrada pelo transporte do Lume.
 
@@ -62,15 +62,15 @@ Todos os comandos enviados têm 64 bytes. Índices nesta descrição começam em
 
 | Posição | Função |
 |---|---|
-| 0–1 | `55 AA` |
+| 0-1 | `55 AA` |
 | 2 | Comando |
 | 3 | Subcomando, quando usado |
 | 4 | Reservado, normalmente zero |
 | 5 | Tamanho do conteúdo, quando usado |
 | 6 em diante | Dados do comando |
-| 49–60 | Identidade do aparelho |
-| 61 | Soma dos bytes 0–48, módulo 256 |
-| 62–63 | Zero no APK analisado |
+| 49-60 | Identidade do aparelho |
+| 61 | Soma dos bytes 0-48, módulo 256 |
+| 62-63 | Zero no APK analisado |
 
 O cálculo anterior do Lume (`0xFF + soma(payload)`) é equivalente para seus quadros comuns, pois `0x55 + 0xAA = 0xFF` e o restante da área é zerado. A identidade não entra no checksum.
 
@@ -113,9 +113,9 @@ O APK não usa o cabeçalho fixo do Pled desktop que estava sendo usado pelo Lum
 `DownloadProcess` envia cada um dos 48 pontos:
 
 - Byte 2 `01`, byte 3 `02`, byte 5 `08`.
-- Byte 6: índice do ponto, 0–47.
-- Bytes 7–8: hora e minuto (00 ou 30).
-- Bytes 9–13: cinco intensidades.
+- Byte 6: índice do ponto, 0-47.
+- Bytes 7-8: hora e minuto (00 ou 30).
+- Bytes 9-13: cinco intensidades.
 - ACK **81**.
 
 Depois de cada ponto, a tela de transferência aguarda **50 ms**. Depois dos 48 pontos de cada perfil, chama **03 08 / ACK 83**. Ao terminar o conjunto, chama **04 0A / ACK 91**.
@@ -124,8 +124,8 @@ O Android 1.0.3 do Lume detecta o formato Smart Timer pela resposta de descobert
 
 ## O que foi alterado e como foi verificado
 
-- Parser de descoberta: resposta `88 00`, 64 bytes, identificação em 4–15.
-- Parser de ACK Smart: cabeçalho `88 00`, 64 bytes, código em 4, identificação em 49–60.
+- Parser de descoberta: resposta `88 00`, 64 bytes, identificação em 4-15.
+- Parser de ACK Smart: cabeçalho `88 00`, 64 bytes, código em 4, identificação em 49-60.
 - Seleção automática do formato de envio Smart Timer, mantendo o fluxo anterior separado.
 - Cabeçalho de perfil com tamanho real do nome, pausa de 50 ms por ponto e encerramentos por perfil/conjunto.
 - Validação e cópia do plano inteiro antes do primeiro comando, backup local, interrupção na primeira falha e nenhuma repetição automática de mutações.

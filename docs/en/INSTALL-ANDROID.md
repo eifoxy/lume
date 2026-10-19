@@ -1,6 +1,6 @@
 # Install on Android
 
-[Home](../../README.md) · **English** · [Português (Brasil)](../INSTALACAO-ANDROID.md) · [Wi-Fi setup](WIFI.md) · [Usage](USAGE.md)
+[Home](../../README.en.md) · **English** · [Português (Brasil)](../INSTALACAO-ANDROID.md) · [Wi-Fi setup](WIFI.md) · [Usage](USAGE.md)
 
 ## Requirements
 

@@ -1,6 +1,6 @@
 # Install on Windows
 
-[Home](../../README.md) · **English** · [Português (Brasil)](../INSTALACAO-WINDOWS.md) · [Wi-Fi setup](WIFI.md) · [Usage](USAGE.md)
+[Home](../../README.en.md) · **English** · [Português (Brasil)](../INSTALACAO-WINDOWS.md) · [Wi-Fi setup](WIFI.md) · [Usage](USAGE.md)
 
 ## Requirements and download
 

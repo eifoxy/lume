@@ -8,7 +8,7 @@
 
 Cada perfil tem **cinco canais e 48 pontos**, um a cada 30 minutos, de 00:00 a 23:30. Cada ponto guarda porcentagens inteiras de 0 a 100. A prévia interpola entre os pontos e fecha o ciclo interpolando de 23:30 para 00:00.
 
-Os nomes e cores ajudam a identificar canais, mas não mudam a ordem física CH1–CH5. Renomeie conforme a ligação da sua luminária. Os exemplos de intensidade são ilustrativos, não recomendações de iluminação para espécies.
+Os nomes e cores ajudam a identificar canais, mas não mudam a ordem física CH1-CH5. Renomeie conforme a ligação da sua luminária. Os exemplos de intensidade são ilustrativos, não recomendações de iluminação para espécies.
 
 ## Editar
 

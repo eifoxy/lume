@@ -1,6 +1,6 @@
 # Changelog
 
-**English** · [Português (Brasil)](CHANGELOG.pt-BR.md) · [Home](README.md)
+**English** · [Português (Brasil)](CHANGELOG.pt-BR.md) · [Home](README.en.md)
 
 ## Documentation · 2026-10-19
 
@@ -37,7 +37,7 @@
 ## Android 1.0.3 · 2026-10-19
 
 - Static analysis of the working Smart WiFi Timer 3.0 APK confirms 64-byte requests `55 AA` and replies `88 00`, fixing the confirmed discovery parser mismatch.
-- Validates ACK identity at bytes 49–60, versus 4–15 for discovery. Previous non-hex identity speculation was not established physically.
+- Validates ACK identity at bytes 49-60, versus 4-15 for discovery. Previous non-hex identity speculation was not established physically.
 - Detects Smart framing, uses actual profile-name length, and removes the desktop reserved count from the Smart header.
 - Uses 50 ms pacing, per-profile `03 08 / 83`, and whole-batch `04 0A / 91`; success requires final ACK.
 - Validates/copies the full upload plan before mutation; retains fail-fast behavior without copying vendor password storage or broad mutation retries.

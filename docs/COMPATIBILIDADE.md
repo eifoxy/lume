@@ -58,6 +58,6 @@ O relato seguinte mostrou limpeza confirmada e silêncio ao iniciar o primeiro p
 
 ## Limites
 
-Cinco canais; 48 pontos com intervalo de 30 minutos; intensidades inteiras 0–100; até 100 perfis locais e 16 posições de envio. Nomes no aparelho têm até sete caracteres ASCII. Rede IPv4 local, UDP 5000, sem conexão remota pela internet. SSID de 1–32 e senha de 8–32 caracteres ASCII; WPA/WPA2, AES/TKIP. WPA3 não implementado.
+Cinco canais; 48 pontos com intervalo de 30 minutos; intensidades inteiras 0-100; até 100 perfis locais e 16 posições de envio. Nomes no aparelho têm até sete caracteres ASCII. Rede IPv4 local, UDP 5000, sem conexão remota pela internet. SSID de 1-32 e senha de 8-32 caracteres ASCII; WPA/WPA2, AES/TKIP. WPA3 não implementado.
 
 Não há leitura completa de memória, rollback do aparelho, atualização de firmware, descoberta Bluetooth, comunicação USB no Android ou telemetria na nuvem. Uma falha depois de um comando de limpeza pode deixar a memória apagada ou parcial. O app para e orienta reconectar e reenviar, limitando a recuperação automática ao mesmo ponto Smart Timer indexado (até três tentativas totais em timeout sem resposta válida).

@@ -1,12 +1,12 @@
 # ◒ Lume
 
-[English](README.md) · **Português (Brasil)**
+**Português (Brasil)** · [English](README.en.md)
 
 > **Feito com vibe coding para resolver um problema real, sem fins lucrativos.** O Lume é um projeto pessoal, independente, gratuito e de código aberto, criado para facilitar o uso de uma controladora antiga de LEDs de aquário. Foi desenvolvido com ampla assistência de IA do Codex, da OpenAI, guiado pelos requisitos e pelo retorno de um usuário com o aparelho real.
 
 **Um dia de luz, do amanhecer ao anoitecer.**
 
-![Lume — recife da interface, com corais e peixes-palhaço](docs/images/recife-dia.png)
+![Lume - recife da interface, com corais e peixes-palhaço](docs/images/recife-dia.png)
 
 Editor de iluminação para controladoras de aquário compatíveis com TC420 e com o protocolo Wi-Fi do Pled V2.2. Aplicativos para **Windows** e **Android**, em português, com curvas de cinco canais, perfis e um recife animado que acompanha a programação.
 
@@ -46,11 +46,11 @@ Editor de iluminação para controladoras de aquário compatíveis com TC420 e c
 | Recife animado com prévia do dia | ✓ | ✓ |
 | Descoberta e configuração Wi-Fi | ✓ | ✓ |
 | Envio de perfis e relógio por Wi-Fi | ✓ | ✓ |
-| Busca e reconexão automáticas | — | ✓ |
-| USB HID | ✓ | — |
-| Ajuste instantâneo dos LEDs físicos | USB, experimental | — |
+| Busca e reconexão automáticas | - | ✓ |
+| USB HID | ✓ | - |
+| Ajuste instantâneo dos LEDs físicos | USB, experimental | - |
 | Importação `.lmf` / JSON | ✓ | ✓ |
-| Importação de projeto `.lcm` | ✓ | — |
+| Importação de projeto `.lcm` | ✓ | - |
 | Exportação `.lmf` / JSON | ✓ | JSON |
 
 ## Uma prévia do recife
@@ -97,7 +97,7 @@ scripts/             Compilação e verificação
 
 O código e os desenhos do Lume usam a [licença MIT](LICENSE). O programa original Pled, bibliotecas proprietárias, chaves de assinatura e bibliotecas pessoais de perfis não são distribuídos neste repositório. A biblioteca Android inicial contém apenas um exemplo ilustrativo.
 
-O projeto é gratuito e mantido sem fins lucrativos. Isso descreve sua finalidade e não acrescenta restrições à licença MIT. A documentação padrão está em inglês; esta versão e os tutoriais vinculados oferecem o caminho em português brasileiro. A interface dos aplicativos publicados continua em português.
+O projeto é gratuito e mantido sem fins lucrativos. Isso descreve sua finalidade e não acrescenta restrições à licença MIT. A página inicial e os tutoriais vinculados estão em português brasileiro. Use o link English no topo para acessar a versão em inglês e seus guias. A interface dos aplicativos publicados continua em português.
 
 Projeto independente, sem afiliação com os fabricantes das controladoras. Referências de protocolo e documentação oficial estão em [REFERENCIAS.md](docs/REFERENCIAS.md).
 

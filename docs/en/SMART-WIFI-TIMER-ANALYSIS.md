@@ -1,6 +1,6 @@
 # Smart WiFi Timer 3.0 analysis
 
-[Home](../../README.md) · **English** · [Português (Brasil)](../ANALISE-SMART-WIFI-TIMER.md)
+[Home](../../README.en.md) · **English** · [Português (Brasil)](../ANALISE-SMART-WIFI-TIMER.md)
 
 Static analysis performed on **2026-10-19** using the APK the user reported working with their controller. JADX was used for decompilation; the APK was **not installed or executed** during analysis. The APK and decompiled code are excluded from the repository. Lume implements the protocol fields and sequence documented here.
 
@@ -32,10 +32,10 @@ Earlier source-port and identity changes could not fix this header mismatch. Non
 
 1. `Communication` opens a local UDP socket on **5000** with a receive thread.
 2. `MyProtocol.SearchDevice` creates a zeroed 64-byte frame with prefix `55 AA 17 00 00 03 DD EE FF`.
-3. Byte **61** is the sum of bytes **0–48** modulo 256: `E3` for discovery.
+3. Byte **61** is the sum of bytes **0-48** modulo 256: `E3` for discovery.
 4. It queries **255.255.255.255:5000**, repeating after 300 ms. These are discovery queries, not schedule writes.
 5. Replies with command **0x17** (23 decimal) are treated as devices during discovery.
-6. `Common.GetMacFromSearch` extracts twelve identity bytes at **4–15**.
+6. `Common.GetMacFromSearch` extracts twelve identity bytes at **4-15**.
 7. IP comes from the datagram source; identities deduplicate the list.
 
 The decompiled preliminary `Communication.CheckReceive` condition is permissive. `MyProtocol.ReceiveData` clearly requires both `88 00` bytes. Lume uses explicit confirmed framing and retains rejection of wrong networks, query echoes, empty identities, and wrong lengths.
@@ -44,7 +44,7 @@ Lume also queries the gateway and subnet broadcast, and explicitly binds recepti
 
 ## Command acknowledgments
 
-`MyProtocol.ReceiveData` checks 64 bytes, `88 00`, status byte **4**, and device identity at **49–60** matching the destination. Unlike discovery, identity is at the end of the frame. Smart ACK acceptance does not require a command echo at byte 2. Lume also filters source IP and port.
+`MyProtocol.ReceiveData` checks 64 bytes, `88 00`, status byte **4**, and device identity at **49-60** matching the destination. Unlike discovery, identity is at the end of the frame. Smart ACK acceptance does not require a command echo at byte 2. Lume also filters source IP and port.
 
 The vendor app waits about one second and can try commands up to three times. Lume uses a 2.5-second timeout. Its current bounded retry policy is deliberately narrower: up to three identical attempts for the same indexed point or the initial profile header before any points, only on timeout without a valid device reply. Erasure, credentials, clock, and finalizers are not automatically repeated. Partial profiles are not restarted.
 
@@ -54,15 +54,15 @@ All offsets are zero-based; all frames are 64 bytes.
 
 | Offset | Meaning |
 |---|---|
-| 0–1 | `55 AA` |
+| 0-1 | `55 AA` |
 | 2 | Command |
 | 3 | Subcommand where applicable |
 | 4 | Reserved, normally zero |
 | 5 | Content length where applicable |
 | 6 onward | Command data |
-| 49–60 | Device identity |
-| 61 | Sum of bytes 0–48, modulo 256 |
-| 62–63 | Zero in the analyzed APK |
+| 49-60 | Device identity |
+| 61 | Sum of bytes 0-48, modulo 256 |
+| 62-63 | Zero in the analyzed APK |
 
 Lume's common-frame calculation `0xFF + sum(payload)` is equivalent because `0x55 + 0xAA = 0xFF` and the remaining area is zeroed. Identity is excluded from the checksum.
 
@@ -101,8 +101,8 @@ The APK's `StartDownload` differs from the fixed desktop Pled header:
 
 `DownloadProcess` sends 48 indexed points:
 
-- Bytes 2/3: `01 02`; byte 5: `08`; byte 6: index 0–47.
-- Bytes 7–8: hour/minute, with minutes 00 or 30; bytes 9–13: five intensities. ACK **81**.
+- Bytes 2/3: `01 02`; byte 5: `08`; byte 6: index 0-47.
+- Bytes 7-8: hour/minute, with minutes 00 or 30; bytes 9-13: five intensities. ACK **81**.
 
 The vendor UI waits **50 ms** after each point ACK, then uses **03 08 / 83** after 48 points and **04 0A / 91** after the batch. Lume detects Smart format from discovery framing and uses these finalizers. It retains seven-character names, a compatible subset of the vendor UI's 12-byte limit. Full replacement erases once after explicit confirmation; individual uploads do not erase all memory.
 

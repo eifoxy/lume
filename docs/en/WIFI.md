@@ -1,6 +1,6 @@
 # Wi-Fi setup and discovery
 
-[Home](../../README.md) · **English** · [Português (Brasil)](../WIFI.md) · [Compatibility](COMPATIBILITY.md)
+[Home](../../README.en.md) · **English** · [Português (Brasil)](../WIFI.md) · [Compatibility](COMPATIBILITY.md)
 
 Android uses Wi-Fi exclusively; Windows also offers USB. Wireless operation requires a compatible module. Software cannot add Wi-Fi hardware to a standard TC420. The released app buttons use Brazilian Portuguese.
 
@@ -29,8 +29,8 @@ While still joined to the controller's network, enter:
 
 | Field | Implemented limit |
 |---|---|
-| Network name / SSID | 1–32 ASCII characters, case-sensitive, without accents. |
-| Password | 8–32 ASCII characters. Overlong input is rejected, not silently truncated. |
+| Network name / SSID | 1-32 ASCII characters, case-sensitive, without accents. |
+| Password | 8-32 ASCII characters. Overlong input is rejected, not silently truncated. |
 | Authentication | WPA2-PSK or WPA-PSK. |
 | Encryption | AES or TKIP. |
 
