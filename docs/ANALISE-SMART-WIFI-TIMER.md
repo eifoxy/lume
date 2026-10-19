@@ -52,7 +52,7 @@ O APK verifica, em `MyProtocol.ReceiveData`:
 
 A identidade muda de posição entre descoberta e confirmação. O Lume 1.0.3 passou a conferir essa identidade nas respostas Smart Timer; não basta receber qualquer quadro com o código esperado. A origem IP/porta também é filtrada pelo transporte do Lume.
 
-O aplicativo antigo aguarda cerca de um segundo e pode repetir comandos até três vezes. O Lume mantém seu prazo de 2,5 segundos e **não repete automaticamente comandos de gravação**, para não duplicar uma operação já recebida cujo ACK se perdeu.
+O aplicativo antigo aguarda cerca de um segundo e pode repetir comandos até três vezes. O Lume mantém seu prazo de 2,5 segundos. Desde Android 1.0.4, só o mesmo ponto indexado pode ter até três tentativas totais em timeout sem resposta válida, com bytes idênticos. Cabeçalhos, limpeza, credenciais, relógio e encerramentos não são repetidos automaticamente.
 
 ## Formato de saída e checksum
 
@@ -131,3 +131,6 @@ O Android 1.0.3 do Lume detecta o formato Smart Timer pela resposta de descobert
 Testes locais: **55 verificações de protocolo/descoberta, 22 de Smart Timer e 16 do editor**. O teste de integração usa sockets UDP reais em loopback, com simulador que recebe relógio, SSID, senha fictícia, cabeçalho e 48 pontos, responde `88 00` com identidade e exige os dois encerramentos. Há casos negativos para identidade errada, código/tamanho/cabeçalho inválido, cancelamento, falha no meio da transferência e ausência de confirmação final.
 
 Esses testes não foram executados na controladora física. A evidência física disponível confirma recepção de `88 00` na descoberta e o usuário informou que o APK original funcionava; configuração, relógio e gravação com Lume 1.0.3 ainda precisam de confirmação. O Windows 0.5.0 não recebeu esta adaptação do formato Smart Timer.
+
+## Atualização 1.0.4
+A descoberta foi confirmada fisicamente, mas um envio parou no sexto ponto por timeout. A versão 1.0.4 usa 150 ms entre pontos e recuperação limitada do mesmo ponto, com diagnóstico persistente. O teste de loopback que perde o ACK do sexto ponto recupera e encerra o perfil. Essa simulação não confirma a causa ou a recuperação no aparelho real.

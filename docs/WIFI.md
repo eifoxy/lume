@@ -58,7 +58,7 @@ No Android, a seleção do dispositivo é descartada ao retornar de outra tela/a
 | Porta UDP 5000 ocupada | Feche o Pled, outra instância do Lume e outros controladores que usem essa porta. |
 | O Windows bloqueia a resposta | Confira as permissões de rede local do aplicativo no firewall. O Lume não desativa nem altera o firewall automaticamente. |
 | Configuração enviada, sem confirmação final | Tente voltar ao roteador e buscar antes de reenviar. |
-| Recebeu um erro durante gravação | A memória pode estar incompleta; reconecte e reenvie a biblioteca revisada. Não há repetição automática nem rollback físico. |
+| Recebeu um erro durante gravação | A memória pode estar incompleta; reconecte e reenvie a biblioteca revisada. Somente pontos Smart Timer indexados podem ter até três tentativas em timeout sem resposta válida no Android 1.0.4; não há rollback físico. |
 
 Não é necessário expor a porta 5000 na internet ou criar encaminhamento de portas no roteador. O uso previsto é restrito à rede local.
 

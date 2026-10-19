@@ -21,7 +21,7 @@ Os dois aplicativos salvam JSON com `Version`, `Profiles` e `Selected`. Cada per
 Esta descrição deriva da análise do executável fornecido e dos testes simulados, não de uma especificação oficial do fabricante. **Não comprova compatibilidade física.**
 
 - IPv4/UDP, porta local e remota **5000**.
-- Um socket permanece aberto entre envio e recepção. Os comandos mutáveis não são repetidos automaticamente.
+- Um socket permanece aberto entre envio e recepção. O Android 1.0.4 limita a recuperação a três tentativas totais do mesmo ponto Smart Timer indexado em timeout sem resposta válida; outros comandos não são repetidos automaticamente.
 - Quadro de 64 bytes: `55 AA`, payload a partir de 2, identidade ASCII de 12 caracteres nos bytes 49–60, checksum no byte 61.
 - Comandos comuns: checksum = `0xFF + soma(payload)`, módulo 256, sem incluir a identidade.
 - Descoberta: prefixo `55 AA 17 00 00 03 DD EE FF`, byte 61 `E3`. A resposta fornece identidade nos bytes 4–15 e o IP vem do datagrama.

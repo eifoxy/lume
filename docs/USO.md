@@ -52,7 +52,9 @@ Escolha a opção de substituir a memória inteira. Confira a lista e marque a c
 
 Todos os dados são validados e há um backup da biblioteca local antes do primeiro comando de gravação. **O Lume não lê a programação já existente no dispositivo**, portanto esse backup não recupera programas que só estavam na controladora.
 
-Mantenha a conexão ativa e o app aberto. Cada comando precisa de confirmação. Se houver falha, o app para e informa quantos perfis foram concluídos; pode haver uma limpeza ou gravação parcial. Não existe rollback do dispositivo ou repetição automática de comandos. Reconecte e reenvie o conjunto revisado.
+Mantenha a conexão ativa e o app aberto. Cada comando precisa de confirmação. No Android Smart Timer 1.0.4, somente um ponto indexado sem resposta válida pode ser tentado até três vezes, com bytes idênticos; o app não reinicia o perfil ou a limpeza. Se o erro persistir, para e informa a etapa e quantos perfis foram recebidos. Uma resposta válida com código inesperado interrompe sem repetição. Não existe rollback do dispositivo. Cabeçalhos, limpeza, credenciais, relógio e encerramentos não são repetidos automaticamente.
+
+Se falhar, abra **Conexão → Diagnóstico da última comunicação → Copiar diagnóstico**. O erro inclui o horário e se houve silêncio ou uma resposta não aceita, sem pacotes brutos ou senha. A prévia não faz leitura de retorno da memória, portanto conferir sua curva na tela não comprova gravação física.
 
 Um envio confirmado não faz leitura de retorno de toda a memória. No formato Smart Timer (Android 1.0.3), o app envia os encerramentos por perfil e por conjunto encontrados no APK funcional; seus efeitos exatos no firmware ainda aguardam validação. Confira no aparelho o perfil ativo depois da transferência.
 

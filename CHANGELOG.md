@@ -1,5 +1,14 @@
 # Histórico
 
+## Android 1.0.4 · 2026-10-19
+
+- Após confirmação física da descoberta, houve relato de timeout no sexto horário, com cinco pontos já confirmados. A causa da ausência de ACK ainda não foi capturada.
+- Adiciona recuperação limitada a três tentativas totais do mesmo ponto indexado Smart Timer, como no APK original. Só trata timeout sem resposta válida do aparelho; não repete cabeçalho, limpeza, credenciais, relógio ou encerramentos.
+- Intervalo Smart aumentado de 50 para 150 ms por ponto. Respostas já enfileiradas são descartadas antes de um novo pedido para reduzir a aceitação de ACKs anteriores.
+- Timeout informa contagem de datagramas, cabeçalho/código observado e conferência de identidade, sem registrar os pacotes ou credenciais. Falhas de envio ficam disponíveis no diagnóstico copiável da última comunicação.
+- 55 verificações gerais, 28 Smart Timer e 16 do editor. Inclui perda do ACK do sexto ponto em UDP real de loopback, recuperação com bytes idênticos, limite de tentativas e parada sem finalização se a falha persistir.
+- Reteste da gravação no aparelho pendente; não há leitura de retorno da memória.
+
 ## Android 1.0.3 · 2026-10-19
 
 - Protocolo confrontado com análise estática do Smart WiFi Timer 3.0 fornecido pelo usuário: pedidos `55 AA`, respostas `88 00`, datagramas de 64 bytes.

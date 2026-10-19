@@ -38,7 +38,7 @@
 ## Testes locais
 
 - **Windows:** 77 verificações funcionais de modelo, arquivos, pacotes, transferências, erros e UDP; 24 verificações de interface com renderização fora da tela.
-- **Android 1.0.3:** 55 verificações Java de protocolo/descoberta, 22 de Smart Timer (incluindo integração UDP de relógio, SSID/senha fictícios, 48 pontos e ambos os encerramentos) e 16 JavaScript do editor. Na 1.0.2 eram 55 verificações Java, na 1.0.1 eram 44 e na 1.0.0 eram 32.
+- **Android 1.0.4:** 55 verificações Java gerais, 28 de Smart Timer e 16 JavaScript do editor. A integração UDP cobre relógio, credenciais fictícias, perfil completo e perda da confirmação no sexto ponto, com recuperação limitada. A 1.0.3 tinha 22 verificações Smart Timer; as anteriores não tinham esse grupo.
 - **APK:** compilação javac/D8/aapt2, alinhamento e assinaturas v2/v3 conferidos.
 - **Interface Android:** revisão no navegador em largura de celular, incluindo persistência após recarregar, ciclo, curvas, recife e conexão.
 
@@ -50,8 +50,10 @@ No reteste da 1.0.1, o diagnóstico confirmou recepção de datagramas de 64 byt
 
 O reteste da 1.0.2 mostrou precisamente `88 00` no cabeçalho. A análise do Smart WiFi Timer 3.0 confirmou esse cabeçalho de resposta e diferenças no envio de perfis. A 1.0.3 corrige esses pontos. A restrição de cabeçalho foi a causa confirmada do descarte; a hipótese de identificação binária não foi comprovada no equipamento. Descoberta, ingresso no roteador e gravação com a 1.0.3 ainda precisam do reteste físico. [Análise](ANALISE-SMART-WIFI-TIMER.md).
 
+No reteste da 1.0.3, o usuário confirmou a descoberta e relatou falha ao gravar o sexto horário, após cinco pontos confirmados. Isso confirma comunicação parcial de envio, mas não um perfil completo, a finalização ou a leitura de retorno. A 1.0.4 adiciona recuperação de timeout apenas do mesmo ponto, ritmo mais conservador e diagnóstico da resposta; o resultado no aparelho ainda precisa de reteste.
+
 ## Limites
 
 Cinco canais; 48 pontos com intervalo de 30 minutos; intensidades inteiras 0–100; até 100 perfis locais e 16 posições de envio. Nomes no aparelho têm até sete caracteres ASCII. Rede IPv4 local, UDP 5000, sem conexão remota pela internet. SSID de 1–32 e senha de 8–32 caracteres ASCII; WPA/WPA2, AES/TKIP. WPA3 não implementado.
 
-Não há leitura completa de memória, rollback do aparelho, atualização de firmware, descoberta Bluetooth, comunicação USB no Android ou telemetria na nuvem. Uma falha depois de um comando de limpeza pode deixar a memória apagada ou parcial. O app para e orienta reconectar e reenviar, sem repetir automaticamente a gravação.
+Não há leitura completa de memória, rollback do aparelho, atualização de firmware, descoberta Bluetooth, comunicação USB no Android ou telemetria na nuvem. Uma falha depois de um comando de limpeza pode deixar a memória apagada ou parcial. O app para e orienta reconectar e reenviar, limitando a recuperação automática ao mesmo ponto Smart Timer indexado (até três tentativas totais em timeout sem resposta válida).

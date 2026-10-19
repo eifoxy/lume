@@ -32,7 +32,35 @@ public final class SmartTimerTest {
   sent.set(0);failed=false;try{Upload.run(Arrays.asList(item),true,true,(p,code)->sent.incrementAndGet(),()->{throw new IOException("cancelled");},(v,t)->{},()->{});}catch(IOException e){failed=true;}ok(failed&&sent.get()==0,"cancel before clear does not write");
   sent.set(0);failed=false;try{Upload.run(Arrays.asList(item,new Upload.Item(0,"OUTRO",rows)),true,true,(p,code)->sent.incrementAndGet(),()->{},(v,t)->{},()->{});}catch(IllegalArgumentException e){failed=true;}ok(failed&&sent.get()==0,"invalid complete plan rejected before clear");
   percent.set(0);failed=false;try{Upload.run(Arrays.asList(item),false,true,(p,code)->{if(code==0x91)throw new IOException("final ACK lost");},()->{},(v,t)->percent.set(v),()->{});}catch(IOException e){failed=e.getMessage().contains("finalizar");}ok(failed&&percent.get()<100,"missing final ACK cannot report success");
-  integration(item);System.out.println(count+" Smart WiFi Timer checks passed, including complete loopback transfer");
+  retryPolicy(item);integration(item);lossRecovery(item);System.out.println(count+" Smart WiFi Timer checks passed, including complete loopback transfer and sixth-point ACK loss");
+ }
+ static void retryPolicy(Upload.Item item)throws Exception{
+  AtomicInteger attempts=new AtomicInteger(),sent=new AtomicInteger();List<byte[]> sixth=new ArrayList<>();
+  Upload.run(Arrays.asList(item),false,true,(p,code)->{sent.incrementAndGet();if(code==0x81&&p[4]==5){sixth.add(p.clone());if(attempts.incrementAndGet()==1)throw new PacketIO.AckTimeout(false,0,"simulated lost ACK");}},()->{},(v,t)->{},()->{});
+  ok(attempts.get()==2&&sixth.size()==2&&Arrays.equals(sixth.get(0),sixth.get(1))&&sent.get()==52,"sixth indexed point recovered using identical bytes, no restart");
+  attempts.set(0);sent.set(0);boolean failed=false;
+  try{Upload.run(Arrays.asList(item),false,true,(p,code)->{sent.incrementAndGet();if(code==0x81&&p[4]==5){attempts.incrementAndGet();throw new PacketIO.AckTimeout(false,0,"silent");}},()->{},(v,t)->{},()->{});}catch(IOException e){failed=e.getMessage().contains("horário 6");}
+  ok(failed&&attempts.get()==3&&sent.get()==9,"three attempts maximum, no seventh point or finalization after failure");
+  attempts.set(0);failed=false;try{Upload.run(Arrays.asList(item),false,true,(p,code)->{if(code==0x81){attempts.incrementAndGet();throw new PacketIO.AckTimeout(true,1,"device returned other status");}},()->{},(v,t)->{},()->{});}catch(IOException e){failed=true;}
+  ok(failed&&attempts.get()==1,"device reply with unexpected status is not retried");
+  for(boolean clear:new boolean[]{false,true}){sent.set(0);failed=false;try{Upload.run(Arrays.asList(item),clear,true,(p,code)->{sent.incrementAndGet();throw new PacketIO.AckTimeout(false,0,"timeout");},()->{},(v,t)->{},()->{});}catch(IOException e){failed=true;}ok(failed&&sent.get()==1,"header/clear are never repeated automatically");}
+ }
+ static void lossRecovery(Upload.Item item)throws Exception{
+  ExecutorService executor=Executors.newSingleThreadExecutor();InetAddress local=InetAddress.getLoopbackAddress();
+  try(DatagramSocket controller=new DatagramSocket(0,local);DatagramSocket client=new DatagramSocket(0,local)){
+   controller.setSoTimeout(5000);AtomicInteger rowSix=new AtomicInteger(),seen=new AtomicInteger();int[] rows=new int[48];
+   Future<?> server=executor.submit(()->{try{boolean done=false;byte[] firstSixth=null;while(!done){DatagramPacket q=new DatagramPacket(new byte[65],65);controller.receive(q);seen.incrementAndGet();byte[] b=q.getData();int code;
+    if(b[2]==1&&b[3]==1)code=0x80;
+    else if(b[2]==1&&b[3]==2){int r=u(b[6]);if(r>=48)throw new AssertionError("row out of range");rows[r]++;code=0x81;if(r==5){rowSix.incrementAndGet();if(firstSixth==null){firstSixth=Arrays.copyOf(b,64);continue;}if(!Arrays.equals(firstSixth,Arrays.copyOf(b,64)))throw new AssertionError("retry changed point");}}
+    else if(b[2]==3&&b[3]==8)code=0x83;
+    else if(b[2]==4&&b[3]==10){code=0x91;done=true;}
+    else throw new AssertionError("unexpected mutation");
+    byte[] answer=ack(code,ID);controller.send(new DatagramPacket(answer,64,q.getAddress(),q.getPort()));
+   }}catch(Exception e){throw new RuntimeException(e);}});
+   Upload.Sender sender=(p,code)->PacketIO.exchange(client,local,controller.getLocalPort(),Protocol.frame(p,ID),p[0]&255,new int[]{code},250,()->{},ID);
+   Upload.run(Arrays.asList(item),false,true,sender,()->{},(v,t)->{},()->{});server.get(5,TimeUnit.SECONDS);
+   ok(seen.get()==52&&rowSix.get()==2&&rows[5]==2&&java.util.stream.IntStream.range(0,48).allMatch(r->rows[r]==(r==5?2:1)),"real UDP sixth-point ACK loss recovers and finalizes without reuploading other rows");
+  }finally{executor.shutdownNow();}
  }
  static void integration(Upload.Item item)throws Exception{
   InetAddress local=InetAddress.getLoopbackAddress();ExecutorService executor=Executors.newSingleThreadExecutor();

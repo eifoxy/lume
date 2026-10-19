@@ -26,7 +26,15 @@ public final class Upload {
    if(clear){phase="limpar perfis antigos";progress.update(0,"Limpando os perfis antigos…");eraseAttempted=true;send.send(new byte[]{5,(byte)0xfe},0x82);}
    for(int i=0;i<items.size();i++){
     Item item=items.get(i);guard.check();phase="iniciar perfil "+(i+1);send.send(smart?Protocol.smartHeader(item.slot,item.alias):Protocol.header(item.slot,item.alias),0x80);
-    for(int r=0;r<48;r++){guard.check();phase="gravar perfil "+(i+1)+", horário "+(r+1);send.send(Protocol.step(r,item.values[r]),0x81);if(smart)pacer.pause();progress.update((i*48+r+1)*98/(items.size()*48),"Perfil "+(i+1)+"/"+items.size()+" · horário "+(r+1)+"/48");}
+    for(int r=0;r<48;r++){
+     guard.check();phase="gravar perfil "+(i+1)+", horário "+(r+1);byte[] point=Protocol.step(r,item.values[r]);int attempts=smart?3:1;
+     for(int attempt=1;;attempt++){
+      guard.check();
+      try{send.send(point.clone(),0x81);break;}
+      catch(PacketIO.AckTimeout e){if(attempt>=attempts||e.deviceReplied)throw e;progress.update((i*48+r)*98/(items.size()*48),"Reconfirmando perfil "+(i+1)+", horário "+(r+1)+" · tentativa "+(attempt+1)+"/"+attempts);pacer.pause();}
+     }
+     if(smart)pacer.pause();progress.update((i*48+r+1)*98/(items.size()*48),"Perfil "+(i+1)+"/"+items.size()+" · horário "+(r+1)+"/48");
+    }
     if(smart){guard.check();phase="encerrar perfil "+(i+1);send.send(new byte[]{3,8},0x83);}completed++;
    }
    if(smart){guard.check();phase="finalizar o conjunto";progress.update(99,"Finalizando a transferência…");send.send(new byte[]{4,10},0x91);}
