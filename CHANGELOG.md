@@ -1,5 +1,14 @@
 # Histórico
 
+## Android 1.0.6 · 2026-10-19
+
+- Busca automática de três segundos ao abrir e retornar ao app; seleção automática da única controladora e lembrança da escolha pelo identificador, mesmo com mudança de IP.
+- Sem resposta, descarta o destino antigo e tenta novamente após 20 segundos. Com aparelho selecionado, verifica presença após 60 segundos. Não troca silenciosamente para outra controladora quando a anterior desaparece.
+- Sem serviço em segundo plano: buscas param ao sair do app, aguardam operações e diálogos, e compartilham a exclusão de acesso à porta UDP com comandos e envios. Não gravam perfis ou sincronizam relógio automaticamente.
+- Navegação e edição continuam disponíveis durante a busca automática; comandos físicos aguardam a busca breve. Busca manual e diagnóstico preservados. A busca automática não sobrescreve o diagnóstico de uma falha de envio.
+- 55 verificações gerais, 34 Smart Timer, 16 do editor e 29 da reconexão automática. Compilação e assinatura verificadas; reteste das funções novas no telefone pendente.
+- Capa do README com captura do recife real da interface e créditos explícitos de autoria humana e assistência do Codex.
+
 ## Android 1.0.5 · 2026-10-19
 
 - Trata o relato de limpeza confirmada seguida de timeout sem datagramas ao iniciar o primeiro perfil.

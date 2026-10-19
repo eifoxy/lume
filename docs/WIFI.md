@@ -13,9 +13,13 @@ No Android, **Conexão → Abrir redes Wi-Fi** abre o painel do sistema. No Wind
 ## 2. Buscar e selecionar
 
 - Windows: **Conectar por Wi-Fi → Buscar na rede**.
-- Android: **Conexão → Buscar aparelhos**.
+- Android 1.0.6: a busca começa automaticamente ao abrir ou retornar ao app. **Conexão → Buscar aparelhos** continua disponível para uma busca manual e diagnóstico.
 
-A busca dura aproximadamente cinco segundos no Windows e oito segundos no Android 1.0.1. Ela envia consultas UDP na rede local e mostra identificação e endereço IP dos aparelhos que responderem. No Android, consulta também o gateway da interface Wi-Fi e usa dois destinos de broadcast, sem varrer endereços/portas. Não grava horários nem troca a configuração da luz.
+A busca dura aproximadamente cinco segundos no Windows, oito segundos na busca manual Android e três segundos na automática. Ela envia consultas UDP na rede local e mostra identificação e endereço IP dos aparelhos que responderem. No Android, consulta também o gateway da interface Wi-Fi e usa dois destinos de broadcast, sem varrer endereços/portas. Não grava horários nem troca a configuração da luz.
+
+No Android, a única controladora é selecionada automaticamente na primeira descoberta. Se houver várias, escolha uma. O app guarda apenas seu identificador e procura essa mesma controladora nas próximas vezes, atualizando o IP recebido. Se ela não responder, não escolhe outra silenciosamente: você pode selecionar outra em **Conexão**. Ao ficar sem aparelho, tenta novamente 20 segundos após cada busca; com aparelho selecionado, verifica novamente após 60 segundos. Os intervalos começam ao concluir a busca.
+
+As buscas automáticas são discretas, não abrem telas nem substituem o diagnóstico de uma falha de envio. A edição e a navegação continuam disponíveis; comandos ao aparelho aguardam a breve busca terminar. Buscas e comandos usam uma única operação de rede por vez. A busca aguarda envios e diálogos terminarem e para quando o app sai do primeiro plano. Não há serviço de busca em segundo plano, sincronização de relógio ou reenvio de perfis automáticos.
 
 Selecione a controladora correta. No Windows, finalize com **Usar esta controladora** quando quiser começar a operá-la; para a configuração inicial, use os campos do roteador na própria janela.
 
@@ -45,7 +49,7 @@ O envio tem duas etapas: rede e senha, com respostas independentes. **Se a confi
 3. Faça uma nova busca no Lume e selecione novamente o aparelho. O endereço IP pode mudar.
 4. Sincronize o relógio, revise seu perfil e envie a programação.
 
-No Android, a seleção do dispositivo é descartada ao retornar de outra tela/app para evitar reutilizar um destino antigo após trocar de rede. Faça uma nova busca. O app não sincroniza o relógio ou grava perfis sozinho.
+No Android, ao retornar de outra tela/app, o destino antigo é invalidado e uma nova busca confirma o aparelho na rede atual. A escolha anterior é recuperada pelo identificador quando ele responde.
 
 ## Se não encontrar o aparelho
 

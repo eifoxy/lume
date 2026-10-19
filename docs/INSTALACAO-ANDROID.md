@@ -12,8 +12,8 @@ Não é necessário cabo, PC conectado ao telefone, conta ou serviço na nuvem. 
 
 ## Instalar o APK
 
-1. No telefone, abra a [versão Android publicada](https://github.com/eifoxy/lume/releases/tag/android-v1.0.5).
-2. Baixe **`Lume-Android-1.0.5.apk`** na área **Assets**. Se já usa uma versão anterior, instale por cima, sem desinstalar, para manter os perfis.
+1. No telefone, abra a [versão Android publicada](https://github.com/eifoxy/lume/releases/tag/android-v1.0.6).
+2. Baixe **`Lume-Android-1.0.6.apk`** na área **Assets**. Se já usa uma versão anterior, instale por cima, sem desinstalar, para manter os perfis.
 3. Abra o download pelo gerenciador de arquivos ou pela notificação de conclusão.
 4. Se o Android pedir, permita que **esse navegador ou gerenciador de arquivos** instale aplicativos. O nome da tela varia entre fabricantes.
 5. Toque em **Instalar** e abra **Lume**.
@@ -22,7 +22,7 @@ O APK é distribuído diretamente pelo GitHub e não está na Play Store. É ass
 
 ## Primeira conexão
 
-Abra **Conexão** no menu inferior e siga as quatro etapas: entrar no Wi-Fi do aparelho, buscar a controladora, configurar o roteador e retornar à rede de casa. O botão **Abrir redes Wi-Fi** abre o painel do Android; você escolhe a rede no sistema.
+Abra **Conexão** no menu inferior para configurar o Wi-Fi pela primeira vez. O botão **Abrir redes Wi-Fi** abre o painel do Android; você escolhe a rede no sistema. Ao voltar ao Lume, ele busca automaticamente e seleciona a única controladora encontrada. Se houver várias, escolha uma; essa escolha será lembrada pelo identificador nas próximas buscas. Após configurar o roteador e entrar na rede de casa, volte ao app para a nova busca automática. A busca manual continua disponível.
 
 Feche o Smart WiFi Timer antes de usar o Lume; se ele mantiver a porta 5000 ocupada em segundo plano, force sua parada nas configurações do Android.
 
@@ -57,4 +57,4 @@ O alvo atual é SDK 36. Ao migrar para alvo SDK 37, o app precisará declarar e 
 
 ## Estado da versão
 
-Compilação, assinatura e testes locais passaram. **A instalação e a execução em telefone, a descoberta e a gravação na controladora física ainda não foram validadas.** Isso está separado dos resultados do simulador na [matriz de compatibilidade](COMPATIBILIDADE.md).
+Compilação, assinatura e testes locais passaram. O usuário confirmou a descoberta e relatou bom funcionamento após a 1.0.5. A busca e reconexão automáticas da 1.0.6 ainda precisam de reteste no telefone. Veja os limites e evidências na [matriz de compatibilidade](COMPATIBILIDADE.md).

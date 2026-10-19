@@ -8,7 +8,7 @@
 |---|---|---|
 | Windows completo | Windows 10/11 x64; runtime incluído | Compilado e testado localmente. |
 | Windows leve | Windows com .NET Desktop Runtime 8 | Compilado e testado localmente. |
-| Android | Android 8+ (mínimo API 26; alvo API 36) | APK compilado e assinatura verificada; execução em telefone/emulador pendente. |
+| Android | Android 8+ (mínimo API 26; alvo API 36) | APK compilado e assinatura verificada; usuário usa Samsung SM-S948B/API 37 e confirmou descoberta, com retorno positivo após 1.0.5. Busca automática 1.0.6 pendente no aparelho. |
 
 ## Controladoras e transportes
 
@@ -17,7 +17,7 @@
 | TC420 clássica · HID `0888:4000` | USB implementado | Não suportado | Protocolo de referência e testes de transporte em memória; comandos físicos pendentes. |
 | Variante Pled V2.2 · HID `0483:5750` | USB implementado | Não suportado | HID detectado no PC de desenvolvimento; protocolo analisado no executável fornecido; gravação física pendente. |
 | Módulo Wi-Fi com protocolo Pled V2.2 desktop | Caminho experimental implementado | Caminho legado mantido | Simulador; compatibilidade física não confirmada. |
-| Smart WiFi Timer com respostas `88 00` | Windows 0.5.0 sem esta adaptação | Suporte no Android 1.0.3 | Cabeçalho observado fisicamente e sequência analisada no APK funcional; reteste Lume 1.0.3 no aparelho pendente. |
+| Smart WiFi Timer com respostas `88 00` | Windows 0.5.0 sem esta adaptação | Suporte desde Android 1.0.3 | Descoberta confirmada pelo usuário; retorno positivo após correções de envio na 1.0.5. Sem leitura de memória para conferência. |
 | TC420 sem hardware Wi-Fi | USB, se compatível | Não suportado | Software não adiciona rádio ao aparelho. |
 | Outros módulos/firmwares | Sem garantia | Sem garantia | Sem identificação ou testes. Nome comercial sozinho não prova compatibilidade. |
 
@@ -26,7 +26,7 @@
 | Função | Implementação | Verificação física |
 |---|---|---|
 | Descoberta USB Windows | Enumeração HID | Controladora detectada. |
-| Descoberta Wi-Fi | Broadcast UDP / consulta por IP | Busca no PC retornou zero; rede do aparelho ainda não configurada. |
+| Descoberta Wi-Fi | Broadcast UDP / consulta por IP | Android confirmado pelo usuário; Windows ainda sem confirmação. Busca automática 1.0.6 testada com eventos simulados, reteste físico pendente. |
 | Configurar SSID e senha | Dois pacotes com confirmações distintas | Pendente. |
 | Enviar um perfil | Cabeçalho + 48 pontos, com confirmação por comando | Pendente. |
 | Apagar e enviar todos | Limpeza única + perfis sequenciais | Pendente. |
@@ -38,7 +38,7 @@
 ## Testes locais
 
 - **Windows:** 77 verificações funcionais de modelo, arquivos, pacotes, transferências, erros e UDP; 24 verificações de interface com renderização fora da tela.
-- **Android 1.0.4:** 55 verificações Java gerais, 28 de Smart Timer e 16 JavaScript do editor. A integração UDP cobre relógio, credenciais fictícias, perfil completo e perda da confirmação no sexto ponto, com recuperação limitada. A 1.0.3 tinha 22 verificações Smart Timer; as anteriores não tinham esse grupo.
+- **Android 1.0.6:** 55 verificações Java gerais, 34 Smart Timer, 16 JavaScript do editor e 29 de busca automática. UDP em loopback cobre relógio, credenciais fictícias, perfil completo e perdas de confirmação no sexto ponto e no primeiro cabeçalho após limpeza. Eventos e temporizadores simulados cobrem abertura, retomada, mudança de IP, perda/retorno do aparelho, várias controladoras, escolha persistida e exclusão durante operações/diálogos.
 - **APK:** compilação javac/D8/aapt2, alinhamento e assinaturas v2/v3 conferidos.
 - **Interface Android:** revisão no navegador em largura de celular, incluindo persistência após recarregar, ciclo, curvas, recife e conexão.
 
@@ -52,7 +52,7 @@ O reteste da 1.0.2 mostrou precisamente `88 00` no cabeçalho. A análise do Sma
 
 No reteste da 1.0.3, o usuário confirmou a descoberta e relatou falha ao gravar o sexto horário, após cinco pontos confirmados. Isso confirma comunicação parcial de envio, mas não um perfil completo, a finalização ou a leitura de retorno. A 1.0.4 adiciona recuperação de timeout apenas do mesmo ponto, ritmo mais conservador e diagnóstico da resposta; o resultado no aparelho ainda precisa de reteste.
 
-O relato seguinte mostrou limpeza confirmada e silêncio ao iniciar o primeiro perfil. A 1.0.5 acrescenta espera após limpeza e até três tentativas do cabeçalho antes dos pontos, mantendo limpeza única. O novo teste UDP recupera exatamente essa sequência com perda da primeira resposta. Não comprova que o hardware estava ocupado nem que a atualização resolveu fisicamente a falha. A suíte atual tem 55 verificações gerais, 34 Smart Timer e 16 do editor.
+O relato seguinte mostrou limpeza confirmada e silêncio ao iniciar o primeiro perfil. A 1.0.5 acrescenta espera após limpeza e até três tentativas do cabeçalho antes dos pontos, mantendo limpeza única. O teste UDP recupera essa sequência com perda da primeira resposta. O usuário depois relatou bom funcionamento da atualização. Esse retorno não comprova a causa do silêncio nem substitui leitura de retorno da memória, que não está implementada. A 1.0.6 mantém esse fluxo de envio e acrescenta descoberta automática; a execução da função nova no telefone ainda precisa de reteste.
 
 ## Limites
 

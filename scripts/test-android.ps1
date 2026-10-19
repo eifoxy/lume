@@ -11,3 +11,5 @@ if($LASTEXITCODE -ne 0){throw 'Falha nos testes de protocolo/UDP.'}
 if($LASTEXITCODE -ne 0){throw 'Falha nos testes Smart WiFi Timer.'}
 node "$root/android/tests/editor-test.cjs"
 if($LASTEXITCODE -ne 0){throw 'Falha nos testes do editor.'}
+node "$root/android/tests/auto-discovery-test.cjs"
+if($LASTEXITCODE -ne 0){throw 'Falha nos testes de busca automática.'}
