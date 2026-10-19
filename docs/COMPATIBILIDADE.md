@@ -1,6 +1,8 @@
 # Compatibilidade e validação
 
-[← Início](../README.md)
+**Português (Brasil)** · [English](en/COMPATIBILITY.md)
+
+[← Início](../README.pt-BR.md)
 
 ## Plataformas
 

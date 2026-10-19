@@ -1,9 +1,13 @@
-# Contribuir
+# Contributing
 
-Correções, melhorias de acessibilidade, testes e validação de compatibilidade são bem-vindos. Veja [como compilar e testar](docs/DESENVOLVIMENTO.md) e abra uma issue para discutir mudanças no protocolo ou novos modelos antes de implementá-las.
+**English** · [Português (Brasil)](CONTRIBUTING.pt-BR.md) · [Home](README.md)
 
-Para relatar um problema, inclua versão do Lume, sistema, modelo/firmware, tipo de conexão, passos para reproduzir e resultado esperado/observado. Para confirmar hardware, diga qual comando funcionou e se a confirmação veio do app ou foi conferida no aparelho. Uma resposta de pacote e uma leitura de retorno completa são evidências distintas.
+Lume is a free personal project, built with vibe coding and substantial AI assistance to solve a real aquarium-controller problem, with no profit motive. Fixes, accessibility improvements, tests, and compatibility feedback are welcome. See [Build and test](docs/en/DEVELOPMENT.md); discuss protocol changes or new controller support in an issue before implementation.
 
-Não publique senhas, SSID real, endereços públicos, chaves de assinatura, tokens, bibliotecas pessoais ou capturas com dados privados. Substitua dados por exemplos antes de anexar arquivos. Não inclua binários proprietários do fabricante.
+For bug reports, include app version, OS, controller model/firmware, connection type, reproduction steps, and expected/observed behavior. For hardware validation, distinguish an app acknowledgment from a result checked on the device. Packet acknowledgments and complete memory readback are different evidence.
 
-Execute os testes pertinentes. Preserve validação antes da primeira mutação, confirmação antes de limpar a memória, backup local e prazo de resposta. A recuperação Smart Timer limita-se a três tentativas totais de bytes idênticos, somente em timeout sem resposta válida: o mesmo ponto indexado ou o cabeçalho inicial antes de enviar os pontos desse perfil. A limpeza é enviada uma vez e seguida de espera cancelável. Não estenda a repetição a limpeza, credenciais, relógio ou encerramentos, nem reinicie automaticamente um perfil parcial. A simulação deve continuar sem efeitos no hardware. Mudanças devem atualizar os tutoriais e a matriz de compatibilidade.
+Do not publish passwords, actual SSIDs, public IPs, signing keys, tokens, personal libraries, private screenshots, or proprietary vendor binaries. Replace private data with examples.
+
+Run relevant checks. Preserve validation before mutation, explicit confirmation before erasure, local backups, and bounded response deadlines. Smart Timer retries are limited to three identical attempts on timeout without a valid device reply: the same indexed point or initial header before that profile's points begin. Erasure is sent once, followed by a cancelable wait. Do not extend retries to erasure, credentials, clock, or finalizers, or restart partial profiles. Simulation must not affect hardware. Update guides and the compatibility matrix with behavior changes.
+
+Keep English as the default documentation and provide a Brazilian Portuguese counterpart with reciprocal language links. AI assistance is welcome; describe verification and limitations honestly. The project's free, noncommercial purpose does not add restrictions to its MIT license.

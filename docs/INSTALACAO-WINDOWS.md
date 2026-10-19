@@ -1,6 +1,8 @@
 # Instalar no Windows
 
-[← Início](../README.md) · [Configuração Wi-Fi](WIFI.md) · [Uso e perfis](USO.md)
+**Português (Brasil)** · [English](en/INSTALL-WINDOWS.md)
+
+[← Início](../README.pt-BR.md) · [Configuração Wi-Fi](WIFI.md) · [Uso e perfis](USO.md)
 
 ## Requisitos e download
 

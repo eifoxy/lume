@@ -1,6 +1,8 @@
 # Compilar e testar
 
-[← Início](../README.md)
+**Português (Brasil)** · [English](en/DEVELOPMENT.md)
+
+[← Início](../README.pt-BR.md)
 
 ## Obter o código
 

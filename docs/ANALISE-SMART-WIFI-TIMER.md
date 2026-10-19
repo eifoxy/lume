@@ -1,5 +1,7 @@
 # Análise do Smart WiFi Timer 3.0
 
+**Português (Brasil)** · [English](en/SMART-WIFI-TIMER-ANALYSIS.md)
+
 Análise estática realizada em 19/10/2026 a partir do APK que o usuário informou funcionar com sua controladora. O aplicativo foi decompilado com JADX; **não foi instalado nem executado** durante esta análise. O APK e seu código decompilado permanecem fora do repositório. A implementação do Lume usa os campos e a sequência do protocolo descritos abaixo.
 
 ## Material analisado

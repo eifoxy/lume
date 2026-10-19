@@ -1,5 +1,7 @@
 # Referências
 
+**Português (Brasil)** · [English](en/REFERENCES.md)
+
 - Protocolo clássico TC420: [wallneradam/tc420](https://github.com/wallneradam/tc420). Usado como referência do transporte clássico; não comprova compatibilidade com toda variante de firmware.
 - Protocolo Pled V2.2 USB/Wi-Fi: análise do executável fornecido durante o desenvolvimento. O binário proprietário não é redistribuído.
 - Smart WiFi Timer 3.0, pacote `com.leyview.timercontroller`: [análise estática do APK fornecido pelo usuário](ANALISE-SMART-WIFI-TIMER.md). Confirma respostas `88 00`, identidade nas confirmações e finalização do envio. APK/código decompilado não são redistribuídos.

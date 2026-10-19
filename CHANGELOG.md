@@ -1,85 +1,73 @@
-# Histórico
+# Changelog
+
+**English** · [Português (Brasil)](CHANGELOG.pt-BR.md) · [Home](README.md)
+
+## Documentation · 2026-10-19
+
+- Explicit opening disclosure: built with vibe coding and substantial AI assistance to solve a real problem, without a profit motive.
+- English becomes the default README, contribution guide, changelog, and documentation path. Brazilian Portuguese remains available through reciprocal language links.
+- Existing Android/Windows releases and Portuguese app interfaces are unchanged.
 
 ## Android 1.0.6 · 2026-10-19
 
-- Busca automática de três segundos ao abrir e retornar ao app; seleção automática da única controladora e lembrança da escolha pelo identificador, mesmo com mudança de IP.
-- Sem resposta, descarta o destino antigo e tenta novamente após 20 segundos. Com aparelho selecionado, verifica presença após 60 segundos. Não troca silenciosamente para outra controladora quando a anterior desaparece.
-- Sem serviço em segundo plano: buscas param ao sair do app, aguardam operações e diálogos, e compartilham a exclusão de acesso à porta UDP com comandos e envios. Não gravam perfis ou sincronizam relógio automaticamente.
-- Navegação e edição continuam disponíveis durante a busca automática; comandos físicos aguardam a busca breve. Busca manual e diagnóstico preservados. A busca automática não sobrescreve o diagnóstico de uma falha de envio.
-- 55 verificações gerais, 34 Smart Timer, 16 do editor e 29 da reconexão automática. Compilação e assinatura verificadas; reteste das funções novas no telefone pendente.
-- Capa do README com captura do recife real da interface e créditos explícitos de autoria humana e assistência do Codex.
+- Three-second automatic discovery on launch/return; select a sole controller and remember a choice by ID, even when its IP changes.
+- Retry 20 seconds after searches without a selected device; recheck after 60 seconds with one selected. Never silently switch to another controller.
+- Foreground-only searches wait for operations/dialogs and share exclusive UDP access with commands/uploads. No automatic schedule writes or clock sync.
+- Editing/navigation remain available; physical commands wait for the short search. Manual discovery and upload-failure diagnostics remain available.
+- 55 general, 34 Smart Timer, 16 editor, and 29 automatic discovery checks; build/signature verified. New behavior needs a phone retest.
+- Project capture and human/AI collaboration credits added to README.
 
 ## Android 1.0.5 · 2026-10-19
 
-- Trata o relato de limpeza confirmada seguida de timeout sem datagramas ao iniciar o primeiro perfil.
-- Espera cancelável de 14 intervalos de 150 ms (2,1 s) após confirmação de limpeza Smart antes do primeiro cabeçalho. É uma margem conservadora, não um tempo de firmware confirmado.
-- Cabeçalho Smart pode ter até três tentativas totais idênticas antes de enviar qualquer ponto, conforme `StartDownload` do APK original. Não reinicia automaticamente um perfil que já começou nem repete a limpeza; resposta válida com código inesperado continua interrompendo sem repetição.
-- Erro diferencia comando de limpeza confirmado de limpeza apenas tentada.
-- 55 verificações gerais, 34 Smart Timer e 16 do editor. Novo teste UDP reproduz limpeza confirmada com perda da primeira resposta de cabeçalho, recupera o envio e verifica limpeza única. Cobre também espera antes do cabeçalho e cancelamento nessa espera.
-- Resultado no hardware e causa exata da ausência de ACK ainda pendentes de reteste.
+- Addresses confirmed erasure followed by no datagrams for the first profile header.
+- Adds a cancelable 2.1-second post-erase wait, a conservative margin rather than a measured firmware timing requirement.
+- Allows up to three identical Smart initial-header attempts before any points; never repeats erasure or restarts a partial profile. Unexpected valid statuses still stop immediately.
+- Distinguishes confirmed erasure from an erase command merely attempted.
+- 55 general, 34 Smart Timer, and 16 editor checks. Loopback tests cover lost first-header ACK after one erase, recovery, and cancellation.
+- Hardware cause was unknown at release; subsequent user feedback was positive, without memory readback.
 
 ## Android 1.0.4 · 2026-10-19
 
-- Após confirmação física da descoberta, houve relato de timeout no sexto horário, com cinco pontos já confirmados. A causa da ausência de ACK ainda não foi capturada.
-- Adiciona recuperação limitada a três tentativas totais do mesmo ponto indexado Smart Timer, como no APK original. Só trata timeout sem resposta válida do aparelho; não repete cabeçalho, limpeza, credenciais, relógio ou encerramentos.
-- Intervalo Smart aumentado de 50 para 150 ms por ponto. Respostas já enfileiradas são descartadas antes de um novo pedido para reduzir a aceitação de ACKs anteriores.
-- Timeout informa contagem de datagramas, cabeçalho/código observado e conferência de identidade, sem registrar os pacotes ou credenciais. Falhas de envio ficam disponíveis no diagnóstico copiável da última comunicação.
-- 55 verificações gerais, 28 Smart Timer e 16 do editor. Inclui perda do ACK do sexto ponto em UDP real de loopback, recuperação com bytes idênticos, limite de tentativas e parada sem finalização se a falha persistir.
-- Reteste da gravação no aparelho pendente; não há leitura de retorno da memória.
+- After user-confirmed discovery and timeout at point six, adds up to three identical indexed-point attempts only on timeout without a valid reply.
+- Raises pacing from 50 to 150 ms and discards queued replies before each request to reduce stale ACK acceptance.
+- Adds datagram/status/header/identity diagnostics without raw packets or credentials, available in the last-communication report.
+- 55 general, 28 Smart Timer, and 16 editor checks; real loopback UDP tests sixth-point ACK loss, recovery, bounded attempts, and fail-fast behavior.
+- Did not automatically retry headers, erase, credentials, clock, or finalizers in this release.
 
 ## Android 1.0.3 · 2026-10-19
 
-- Protocolo confrontado com análise estática do Smart WiFi Timer 3.0 fornecido pelo usuário: pedidos `55 AA`, respostas `88 00`, datagramas de 64 bytes.
-- Corrige a causa confirmada da rejeição na descoberta: exigência do cabeçalho de pedido nas respostas. A hipótese de identidade não hexadecimal das versões anteriores não foi confirmada no hardware.
-- Valida a identidade do destino em 49–60 nas confirmações Smart; a descoberta extrai 4–15.
-- Detecta o formato Smart pela resposta, usa tamanho real do nome no cabeçalho de envio e não acrescenta o contador reservado do formato desktop.
-- Envio Smart inclui pausa de 50 ms por ponto, encerramento `03 08 / 83` após cada perfil e `04 0A / 91` ao final do conjunto; sucesso somente após a confirmação final.
-- Plano de envio inteiro validado e copiado antes de mutações, com interrupção imediata em falha. Não copia as repetições automáticas nem o armazenamento de senhas do aplicativo antigo.
-- 55 verificações de protocolo, 22 Smart Timer e 16 do editor; integração UDP de relógio, credenciais fictícias e transferência completa.
-- [Análise detalhada](docs/ANALISE-SMART-WIFI-TIMER.md). APK original e código decompilado não redistribuídos; reteste no hardware com esta versão pendente.
+- Static analysis of the working Smart WiFi Timer 3.0 APK confirms 64-byte requests `55 AA` and replies `88 00`, fixing the confirmed discovery parser mismatch.
+- Validates ACK identity at bytes 49–60, versus 4–15 for discovery. Previous non-hex identity speculation was not established physically.
+- Detects Smart framing, uses actual profile-name length, and removes the desktop reserved count from the Smart header.
+- Uses 50 ms pacing, per-profile `03 08 / 83`, and whole-batch `04 0A / 91`; success requires final ACK.
+- Validates/copies the full upload plan before mutation; retains fail-fast behavior without copying vendor password storage or broad mutation retries.
+- 55 general, 22 Smart Timer, and 16 editor checks, including full loopback transfers.
+- [APK analysis](docs/en/SMART-WIFI-TIMER-ANALYSIS.md); proprietary APK/decompiled code not redistributed.
 
 ## Android 1.0.2 · 2026-10-18
 
-- Trata a identidade Wi-Fi como 12 bytes opacos, conforme a cópia feita pelo Pled original, sem exigir texto hexadecimal ASCII.
-- Preserva esses mesmos bytes ao montar comandos e os dois pacotes de configuração; mantém compatibilidade com identidades ASCII já suportadas.
-- Rejeita explicitamente o identificador da própria consulta de busca, inclusive ecos com padding diferente, e identidades vazias.
-- Diagnóstico distingue cabeçalho, comando, tamanho, eco e identidade vazia; mostra somente os dois bytes de cabeçalho quando incompatíveis, sem despejar pacotes/credenciais.
-- Responde ao diagnóstico de datagramas de descoberta recebidos e não reconhecidos. A captura anterior não incluía a identidade/cabeçalho completos; a causa exata e o resultado desta atualização ainda dependem do reteste no aparelho.
-- 55 verificações Java e 16 do editor passaram localmente; APK assinado com a chave anterior para atualização sem desinstalar.
+- Preserves identity as twelve opaque bytes instead of requiring ASCII hexadecimal; retains existing IDs and wire bytes in commands/provisioning.
+- Rejects query-identity echoes, including alternate padding, and empty identities.
+- Diagnostics distinguish header, command, size, echo, and empty identity without dumping packets/credentials.
+- 55 general Java and 16 editor checks; retained signing key supports updates without uninstalling. At this stage the exact rejection cause still required physical diagnostics.
 
 ## Android 1.0.1 · 2026-10-18
 
-- Busca também pelo gateway da interface Wi-Fi, além dos broadcasts da sub-rede e limitado; escuta por oito segundos.
-- Descoberta aceita resposta válida de uma porta de origem diferente de 5000, como o receptor do Pled original; mantém validação de quadro, identidade e origem na mesma rede.
-- Exclui redes VPN da seleção de interface Wi-Fi.
-- Diagnóstico persistente da última busca: endereço local, destinos, contagens e motivos resumidos de rejeição, com botão para copiar. Não guarda senha, SSID ou conteúdo bruto dos pacotes e não envia diagnósticos automaticamente.
-- Diferencia ausência de respostas de respostas não reconhecidas. A falha relatada no hardware ainda precisa ser retestada com este APK; não há confirmação de qual condição ocorreu no telefone.
-- 44 verificações Java e 16 do editor passaram localmente; assinatura preservada para atualizar sobre a versão anterior.
+- Adds gateway queries alongside subnet/limited broadcasts and an eight-second listening window.
+- Accepts valid same-subnet discovery replies from source ports other than 5000, matching the vendor receiver, while retaining frame/identity validation.
+- Excludes VPN interfaces and adds a copyable discovery report with local addresses, counts, and rejection summaries, excluding SSID/password/raw packets.
+- Distinguishes silence from unrecognized responses; 44 general Java and 16 editor checks. Signing key preserved.
 
-## Prévia pública · 2026-10-18
+## Initial public preview · 2026-10-18
 
-Publicação conjunta dos aplicativos, tutoriais de instalação/uso/rede, código-fonte, licença MIT, testes e CI. Os downloads públicos começam com exemplos genéricos; bibliotecas pessoais e chaves de assinatura ficam fora do repositório.
+Windows/Android source, downloads, MIT license, installation/network/usage guides, tests, and CI published together. Public downloads contain generic examples; personal libraries and keys are excluded.
 
 ### Windows 0.5.0
 
-- Editor de cinco canais, curvas, tabela de precisão, rampas, perfis, desfazer e backups.
-- USB HID com caminhos para TC420 clássica e variante Pled V2.2.
-- Envio individual e substituição de até 16 perfis, com revisão e confirmação.
-- Sincronização do relógio na barra principal.
-- Recife vetorial animado com corais e peixes-palhaço.
-- Descoberta IPv4/UDP, configuração do roteador e envio de perfis por Wi-Fi.
-- Testes de validação, transferências simuladas, UDP e renderização da interface.
+Five-channel editor, curves, precision table, ramps, profiles, undo/backups; classic TC420 and Pled V2.2 USB HID paths; single/batch uploads up to 16 slots with confirmation; clock sync; vector reef with corals/clownfish; IPv4/UDP discovery, router setup, and Wi-Fi uploads; simulated transport/UDP/UI tests.
 
 ### Android 1.0.0
 
-- Aplicativo para Android 8+ exclusivamente por Wi-Fi.
-- Editor por toque, controles de intensidade, tabela e assistente de ciclo.
-- Biblioteca com importação JSON/LMF e exportação JSON pelo seletor Android.
-- Recife SVG animado e prévia interpolada de 24 horas.
-- Busca, configuração do roteador, relógio, retomada e envio individual/em lote.
-- Comunicação vinculada à rede Wi-Fi mesmo sem internet; tratamento de desconexão e interrupção, sem repetição automática de gravação.
-- Testes Java/JavaScript e APK assinado para instalação direta.
+Android 8+, Wi-Fi only; touch editor, intensity controls, table/cycle wizard; JSON/LMF import and JSON export through the system picker; SVG reef and interpolated daily preview; discovery, router setup, clock, resume, single/batch uploads; Wi-Fi-bound sockets without internet; interruption handling and no automatic write retries in this initial version; Java/JavaScript tests and signed APK.
 
-### Validação pendente
-
-Instalação/execução Android e funções de gravação/configuração/relógio nas controladoras físicas. A versão pública é marcada como prévia por esse motivo. [Matriz completa](docs/COMPATIBILIDADE.md).
+Hardware installation and physical functions were unvalidated at initial publication. For subsequent evidence, consult the [current compatibility matrix](docs/en/COMPATIBILITY.md).

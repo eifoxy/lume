@@ -1,6 +1,8 @@
 # Arquitetura e protocolo
 
-[← Início](../README.md) · [Estado da validação](COMPATIBILIDADE.md)
+**Português (Brasil)** · [English](en/PROTOCOL.md)
+
+[← Início](../README.pt-BR.md) · [Estado da validação](COMPATIBILIDADE.md)
 
 ## Smart WiFi Timer: correção confirmada pela análise do APK
 

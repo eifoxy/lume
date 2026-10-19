@@ -1,6 +1,8 @@
 # Configurar o Wi-Fi
 
-[← Início](../README.md) · [Compatibilidade](COMPATIBILIDADE.md)
+**Português (Brasil)** · [English](en/WIFI.md)
+
+[← Início](../README.pt-BR.md) · [Compatibilidade](COMPATIBILIDADE.md)
 
 O fluxo é o mesmo nos dois aplicativos. Android usa somente Wi-Fi; Windows também oferece USB. Esta função depende de um módulo que fale o protocolo de rede do Pled V2.2. O app não adiciona Wi-Fi a uma TC420 sem esse hardware.
 

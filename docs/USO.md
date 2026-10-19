@@ -1,6 +1,8 @@
 # Curvas, perfis e envio
 
-[← Início](../README.md)
+**Português (Brasil)** · [English](en/USAGE.md)
+
+[← Início](../README.pt-BR.md)
 
 ## Entender o dia
 

@@ -1,0 +1,60 @@
+# Build and test
+
+[Home](../../README.md) · **English** · [Português (Brasil)](../DESENVOLVIMENTO.md)
+
+## Get the source
+
+```powershell
+git clone https://github.com/eifoxy/lume.git
+cd lume
+```
+
+## Windows
+
+Use Windows, .NET SDK 8, and PowerShell 7. There are no third-party NuGet dependencies; full publishing obtains runtime packages from the official nuget.org feed.
+
+```powershell
+dotnet build windows/src/Lume.csproj -c Release
+dotnet run --project windows/src/Lume.csproj -c Release
+pwsh ./scripts/build-windows.ps1
+pwsh ./scripts/test-windows.ps1 -AppDirectory ./artifacts/windows-x64
+```
+
+The build script creates `artifacts/windows-portable/`, `artifacts/windows-x64/`, and ZIPs. The full x64 package includes .NET 8.0.32 as pinned for this release; maintain the runtime version in the script.
+
+Native test arguments: `Lume.exe --self-test` uses temporary files and loopback sockets; `Lume.exe --ui-test` renders offscreen. Reports are written beside the test executable. Use an artifacts folder rather than a personal library. `--wifi-scan` performs real LAN discovery, is outside the automated suite, and does not upload schedules.
+
+## Android direct build on Windows
+
+Requirements: PowerShell 7, JDK 17, Android SDK Platform 36, and build-tools 36.0.0. No third-party Android dependencies. Install SDK components with Android Studio/SDK Manager and accept the licenses in your environment.
+
+```powershell
+pwsh ./android/build.ps1 `
+  -Jdk 'C:\tools\jdk-17' `
+  -BuildTools 'C:\Android\Sdk\build-tools\36.0.0' `
+  -Platform 'C:\Android\Sdk\platforms\android-36' `
+  -SigningKey 'C:\private\lume-local.p12' `
+  -BuildDirectory './artifacts/android-build'
+```
+
+Output: `android/Lume-Android.apk`. Pipeline: javac → JAR → D8 → aapt2 → zipalign → apksigner. If absent, the script creates a local key with alias `lume-local` and development password `android`. **This convention is for local builds: protect the key and never publish it.** Updates to an existing installation require the same key. Public releases use the maintainer's retained key, excluded from Git.
+
+### Android Studio
+
+Open `android/` as a Gradle project. The project specifies AGP 8.10.1, Gradle 8.11.1, JDK 17, and SDK 36. Gradle files are included, but no wrapper: configure a Gradle 8.11.1 installation in the IDE or generate one with `gradle wrapper --gradle-version 8.11.1`. Keep passwords, `local.properties`, and signing keys out of Git.
+
+### Tests without a device
+
+With Java 17 and Node.js 24:
+
+```powershell
+pwsh ./scripts/test-android.ps1 -Jdk 'C:\tools\jdk-17'
+```
+
+Protocol/Smart Timer tests use actual loopback UDP with simulated device responses, including full transfers and missing acknowledgments. Editor tests cover validation, interpolation, history, and persistence. Automatic discovery tests simulate events/timers for startup, foreground return, changed IPs, lost devices, multiple devices, remembered choices, and exclusion during operations/dialogs. These do not replace Android WebView or physical radio/firmware tests.
+
+## CI and hardware validation
+
+`checks.yml` builds both apps, runs tests, and uploads CI artifacts. CI APKs use a new temporary development key on each run and should not replace a release installation. Workflows do not store router credentials, access real controllers, or automatically publish releases.
+
+For hardware feedback, include model, firmware, app/system version, and exactly what was confirmed on the device. Exclude passwords, signing keys, real SSIDs, public IPs, and personal files. Hardware uploads change schedules; preserve existing programs using a known manufacturer procedure before experimenting.

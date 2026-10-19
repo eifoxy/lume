@@ -1,6 +1,8 @@
 # Instalar no Android
 
-[← Início](../README.md) · [Configuração Wi-Fi](WIFI.md) · [Uso e perfis](USO.md)
+**Português (Brasil)** · [English](en/INSTALL-ANDROID.md)
+
+[← Início](../README.pt-BR.md) · [Configuração Wi-Fi](WIFI.md) · [Uso e perfis](USO.md)
 
 ## Requisitos
 
