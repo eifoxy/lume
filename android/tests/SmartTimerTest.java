@@ -26,13 +26,39 @@ public final class SmartTimerTest {
   int[][] rows=new int[48][5];for(int r=0;r<48;r++)rows[r]=new int[]{r%101,20,40,60,80};Upload.Item item=new Upload.Item(0,"DIARIO",rows);rows[0][0]=100;ok(item.values[0][0]==0,"plan snapshots values before writes");
   List<String> order=new ArrayList<>();AtomicInteger percent=new AtomicInteger();AtomicInteger pauses=new AtomicInteger();
   Upload.run(Arrays.asList(item),true,true,(p,code)->order.add((p[0]&255)+":"+(p.length>1?p[1]&255:0)+":"+code),()->{},(v,t)->percent.set(v),()->pauses.incrementAndGet());
-  ok(order.size()==52&&order.get(0).equals("5:254:130")&&order.get(1).equals("1:1:128")&&order.get(50).equals("3:8:131")&&order.get(51).equals("4:10:145"),"clear, header, 48 points, per-profile finish and all-profile finish");ok(percent.get()==100&&pauses.get()==48,"success only after finalize, 48 pacing points");
+  ok(order.size()==52&&order.get(0).equals("5:254:130")&&order.get(1).equals("1:1:128")&&order.get(50).equals("3:8:131")&&order.get(51).equals("4:10:145"),"clear, header, 48 points, per-profile finish and all-profile finish");ok(percent.get()==100&&pauses.get()==62,"success only after finalize, 48 pacing points plus post-erase settling");
   order.clear();Upload.run(Arrays.asList(item),false,false,(p,code)->order.add(""+(p[0]&255)),()->{},(v,t)->{},()->{throw new AssertionError("legacy must not pace");});ok(order.size()==49,"legacy transfer retains existing flow");
-  AtomicInteger sent=new AtomicInteger();boolean failed=false;try{Upload.run(Arrays.asList(item),true,true,(p,code)->{sent.incrementAndGet();if(code==0x81)throw new IOException("simulated missing ACK");},()->{},(v,t)->{},()->{});}catch(IOException e){failed=e.getMessage().contains("0/1")&&e.getMessage().contains("apagada");}ok(failed&&sent.get()==3,"first step failure stops immediately without retry/finalize");
+  AtomicInteger sent=new AtomicInteger();boolean failed=false;try{Upload.run(Arrays.asList(item),true,true,(p,code)->{sent.incrementAndGet();if(code==0x81)throw new IOException("simulated missing ACK");},()->{},(v,t)->{},()->{});}catch(IOException e){failed=e.getMessage().contains("0/1")&&e.getMessage().contains("limpeza foi confirmado");}ok(failed&&sent.get()==3,"first step failure stops immediately without retry/finalize");
   sent.set(0);failed=false;try{Upload.run(Arrays.asList(item),true,true,(p,code)->sent.incrementAndGet(),()->{throw new IOException("cancelled");},(v,t)->{},()->{});}catch(IOException e){failed=true;}ok(failed&&sent.get()==0,"cancel before clear does not write");
   sent.set(0);failed=false;try{Upload.run(Arrays.asList(item,new Upload.Item(0,"OUTRO",rows)),true,true,(p,code)->sent.incrementAndGet(),()->{},(v,t)->{},()->{});}catch(IllegalArgumentException e){failed=true;}ok(failed&&sent.get()==0,"invalid complete plan rejected before clear");
   percent.set(0);failed=false;try{Upload.run(Arrays.asList(item),false,true,(p,code)->{if(code==0x91)throw new IOException("final ACK lost");},()->{},(v,t)->percent.set(v),()->{});}catch(IOException e){failed=e.getMessage().contains("finalizar");}ok(failed&&percent.get()<100,"missing final ACK cannot report success");
-  retryPolicy(item);integration(item);lossRecovery(item);System.out.println(count+" Smart WiFi Timer checks passed, including complete loopback transfer and sixth-point ACK loss");
+  retryPolicy(item);postErase(item);integration(item);lossRecovery(item);postEraseUdp(item);System.out.println(count+" Smart WiFi Timer checks passed, including complete loopback transfers, sixth-point ACK loss and first-header loss after erase");
+ }
+ static void postErase(Upload.Item item)throws Exception{
+  AtomicInteger ticks=new AtomicInteger(),clear=new AtomicInteger(),headers=new AtomicInteger(),points=new AtomicInteger();List<byte[]> copies=new ArrayList<>();
+  Upload.run(Arrays.asList(item),true,true,(p,code)->{if(code==0x82)clear.incrementAndGet();if(code==0x80){ok(ticks.get()>=14,"settling completes before header");copies.add(p.clone());if(headers.incrementAndGet()==1)throw new PacketIO.AckTimeout(false,0,"first header ignored");}if(code==0x81)points.incrementAndGet();},()->{},(v,t)->{},()->ticks.incrementAndGet());
+  ok(clear.get()==1&&headers.get()==2&&points.get()==48&&Arrays.equals(copies.get(0),copies.get(1)),"one clear, identical header recovery, all 48 points");
+  clear.set(0);headers.set(0);ticks.set(0);boolean cancelled=false;
+  try{Upload.run(Arrays.asList(item),true,true,(p,code)->{if(code==0x82)clear.incrementAndGet();if(code==0x80)headers.incrementAndGet();},()->{if(ticks.get()==3)throw new IOException("cancelled during settling");},(v,t)->{},()->ticks.incrementAndGet());}catch(IOException e){cancelled=e.getMessage().contains("aguardar a memória")&&e.getMessage().contains("limpeza foi confirmado");}
+  ok(cancelled&&clear.get()==1&&headers.get()==0,"cancellation during settling sends no header or additional clear");
+  headers.set(0);boolean failed=false;try{Upload.run(Arrays.asList(item),false,true,(p,code)->{if(code==0x80){headers.incrementAndGet();throw new PacketIO.AckTimeout(true,1,"unexpected status");}},()->{},(v,t)->{},()->{});}catch(IOException e){failed=true;}
+  ok(failed&&headers.get()==1,"unexpected header status is not retried");
+ }
+ static void postEraseUdp(Upload.Item item)throws Exception{
+  ExecutorService executor=Executors.newSingleThreadExecutor();InetAddress local=InetAddress.getLoopbackAddress();
+  try(DatagramSocket controller=new DatagramSocket(0,local);DatagramSocket client=new DatagramSocket(0,local)){
+   controller.setSoTimeout(5000);AtomicInteger cleared=new AtomicInteger(),headers=new AtomicInteger(),points=new AtomicInteger();
+   Future<?> server=executor.submit(()->{try{boolean done=false;byte[] first=null;while(!done){DatagramPacket q=new DatagramPacket(new byte[65],65);controller.receive(q);byte[] b=q.getData();int code;
+    if(b[2]==5){if(cleared.incrementAndGet()!=1)throw new AssertionError("erase repeated");code=0x82;}
+    else if(b[2]==1&&b[3]==1){if(cleared.get()!=1)throw new AssertionError("header before erase");headers.incrementAndGet();if(first==null){first=Arrays.copyOf(b,64);continue;}if(!Arrays.equals(first,Arrays.copyOf(b,64)))throw new AssertionError("header changed");code=0x80;}
+    else if(b[2]==1&&b[3]==2){if(headers.get()!=2||u(b[6])!=points.getAndIncrement())throw new AssertionError("points before header ACK/out of order");code=0x81;}
+    else if(b[2]==3)code=0x83;else if(b[2]==4){code=0x91;done=true;}else throw new AssertionError("unexpected command");
+    byte[] response=ack(code,ID);controller.send(new DatagramPacket(response,64,q.getAddress(),q.getPort()));
+   }}catch(Exception e){throw new RuntimeException(e);}});
+   Upload.Sender sender=(p,code)->PacketIO.exchange(client,local,controller.getLocalPort(),Protocol.frame(p,ID),p[0]&255,new int[]{code},250,()->{},ID);
+   Upload.run(Arrays.asList(item),true,true,sender,()->{},(v,t)->{},()->{});server.get(5,TimeUnit.SECONDS);
+   ok(cleared.get()==1&&headers.get()==2&&points.get()==48,"real UDP recovers missing first-header ACK after clear without erasing twice");
+  }finally{executor.shutdownNow();}
  }
  static void retryPolicy(Upload.Item item)throws Exception{
   AtomicInteger attempts=new AtomicInteger(),sent=new AtomicInteger();List<byte[]> sixth=new ArrayList<>();
@@ -43,7 +69,7 @@ public final class SmartTimerTest {
   ok(failed&&attempts.get()==3&&sent.get()==9,"three attempts maximum, no seventh point or finalization after failure");
   attempts.set(0);failed=false;try{Upload.run(Arrays.asList(item),false,true,(p,code)->{if(code==0x81){attempts.incrementAndGet();throw new PacketIO.AckTimeout(true,1,"device returned other status");}},()->{},(v,t)->{},()->{});}catch(IOException e){failed=true;}
   ok(failed&&attempts.get()==1,"device reply with unexpected status is not retried");
-  for(boolean clear:new boolean[]{false,true}){sent.set(0);failed=false;try{Upload.run(Arrays.asList(item),clear,true,(p,code)->{sent.incrementAndGet();throw new PacketIO.AckTimeout(false,0,"timeout");},()->{},(v,t)->{},()->{});}catch(IOException e){failed=true;}ok(failed&&sent.get()==1,"header/clear are never repeated automatically");}
+  for(boolean clear:new boolean[]{false,true}){sent.set(0);failed=false;try{Upload.run(Arrays.asList(item),clear,true,(p,code)->{sent.incrementAndGet();throw new PacketIO.AckTimeout(false,0,"timeout");},()->{},(v,t)->{},()->{});}catch(IOException e){failed=true;}ok(failed&&sent.get()==(clear?1:3),"clear sent once, initial header at most three attempts");}
  }
  static void lossRecovery(Upload.Item item)throws Exception{
   ExecutorService executor=Executors.newSingleThreadExecutor();InetAddress local=InetAddress.getLoopbackAddress();

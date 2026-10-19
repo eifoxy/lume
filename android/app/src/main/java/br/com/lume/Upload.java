@@ -20,12 +20,18 @@ public final class Upload {
   if(source==null||source.isEmpty()||source.size()>16)throw new IllegalArgumentException("Envie entre 1 e 16 perfis.");
   List<Item> items=new ArrayList<>();Set<Integer> slots=new HashSet<>();Set<String> names=new HashSet<>();
   for(Item item:source){if(item==null)throw new IllegalArgumentException("Perfil vazio.");Item copy=new Item(item.slot,item.alias,item.values);if(!slots.add(copy.slot)||!names.add(copy.alias.toUpperCase(Locale.ROOT)))throw new IllegalArgumentException("Posições ou nomes repetidos.");if(clear&&copy.slot!=items.size())throw new IllegalArgumentException("A substituição deve começar na posição 1, em ordem.");items.add(copy);}
-  int completed=0;boolean eraseAttempted=false;String phase="iniciar";
+  int completed=0;boolean eraseAttempted=false,eraseConfirmed=false;String phase="iniciar";
   try{
    guard.check();
-   if(clear){phase="limpar perfis antigos";progress.update(0,"Limpando os perfis antigos…");eraseAttempted=true;send.send(new byte[]{5,(byte)0xfe},0x82);}
+   if(clear){phase="limpar perfis antigos";progress.update(0,"Limpando os perfis antigos…");eraseAttempted=true;send.send(new byte[]{5,(byte)0xfe},0x82);eraseConfirmed=true;
+    if(smart){phase="aguardar a memória após a limpeza";progress.update(0,"Limpeza confirmada · aguardando a memória…");for(int tick=0;tick<14;tick++){guard.check();pacer.pause();}}
+   }
    for(int i=0;i<items.size();i++){
-    Item item=items.get(i);guard.check();phase="iniciar perfil "+(i+1);send.send(smart?Protocol.smartHeader(item.slot,item.alias):Protocol.header(item.slot,item.alias),0x80);
+    Item item=items.get(i);guard.check();phase="iniciar perfil "+(i+1);byte[] header=smart?Protocol.smartHeader(item.slot,item.alias):Protocol.header(item.slot,item.alias);
+    for(int attempt=1;;attempt++){
+     guard.check();try{send.send(header.clone(),0x80);break;}
+     catch(PacketIO.AckTimeout e){if(!smart||attempt>=3||e.deviceReplied)throw e;progress.update(i*98/items.size(),"Reconfirmando início do perfil "+(i+1)+" · tentativa "+(attempt+1)+"/3");pacer.pause();}
+    }
     for(int r=0;r<48;r++){
      guard.check();phase="gravar perfil "+(i+1)+", horário "+(r+1);byte[] point=Protocol.step(r,item.values[r]);int attempts=smart?3:1;
      for(int attempt=1;;attempt++){
@@ -39,6 +45,6 @@ public final class Upload {
    }
    if(smart){guard.check();phase="finalizar o conjunto";progress.update(99,"Finalizando a transferência…");send.send(new byte[]{4,10},0x91);}
    progress.update(100,completed+" perfil(is) confirmado(s). Confira no aparelho o perfil ativo.");
-  }catch(Exception e){throw new IOException("Falha ao "+phase+". "+completed+"/"+items.size()+" perfis tiveram os horários recebidos. "+(eraseAttempted?"A memória pode ter sido apagada ou estar incompleta. ":"A gravação/finalização pode estar incompleta. ")+"Reconecte e reenvie. "+e.getMessage(),e);}
+  }catch(Exception e){throw new IOException("Falha ao "+phase+". "+completed+"/"+items.size()+" perfis tiveram os horários recebidos. "+(eraseConfirmed?"O comando de limpeza foi confirmado; a gravação está incompleta. ":eraseAttempted?"A memória pode ter sido apagada ou estar incompleta. ":"A gravação/finalização pode estar incompleta. ")+"Reconecte e reenvie. "+e.getMessage(),e);}
  }
 }

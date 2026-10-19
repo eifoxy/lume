@@ -56,6 +56,8 @@ Mantenha a conexão ativa e o app aberto. Cada comando precisa de confirmação.
 
 Se falhar, abra **Conexão → Diagnóstico da última comunicação → Copiar diagnóstico**. O erro inclui o horário e se houve silêncio ou uma resposta não aceita, sem pacotes brutos ou senha. A prévia não faz leitura de retorno da memória, portanto conferir sua curva na tela não comprova gravação física.
 
+Desde Android 1.0.5, após uma limpeza Smart confirmada há espera cancelável de 2,1 s. O cabeçalho inicial também pode ter até três tentativas totais em timeout sem resposta válida, antes de enviar qualquer ponto desse perfil. Isso segue a recuperação de `StartDownload` do APK original. Não repete a limpeza ou reinicia um perfil após falha em um horário. A espera é uma margem de operação, não uma medida confirmada do tempo de gravação da memória do aparelho.
+
 Um envio confirmado não faz leitura de retorno de toda a memória. No formato Smart Timer (Android 1.0.3), o app envia os encerramentos por perfil e por conjunto encontrados no APK funcional; seus efeitos exatos no firmware ainda aguardam validação. Confira no aparelho o perfil ativo depois da transferência.
 
 ## Relógio, retomada e prévia

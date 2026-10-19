@@ -52,6 +52,8 @@ O reteste da 1.0.2 mostrou precisamente `88 00` no cabeçalho. A análise do Sma
 
 No reteste da 1.0.3, o usuário confirmou a descoberta e relatou falha ao gravar o sexto horário, após cinco pontos confirmados. Isso confirma comunicação parcial de envio, mas não um perfil completo, a finalização ou a leitura de retorno. A 1.0.4 adiciona recuperação de timeout apenas do mesmo ponto, ritmo mais conservador e diagnóstico da resposta; o resultado no aparelho ainda precisa de reteste.
 
+O relato seguinte mostrou limpeza confirmada e silêncio ao iniciar o primeiro perfil. A 1.0.5 acrescenta espera após limpeza e até três tentativas do cabeçalho antes dos pontos, mantendo limpeza única. O novo teste UDP recupera exatamente essa sequência com perda da primeira resposta. Não comprova que o hardware estava ocupado nem que a atualização resolveu fisicamente a falha. A suíte atual tem 55 verificações gerais, 34 Smart Timer e 16 do editor.
+
 ## Limites
 
 Cinco canais; 48 pontos com intervalo de 30 minutos; intensidades inteiras 0–100; até 100 perfis locais e 16 posições de envio. Nomes no aparelho têm até sete caracteres ASCII. Rede IPv4 local, UDP 5000, sem conexão remota pela internet. SSID de 1–32 e senha de 8–32 caracteres ASCII; WPA/WPA2, AES/TKIP. WPA3 não implementado.

@@ -1,5 +1,14 @@
 # Histórico
 
+## Android 1.0.5 · 2026-10-19
+
+- Trata o relato de limpeza confirmada seguida de timeout sem datagramas ao iniciar o primeiro perfil.
+- Espera cancelável de 14 intervalos de 150 ms (2,1 s) após confirmação de limpeza Smart antes do primeiro cabeçalho. É uma margem conservadora, não um tempo de firmware confirmado.
+- Cabeçalho Smart pode ter até três tentativas totais idênticas antes de enviar qualquer ponto, conforme `StartDownload` do APK original. Não reinicia automaticamente um perfil que já começou nem repete a limpeza; resposta válida com código inesperado continua interrompendo sem repetição.
+- Erro diferencia comando de limpeza confirmado de limpeza apenas tentada.
+- 55 verificações gerais, 34 Smart Timer e 16 do editor. Novo teste UDP reproduz limpeza confirmada com perda da primeira resposta de cabeçalho, recupera o envio e verifica limpeza única. Cobre também espera antes do cabeçalho e cancelamento nessa espera.
+- Resultado no hardware e causa exata da ausência de ACK ainda pendentes de reteste.
+
 ## Android 1.0.4 · 2026-10-19
 
 - Após confirmação física da descoberta, houve relato de timeout no sexto horário, com cinco pontos já confirmados. A causa da ausência de ACK ainda não foi capturada.

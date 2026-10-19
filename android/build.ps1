@@ -19,7 +19,7 @@ Run "$Jdk/bin/java.exe" @('-cp',"$BuildTools/lib/d8.jar",'com.android.tools.r8.D
 $manifest=[IO.File]::ReadAllText("$PSScriptRoot/app/src/main/AndroidManifest.xml").Replace('<manifest xmlns:','<manifest package="br.com.lume.aquario" xmlns:')
 [IO.File]::WriteAllText("$BuildDirectory/AndroidManifest.xml",$manifest)
 Run "$BuildTools/aapt2.exe" @('compile','--dir',"$PSScriptRoot/app/src/main/res",'-o',"$BuildDirectory/resources.zip")
-Run "$BuildTools/aapt2.exe" @('link','-o',"$BuildDirectory/base.apk",'--manifest',"$BuildDirectory/AndroidManifest.xml",'-I',"$Platform/android.jar",'-A',"$PSScriptRoot/app/src/main/assets",'--min-sdk-version','26','--target-sdk-version','36','--version-code','104','--version-name','1.0.4',"$BuildDirectory/resources.zip")
+Run "$BuildTools/aapt2.exe" @('link','-o',"$BuildDirectory/base.apk",'--manifest',"$BuildDirectory/AndroidManifest.xml",'-I',"$Platform/android.jar",'-A',"$PSScriptRoot/app/src/main/assets",'--min-sdk-version','26','--target-sdk-version','36','--version-code','105','--version-name','1.0.5',"$BuildDirectory/resources.zip")
 Add-Type -AssemblyName System.IO.Compression.FileSystem
 $apk=[IO.Compression.ZipFile]::Open("$BuildDirectory/base.apk",'Update')
 try{[IO.Compression.ZipFileExtensions]::CreateEntryFromFile($apk,"$BuildDirectory/dex/classes.dex",'classes.dex')|Out-Null}finally{$apk.Dispose()}
