@@ -66,7 +66,11 @@ Não é necessário expor a porta 5000 na internet ou criar encaminhamento de po
 
 ### Android: o aparelho apita, mas a lista fica vazia
 
-O apito pode indicar recebimento de uma consulta; sozinho não comprova que a resposta chegou ao telefone. Atualize para [Android 1.0.2](https://github.com/eifoxy/lume/releases/tag/android-v1.0.2), instalando o APK sobre a versão anterior, sem desinstalar.
+O apito pode indicar recebimento de uma consulta; sozinho não comprova que a resposta chegou ao telefone. Atualize para [Android 1.0.3](https://github.com/eifoxy/lume/releases/tag/android-v1.0.3), instalando o APK sobre a versão anterior, sem desinstalar.
+
+Se o diagnóstico mostrar **cabeçalho diferente: 88 00**, a causa é conhecida: esse é o cabeçalho de resposta do Smart WiFi Timer, confirmado no APK funcional fornecido e observado no aparelho. As versões até 1.0.2 exigiam incorretamente `55 AA` também na resposta. A 1.0.3 corrige a descoberta, valida as confirmações com a identidade em 49–60 e adapta a finalização do envio de horários. [Análise completa](ANALISE-SMART-WIFI-TIMER.md).
+
+Feche o aplicativo original antes de buscar no Lume, pois ambos usam a porta UDP 5000. Caso o original mantenha seu receptor em segundo plano, force a parada dele pelas configurações de apps do Android.
 
 Permaneça na rede do aparelho mesmo com o aviso de ausência de internet. Para isolar roteamento do telefone, experimente temporariamente sem VPN e dados móveis e repita a busca. Isso é um teste de diagnóstico, não uma confirmação da causa.
 

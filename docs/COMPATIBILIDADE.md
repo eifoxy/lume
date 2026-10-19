@@ -16,7 +16,8 @@
 |---|---|---|---|
 | TC420 clássica · HID `0888:4000` | USB implementado | Não suportado | Protocolo de referência e testes de transporte em memória; comandos físicos pendentes. |
 | Variante Pled V2.2 · HID `0483:5750` | USB implementado | Não suportado | HID detectado no PC de desenvolvimento; protocolo analisado no executável fornecido; gravação física pendente. |
-| Módulo Wi-Fi com protocolo Pled V2.2, como variantes TC421 | Descoberta, configuração e comandos implementados | Mesmos recursos por Wi-Fi | Pacotes e confirmações verificados em simulador UDP local; validação no módulo real pendente. |
+| Módulo Wi-Fi com protocolo Pled V2.2 desktop | Caminho experimental implementado | Caminho legado mantido | Simulador; compatibilidade física não confirmada. |
+| Smart WiFi Timer com respostas `88 00` | Windows 0.5.0 sem esta adaptação | Suporte no Android 1.0.3 | Cabeçalho observado fisicamente e sequência analisada no APK funcional; reteste Lume 1.0.3 no aparelho pendente. |
 | TC420 sem hardware Wi-Fi | USB, se compatível | Não suportado | Software não adiciona rádio ao aparelho. |
 | Outros módulos/firmwares | Sem garantia | Sem garantia | Sem identificação ou testes. Nome comercial sozinho não prova compatibilidade. |
 
@@ -37,7 +38,7 @@
 ## Testes locais
 
 - **Windows:** 77 verificações funcionais de modelo, arquivos, pacotes, transferências, erros e UDP; 24 verificações de interface com renderização fora da tela.
-- **Android 1.0.2:** 55 verificações Java de pacotes, checksums, identidades opacas/binárias, nomes, validação, subnet, alvos de busca, portas de origem, confirmações e timeout, incluindo UDP real em loopback com um aparelho simulado; 16 verificações JavaScript do editor. Na 1.0.1 eram 44 verificações Java e na 1.0.0 eram 32.
+- **Android 1.0.3:** 55 verificações Java de protocolo/descoberta, 22 de Smart Timer (incluindo integração UDP de relógio, SSID/senha fictícios, 48 pontos e ambos os encerramentos) e 16 JavaScript do editor. Na 1.0.2 eram 55 verificações Java, na 1.0.1 eram 44 e na 1.0.0 eram 32.
 - **APK:** compilação javac/D8/aapt2, alinhamento e assinaturas v2/v3 conferidos.
 - **Interface Android:** revisão no navegador em largura de celular, incluindo persistência após recarregar, ciclo, curvas, recife e conexão.
 
@@ -46,6 +47,8 @@ Esses resultados não equivalem a instalação no Android, teste por um rádio W
 Após a publicação inicial, houve relato de teste Android em que o aparelho apitou durante a busca, mas não apareceu na lista. Isso não confirma descoberta ou gravação física. A versão 1.0.1 amplia os destinos de consulta, remove um filtro de porta incompatível com o receptor original e acrescenta diagnóstico; o resultado no telefone ainda precisa ser confirmado.
 
 No reteste da 1.0.1, o diagnóstico confirmou recepção de datagramas de 64 bytes com comando decimal 23, mas rejeição pelo parser. Isso afasta ausência de recepção como explicação desse teste, sem identificar qual outro campo diferia. A 1.0.2 remove a exigência indevida de identidade ASCII hexadecimal e acrescenta motivos específicos de rejeição; ainda precisa de reteste físico. Nenhuma gravação ou configuração foi confirmada por esse diagnóstico.
+
+O reteste da 1.0.2 mostrou precisamente `88 00` no cabeçalho. A análise do Smart WiFi Timer 3.0 confirmou esse cabeçalho de resposta e diferenças no envio de perfis. A 1.0.3 corrige esses pontos. A restrição de cabeçalho foi a causa confirmada do descarte; a hipótese de identificação binária não foi comprovada no equipamento. Descoberta, ingresso no roteador e gravação com a 1.0.3 ainda precisam do reteste físico. [Análise](ANALISE-SMART-WIFI-TIMER.md).
 
 ## Limites
 

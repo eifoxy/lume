@@ -2,6 +2,12 @@
 
 [← Início](../README.md) · [Estado da validação](COMPATIBILIDADE.md)
 
+## Smart WiFi Timer: correção confirmada pela análise do APK
+
+Desde Android 1.0.3, o Lume reconhece respostas `88 00` de 64 bytes e usa o formato Smart Timer automaticamente. Pedidos continuam `55 AA`; descoberta fornece identidade em 4–15, confirmações em 49–60. Cabeçalho de perfil usa o tamanho real do nome; a transferência encerra cada perfil com `03 08` e o conjunto com `04 0A`. Veja a [análise completa do APK que funcionava](ANALISE-SMART-WIFI-TIMER.md), incluindo offsets, checksums, SSID/senha, ACKs e sequência de envio.
+
+O cabeçalho `88 00` foi observado no diagnóstico físico. Até a 1.0.2 o Lume exigia incorretamente `55 AA` também na resposta. O formato desktop abaixo continua separado como caminho legado; o Windows 0.5.0 ainda não recebeu a adaptação Smart Timer.
+
 ## Implementação
 
 Windows usa C#/WPF/.NET 8, HID nativo para USB e sockets para IPv4/UDP. `Transfer.cs` prepara uma cópia validada da biblioteca e separa a execução do transporte. `Wifi.cs` faz descoberta, credenciais e sessões. `LedSimulation.cs` desenha o recife com vetores WPF.
@@ -10,7 +16,7 @@ Android usa uma Activity Java, persistência com `AtomicFile`, seletor de docume
 
 Os dois aplicativos salvam JSON com `Version`, `Profiles` e `Selected`. Cada perfil contém `Name`, cinco `Channels` e 48 linhas `Values` com cinco inteiros. O salvamento é atômico e os arquivos inválidos são preservados. A edição e a simulação não enviam comandos físicos.
 
-## Wi-Fi Pled V2.2
+## Caminho legado de Wi-Fi baseado no Pled V2.2 desktop
 
 Esta descrição deriva da análise do executável fornecido e dos testes simulados, não de uma especificação oficial do fabricante. **Não comprova compatibilidade física.**
 

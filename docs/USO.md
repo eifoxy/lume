@@ -54,7 +54,7 @@ Todos os dados são validados e há um backup da biblioteca local antes do prime
 
 Mantenha a conexão ativa e o app aberto. Cada comando precisa de confirmação. Se houver falha, o app para e informa quantos perfis foram concluídos; pode haver uma limpeza ou gravação parcial. Não existe rollback do dispositivo ou repetição automática de comandos. Reconecte e reenvie o conjunto revisado.
 
-Um envio confirmado não faz leitura de retorno de toda a memória e não seleciona automaticamente o perfil ativo. Escolha o perfil no aparelho conforme seu modo de operação.
+Um envio confirmado não faz leitura de retorno de toda a memória. No formato Smart Timer (Android 1.0.3), o app envia os encerramentos por perfil e por conjunto encontrados no APK funcional; seus efeitos exatos no firmware ainda aguardam validação. Confira no aparelho o perfil ativo depois da transferência.
 
 ## Relógio, retomada e prévia
 

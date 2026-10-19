@@ -12,8 +12,8 @@ Não é necessário cabo, PC conectado ao telefone, conta ou serviço na nuvem. 
 
 ## Instalar o APK
 
-1. No telefone, abra a [versão Android publicada](https://github.com/eifoxy/lume/releases/tag/android-v1.0.2).
-2. Baixe **`Lume-Android-1.0.2.apk`** na área **Assets**. Se já usa uma versão anterior, instale por cima, sem desinstalar, para manter os perfis.
+1. No telefone, abra a [versão Android publicada](https://github.com/eifoxy/lume/releases/tag/android-v1.0.3).
+2. Baixe **`Lume-Android-1.0.3.apk`** na área **Assets**. Se já usa uma versão anterior, instale por cima, sem desinstalar, para manter os perfis.
 3. Abra o download pelo gerenciador de arquivos ou pela notificação de conclusão.
 4. Se o Android pedir, permita que **esse navegador ou gerenciador de arquivos** instale aplicativos. O nome da tela varia entre fabricantes.
 5. Toque em **Instalar** e abra **Lume**.
@@ -23,6 +23,8 @@ O APK é distribuído diretamente pelo GitHub e não está na Play Store. É ass
 ## Primeira conexão
 
 Abra **Conexão** no menu inferior e siga as quatro etapas: entrar no Wi-Fi do aparelho, buscar a controladora, configurar o roteador e retornar à rede de casa. O botão **Abrir redes Wi-Fi** abre o painel do Android; você escolhe a rede no sistema.
+
+Feche o Smart WiFi Timer antes de usar o Lume; se ele mantiver a porta 5000 ocupada em segundo plano, force sua parada nas configurações do Android.
 
 O aplicativo não precisa que a rede do aparelho tenha internet. Se o Android avisar “sem internet”, escolha permanecer conectado. A comunicação UDP é vinculada à interface Wi-Fi, mesmo se a internet móvel estiver ativa.
 

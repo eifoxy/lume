@@ -1,5 +1,16 @@
 # Histórico
 
+## Android 1.0.3 · 2026-10-19
+
+- Protocolo confrontado com análise estática do Smart WiFi Timer 3.0 fornecido pelo usuário: pedidos `55 AA`, respostas `88 00`, datagramas de 64 bytes.
+- Corrige a causa confirmada da rejeição na descoberta: exigência do cabeçalho de pedido nas respostas. A hipótese de identidade não hexadecimal das versões anteriores não foi confirmada no hardware.
+- Valida a identidade do destino em 49–60 nas confirmações Smart; a descoberta extrai 4–15.
+- Detecta o formato Smart pela resposta, usa tamanho real do nome no cabeçalho de envio e não acrescenta o contador reservado do formato desktop.
+- Envio Smart inclui pausa de 50 ms por ponto, encerramento `03 08 / 83` após cada perfil e `04 0A / 91` ao final do conjunto; sucesso somente após a confirmação final.
+- Plano de envio inteiro validado e copiado antes de mutações, com interrupção imediata em falha. Não copia as repetições automáticas nem o armazenamento de senhas do aplicativo antigo.
+- 55 verificações de protocolo, 22 Smart Timer e 16 do editor; integração UDP de relógio, credenciais fictícias e transferência completa.
+- [Análise detalhada](docs/ANALISE-SMART-WIFI-TIMER.md). APK original e código decompilado não redistribuídos; reteste no hardware com esta versão pendente.
+
 ## Android 1.0.2 · 2026-10-18
 
 - Trata a identidade Wi-Fi como 12 bytes opacos, conforme a cópia feita pelo Pled original, sem exigir texto hexadecimal ASCII.
