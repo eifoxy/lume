@@ -7,7 +7,7 @@ public static class Protocol
 {
  public static byte[] Frame(byte[] payload,int length=65)
  {
-  if(payload.Length>60||length!=65)throw new InvalidDataException("Relatório HID incompatível: esperado 65 bytes.");
+  if(payload.Length>60||length!=65)throw new InvalidDataException(I18n.T("Relat\u00F3rio HID incompat\u00EDvel: esperado 65 bytes."));
   byte[] b=new byte[length];b[1]=0x55;b[2]=0xaa;payload.CopyTo(b,3);b[64]=unchecked((byte)(0xff+payload.Sum(x=>(int)x)));return b;
  }
  public static byte[] Header(Profile p,int slot) {p.Validate();if(slot<0||slot>15)throw new ArgumentOutOfRangeException(nameof(slot));var b=new byte[14];b[0]=1;b[1]=1;b[3]=10;b[4]=(byte)slot;Name(p).CopyTo(b,5);b[13]=48;return b;}
@@ -18,13 +18,13 @@ public static class Protocol
  // Classic TC420 uses a different frame from the supplied Pled V2.2 binary.
  public static byte[] ClassicFrame(byte command,params byte[] data)
  {
-  if(data.Length>56)throw new InvalidDataException("Pacote clássico grande demais.");var b=new byte[65];b[1]=0x55;b[2]=0xaa;b[3]=command;b[5]=(byte)data.Length;data.CopyTo(b,6);b[62]=unchecked((byte)b.Take(62).Sum(v=>(int)v));b[63]=13;b[64]=10;return b;
+  if(data.Length>56)throw new InvalidDataException(I18n.T("Pacote cl\u00E1ssico grande demais."));var b=new byte[65];b[1]=0x55;b[2]=0xaa;b[3]=command;b[5]=(byte)data.Length;data.CopyTo(b,6);b[62]=unchecked((byte)b.Take(62).Sum(v=>(int)v));b[63]=13;b[64]=10;return b;
  }
 }
 public record Device(string Path,int InputLength,int OutputLength)
 {
  public bool Classic=>Path.Contains("vid_0888&pid_4000",StringComparison.OrdinalIgnoreCase);
- public string Label=>Classic?"TC420 clássica":"Controladora Pled V2.2";
+ public string Label=>Classic?I18n.T("TC420 cl\u00E1ssica"):I18n.T("Controladora Pled V2.2");
 }
 public sealed class Usb : IControllerSession
 {
@@ -33,10 +33,10 @@ public sealed class Usb : IControllerSession
  public Usb(Device d)
  {
   classic=d.Classic;
-  if(d.InputLength!=65||d.OutputLength!=65)throw new IOException("A controladora encontrada tem um formato HID diferente do Pled V2.2.");
+  if(d.InputLength!=65||d.OutputLength!=65)throw new IOException(I18n.T("A controladora encontrada tem um formato HID diferente do Pled V2.2."));
   var r=Native.CreateFile(d.Path,0x80000000,3,IntPtr.Zero,3,0x40000000,IntPtr.Zero);
-  if(r.IsInvalid){r.Dispose();throw new IOException("Não foi possível abrir a TC420. Feche o Pled e tente novamente.");}
-  try {read=new FileStream(r,FileAccess.Read,65,true);var w=Native.CreateFile(d.Path,0x40000000,3,IntPtr.Zero,3,0x40000000,IntPtr.Zero);if(w.IsInvalid){w.Dispose();throw new IOException("Não foi possível abrir a saída USB.");}write=new FileStream(w,FileAccess.Write,65,true);}
+  if(r.IsInvalid){r.Dispose();throw new IOException(I18n.T("N\u00E3o foi poss\u00EDvel abrir a TC420. Feche o Pled e tente novamente."));}
+  try {read=new FileStream(r,FileAccess.Read,65,true);var w=Native.CreateFile(d.Path,0x40000000,3,IntPtr.Zero,3,0x40000000,IntPtr.Zero);if(w.IsInvalid){w.Dispose();throw new IOException(I18n.T("N\u00E3o foi poss\u00EDvel abrir a sa\u00EDda USB."));}write=new FileStream(w,FileAccess.Write,65,true);}
   catch {r.Dispose();throw;}
  }
  public async Task Send(byte[] payload,byte expected,CancellationToken token)
@@ -47,13 +47,13 @@ public sealed class Usb : IControllerSession
    if(expected==0)return;
    var response=new byte[65];int n=await read.ReadAsync(response,timeout.Token);
    bool accepted=classic?n>=7&&response[4]==0&&response[5]==1&&response[6]==0:n>=3&&response[0]==0&&response[2]==expected;
-   if(!accepted)throw new IOException("Resposta USB inesperada. A operação foi interrompida.");
-  } catch(OperationCanceledException) when(!token.IsCancellationRequested) {throw new IOException("A TC420 não respondeu em 2,2 segundos. Verifique o cabo e feche o Pled.");}
+   if(!accepted)throw new IOException(I18n.T("Resposta USB inesperada. A opera\u00E7\u00E3o foi interrompida."));
+  } catch(OperationCanceledException) when(!token.IsCancellationRequested) {throw new IOException(I18n.T("A TC420 n\u00E3o respondeu em 2,2 segundos. Verifique o cabo e feche o Pled."));}
  }
  public Task Upload(UploadPlan plan,IProgress<TransferProgress> progress,CancellationToken token)=>Transfer.Run(plan,classic,Send,progress,token);
  public async Task Manual(Profile p,byte[] values,CancellationToken token)
  {
-  if(values.Length!=5||values.Any(v=>v>100))throw new InvalidDataException("Intensidades inválidas.");
+  if(values.Length!=5||values.Any(v=>v>100))throw new InvalidDataException(I18n.T("Intensidades inv\u00E1lidas."));
   if(classic){await Send(Protocol.ClassicFrame(0x15,[..Protocol.Name(p),0,0x7f]),1,token);await Send(Protocol.ClassicFrame(0x16,[0xf5,..values,0]),1,token);}
   else{await Send(Protocol.Play(p,0),0x84,token);await Send([6,2,0,5,..values],0x84,token);}
  }
@@ -63,10 +63,10 @@ public sealed class Usb : IControllerSession
  public static List<Device> Find()
  {
   var devices=new List<Device>();Native.HidD_GetHidGuid(out var guid);var set=Native.SetupDiGetClassDevs(ref guid,IntPtr.Zero,IntPtr.Zero,0x12);
-  if(set==new IntPtr(-1))throw new IOException("Falha ao consultar os dispositivos USB do Windows.");
+  if(set==new IntPtr(-1))throw new IOException(I18n.T("Falha ao consultar os dispositivos USB do Windows."));
   try {
    for(uint i=0;;i++){
-    var data=new Native.Interface {Size=Marshal.SizeOf<Native.Interface>()};if(!Native.SetupDiEnumDeviceInterfaces(set,IntPtr.Zero,ref guid,i,ref data)){if(Marshal.GetLastWin32Error()!=259)throw new IOException("Falha ao enumerar interfaces HID.");break;}
+    var data=new Native.Interface {Size=Marshal.SizeOf<Native.Interface>()};if(!Native.SetupDiEnumDeviceInterfaces(set,IntPtr.Zero,ref guid,i,ref data)){if(Marshal.GetLastWin32Error()!=259)throw new IOException(I18n.T("Falha ao enumerar interfaces HID."));break;}
     Native.SetupDiGetDeviceInterfaceDetail(set,ref data,IntPtr.Zero,0,out uint size,IntPtr.Zero);if(size<6||size>32768)continue;
     var detail=Marshal.AllocHGlobal((int)size);
     try {Marshal.WriteInt32(detail,IntPtr.Size==8?8:6);if(!Native.SetupDiGetDeviceInterfaceDetail(set,ref data,detail,size,out _,IntPtr.Zero))continue;

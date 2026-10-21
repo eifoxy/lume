@@ -49,17 +49,20 @@ public final class MainActivity extends Activity {
   void send(byte[] p,String id,InetAddress target,int ack)throws Exception{exchange(Protocol.frame(p,id),id,target,p[0]&255,ack);}
  }
  public final class Bridge{
+  @JavascriptInterface public String languagePreference(){return getSharedPreferences("connection",MODE_PRIVATE).getString("language","auto");}
+  @JavascriptInterface public String deviceLanguage(){return Locale.getDefault().toLanguageTag();}
+  @JavascriptInterface public String saveLanguage(String value){if(!Arrays.asList("auto","pt-BR","en","es").contains(value))return "Invalid language";return getSharedPreferences("connection",MODE_PRIVATE).edit().putString("language",value).commit()?"":"Could not save language";}
   @JavascriptInterface public String loadLibrary(){return load();}
   @JavascriptInterface public String saveLibrary(String text){try{store(text);return "";}catch(Exception e){return message(e);}}
   @JavascriptInterface public void wifi(){runOnUiThread(()->{try{startActivity(new Intent(Build.VERSION.SDK_INT>=29?Settings.Panel.ACTION_WIFI:Settings.ACTION_WIFI_SETTINGS));}catch(Exception e){startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));}});}
   @JavascriptInterface public void cancel(){cancelled=true;DatagramSocket s=activeSocket;if(s!=null)s.close();}
-  @JavascriptInterface public void copyDiagnostic(){runOnUiThread(()->{android.content.ClipboardManager clipboard=(android.content.ClipboardManager)getSystemService(CLIPBOARD_SERVICE);clipboard.setPrimaryClip(ClipData.newPlainText("Diagnóstico Lume",lastDiagnostic));event("success","Diagnóstico copiado. Ele não contém senha nem nome da rede.");});}
+  @JavascriptInterface public void copyDiagnostic(String shown){final String report=shown!=null&&shown.length()<=40000?shown:lastDiagnostic;runOnUiThread(()->{android.content.ClipboardManager clipboard=(android.content.ClipboardManager)getSystemService(CLIPBOARD_SERVICE);clipboard.setPrimaryClip(ClipData.newPlainText("Lume",report));event("success","Diagnóstico copiado. Ele não contém senha nem nome da rede.");});}
   @JavascriptInterface public String preferredDevice(){return getSharedPreferences("connection",MODE_PRIVATE).getString("device","");}
   @JavascriptInterface public void rememberDevice(String id){if(id.length()<=40)getSharedPreferences("connection",MODE_PRIVATE).edit().putString("device",id).apply();}
   @JavascriptInterface public void discover(String direct){discoverNow(direct,false);}
   @JavascriptInterface public void discoverAutomatic(){discoverNow("",true);}
   private void discoverNow(String direct,boolean automatic){job(()->{
-   StringBuilder report=new StringBuilder("Lume Android 1.0.6 · API "+Build.VERSION.SDK_INT+" · "+Build.MANUFACTURER+" "+Build.MODEL+"\n");
+   StringBuilder report=new StringBuilder("Lume Android 1.1.0 · API "+Build.VERSION.SDK_INT+" · "+Build.MANUFACTURER+" "+Build.MODEL+"\n");
    WifiManager.MulticastLock lock=null;int received=0,rejected=0,sent=0;Map<String,JSONObject> found=new LinkedHashMap<>();
    try{
     WifiManager wm=(WifiManager)getApplicationContext().getSystemService(WIFI_SERVICE);lock=wm.createMulticastLock("lume-discovery");lock.acquire();
@@ -95,7 +98,7 @@ public final class MainActivity extends Activity {
    List<String> names=new ArrayList<>();for(JSONObject p:profiles)names.add(p.getString("Name"));List<String> aliases=Protocol.aliases(names);List<Upload.Item> items=new ArrayList<>();
    for(int i=0;i<profiles.size();i++){JSONArray rows=profiles.get(i).getJSONArray("Values");int[][] values=new int[48][5];for(int r=0;r<48;r++)for(int c=0;c<5;c++)values[r][c]=rows.getJSONArray(r).getInt(c);items.add(new Upload.Item(firstSlot+i,aliases.get(i),values));}
    backup(root.toString());
-   try(Route route=new Route()){InetAddress ip=InetAddress.getByName(d.getString("ip"));Upload.run(items,replace,smart,(payload,ack)->route.send(payload,id,ip,ack),()->route.checkRoute(),(percent,phase)->progress(phase,percent),()->{check();Thread.sleep(150);});}catch(Exception e){lastDiagnostic="Lume Android 1.0.6 · envio de perfis\n"+message(e);event("diagnostic",lastDiagnostic);throw e;}
+   try(Route route=new Route()){InetAddress ip=InetAddress.getByName(d.getString("ip"));Upload.run(items,replace,smart,(payload,ack)->route.send(payload,id,ip,ack),()->route.checkRoute(),(percent,phase)->progress(phase,percent),()->{check();Thread.sleep(150);});}catch(Exception e){lastDiagnostic="Lume Android 1.1.0 · envio de perfis\n"+message(e);event("diagnostic",lastDiagnostic);throw e;}
    event("success",profiles.size()+" perfil(is) confirmado(s). Confira no aparelho o perfil ativo.");
   });}
   @JavascriptInterface public void exportLibrary(String json){try{String validated=validate(new JSONObject(json)).toString(2);runOnUiThread(()->{pendingExport=validated;Intent i=new Intent(Intent.ACTION_CREATE_DOCUMENT).setType("application/json").addCategory(Intent.CATEGORY_OPENABLE).putExtra(Intent.EXTRA_TITLE,"Lume-perfis.json");startActivityForResult(i,10);});}catch(Exception e){event("error",message(e));}}

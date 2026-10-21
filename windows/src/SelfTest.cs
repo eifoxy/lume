@@ -24,6 +24,7 @@ public static class SelfTest
    var classicClock=Protocol.ClassicFrame(0x11,Protocol.Clock(new DateTime(2026,10,18,18,30,45))[4..]);Check(classicClock[5]==7&&classicClock[6]==7&&classicClock[7]==234&&classicClock[12]==45,"Classic clock payload");
    count+=TransferTests.Run();
    count+=WifiTests.Run();
+   count+=LanguageTests.Run();
    File.WriteAllText(Path.Combine(AppContext.BaseDirectory,"test-results.txt"),$"{count} checks passed. {DateTime.Now:O}\nHardware was not exercised. USB transfers tested in memory; Wi-Fi command, provisioning, and ACK handling tested on local UDP sockets.\n");
   }finally {Directory.Delete(temp,true);}
  }

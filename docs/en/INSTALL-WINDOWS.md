@@ -7,12 +7,12 @@
 - Windows 10/11 x64 for the `win-x64` package, and a folder your user can write to.
 - A compatible USB HID controller or a compatible Wi-Fi module for wireless use.
 
-Open the [Windows release](https://github.com/eifoxy/lume/releases/tag/preview-2026.10.18):
+Open the [Windows release](https://github.com/eifoxy/lume/releases/tag/windows-v0.6.0):
 
 | File | Choose this when |
 |---|---|
-| `Lume-Windows-0.5.0-win-x64.zip` | You want .NET included; easiest for Windows x64. |
-| `Lume-Windows-0.5.0-portable.zip` | You prefer a smaller download and have [.NET Desktop Runtime 8 for Windows](https://dotnet.microsoft.com/en-us/download/dotnet/8.0). The base or ASP.NET runtime alone is insufficient. |
+| `Lume-Windows-0.6.0-win-x64.zip` | You want .NET included; easiest for Windows x64. |
+| `Lume-Windows-0.6.0-portable.zip` | You prefer a smaller download and have [.NET Desktop Runtime 8 for Windows](https://dotnet.microsoft.com/en-us/download/dotnet/8.0). The base or ASP.NET runtime alone is insufficient. |
 
 1. Download your chosen ZIP and select **Extract All**.
 2. Keep the extracted folder in a writable location such as Documents. Do not run inside the ZIP.
@@ -22,10 +22,10 @@ Open the [Windows release](https://github.com/eifoxy/lume/releases/tag/preview-2
 The app is portable and needs no installer or administrator privileges. The current executable has no commercial signing certificate. Download from this repository's releases; compare with `SHA256SUMS.txt` to verify:
 
 ```powershell
-Get-FileHash .\Lume-Windows-0.5.0-win-x64.zip -Algorithm SHA256
+Get-FileHash .\Lume-Windows-0.6.0-win-x64.zip -Algorithm SHA256
 ```
 
-The released interface is in Brazilian Portuguese. The button names below match the app.
+The app supports Portuguese, English, and Spanish. Select a language or Automatic (device) in the sidebar; the choice is saved separately from profiles. Examples below retain Portuguese button names. The transport is inherited from 0.5.0; adding languages does not adapt Smart Timer framing.
 
 ## Connect over USB
 
@@ -40,7 +40,7 @@ Lume uses native Windows HID; no external driver replacement is required. Detect
 
 ## Connect over Wi-Fi
 
-Open **Conectar por Wi-Fi** and follow the [Wi-Fi guide](WIFI.md). After selecting a controller, uploads, clock sync, and resume use that connection. Instant physical intensity adjustment remains USB-only. Windows 0.5.0 does not include Android's Smart Timer `88 00` adaptation.
+Open **Conectar por Wi-Fi** and follow the [Wi-Fi guide](WIFI.md). After selecting a controller, uploads, clock sync, and resume use that connection. Instant physical intensity adjustment remains USB-only. Windows 0.6.0 does not include Android's Smart Timer `88 00` adaptation.
 
 ![Wi-Fi connection window](../images/previa-wifi.png)
 

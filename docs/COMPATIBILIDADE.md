@@ -39,6 +39,7 @@
 
 ## Testes locais
 
+- **Idiomas, Android 1.1.0 e Windows 0.6.0:** 496 mensagens em PT-BR, inglês e espanhol. Os testes de catálogo verificam cada entrada em cada idioma; os de interface conferem troca automática/manual, persistência, idiomas de sistema não suportados e preservação da biblioteca e dos bytes dos perfis. Android também foi revisado em navegador; Windows foi renderizado fora da tela nos três idiomas. As novas versões ainda precisam de reteste no telefone/controladora. Windows 0.6.0 herda os transportes da 0.5.0 e continua sem a adaptação Smart Timer do Android.
 - **Windows:** 77 verificações funcionais de modelo, arquivos, pacotes, transferências, erros e UDP; 24 verificações de interface com renderização fora da tela.
 - **Android 1.0.6:** 55 verificações Java gerais, 34 Smart Timer, 16 JavaScript do editor e 29 de busca automática. UDP em loopback cobre relógio, credenciais fictícias, perfil completo e perdas de confirmação no sexto ponto e no primeiro cabeçalho após limpeza. Eventos e temporizadores simulados cobrem abertura, retomada, mudança de IP, perda/retorno do aparelho, várias controladoras, escolha persistida e exclusão durante operações/diálogos.
 - **APK:** compilação javac/D8/aapt2, alinhamento e assinaturas v2/v3 conferidos.

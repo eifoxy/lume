@@ -70,3 +70,9 @@ pwsh ./scripts/test-android.ps1 -Jdk 'C:\caminho\jdk-17'
 O workflow `checks.yml` compila os dois aplicativos, roda testes e publica artefatos de CI. Os APKs de CI são assinados com uma chave temporária de desenvolvimento a cada execução e não devem substituir o APK de lançamento na mesma instalação. Nenhum workflow guarda credenciais de roteador, acessa uma controladora real ou publica releases automaticamente.
 
 Para contribuir com validação física, registre modelo, firmware, versão do Lume, Android/Windows e qual função confirmou no dispositivo. Não inclua senha, chave de assinatura, SSID real, IP público ou arquivos pessoais no relato. Testar envio no hardware altera a programação; faça uma cópia dos programas atuais pelo procedimento conhecido do fabricante antes de experimentar.
+
+## Traduções
+
+O catálogo compartilhado é `localization/strings.json`, com campos `pt`, `en` e `es`. Windows incorpora o JSON como recurso; Android usa `strings.js`, gerado por `node scripts/sync-localization.cjs`. Use `--check` para verificar sincronização. Use `I18n.T`/`Tr` no Windows e `tr` no Android para textos estáticos, sem traduzir nomes pessoais, chaves JSON ou dados do protocolo. A preferência inicial é Automático; as escolhas manuais ficam separadas da biblioteca.
+
+[Guia de desenvolvimento em espanhol](es/DESARROLLO.md).

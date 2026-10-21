@@ -2,6 +2,16 @@
 
 [English](CHANGELOG.md) · **Português (Brasil)** · [Início](README.pt-BR.md)
 
+## Android 1.1.0 / Windows 0.6.0 · 2026-10-21
+
+- Português brasileiro, inglês e espanhol nos dois apps, com idioma automático do dispositivo por padrão e inglês como alternativa para idiomas não suportados.
+- Seletor visível com preferência salva e troca sem reiniciar, incluindo retorno à opção Automático. Traduz controles, diálogos, confirmações, progresso, validações e mensagens de comunicação.
+- Nomes já salvos de perfis/canais, horários e dados do protocolo preservados. A troca aguarda operações de rede e diálogos.
+- Catálogo offline compartilhado com 496 mensagens, checagem de sincronização e testes de catálogo, preservação dos pacotes, navegador e renderização Windows nos três idiomas.
+- README e guias de instalação, Wi-Fi, uso e desenvolvimento em espanhol. A página inicial continua em PT-BR, com opções English e Español.
+- Mesma chave Android para atualizar sem desinstalar. Windows mantém seus transportes atuais; esta atualização não adiciona o formato Smart Timer ao Windows.
+- Compilação e verificações locais concluídas; reteste no telefone e aparelho físico pendente. Nenhum comando foi enviado à controladora nos testes.
+
 ## Documentação · 2026-10-19
 
 - Aviso explícito no início: feito com vibe coding e ampla assistência de IA para resolver um problema real, sem fins lucrativos.

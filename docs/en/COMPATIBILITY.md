@@ -36,6 +36,7 @@
 
 ## Local checks
 
+- **Languages, Android 1.1.0 and Windows 0.6.0:** 496 shared messages in PT-BR, English, and Spanish. Catalog tests cover every entry in each language; interface checks cover automatic/manual selection, persistence, unsupported system languages, and preservation of library data and profile bytes. Android was also reviewed in a browser; Windows was rendered offscreen in all three languages. These builds still need a phone/controller retest. Windows 0.6.0 inherits 0.5.0 transports and still lacks Android's Smart Timer adaptation.
 - **Windows:** 77 functional checks for models, files, packets, transfers, errors, and UDP; 24 offscreen UI checks.
 - **Android 1.0.6:** 55 general Java checks, 34 Smart Timer checks, 16 editor checks, and 29 automatic discovery checks. Real loopback UDP covers clock, fictitious credentials, complete profiles, and lost acknowledgments at the sixth point and first header after erasure. Simulated events/timers cover startup/return, changed IP, lost/recovered devices, multiple controllers, persistent choice, and operation/dialog exclusion.
 - **APK:** javac/D8/aapt2 build, alignment, and v2/v3 signatures verified.

@@ -2,7 +2,7 @@
 
 [Home](../../README.en.md) · **English** · [Português (Brasil)](../USO.md)
 
-The released apps use Brazilian Portuguese. Button names below match the interface.
+The apps support Portuguese, English, and Spanish. Examples below retain Portuguese button names; select Português (Brasil) in the language selector to match them.
 
 ## Understand the day
 

@@ -2,7 +2,8 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType><TargetFramework>net8.0-windows</TargetFramework>
     <UseWPF>true</UseWPF><Nullable>enable</Nullable><ImplicitUsings>enable</ImplicitUsings>
-    <AssemblyName>Lume</AssemblyName><Version>0.5.0</Version>
+    <AssemblyName>Lume</AssemblyName><Version>0.6.0</Version>
     <EnableNETAnalyzers>true</EnableNETAnalyzers>
   </PropertyGroup>
+ <ItemGroup><EmbeddedResource Include="../../localization/strings.json" LogicalName="Lume.Strings.json" /></ItemGroup>
 </Project>

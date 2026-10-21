@@ -11,7 +11,7 @@ public sealed class LedSimulation : FrameworkElement
  readonly DispatcherTimer animation=new(){Interval=TimeSpan.FromMilliseconds(33)};
  readonly Stopwatch clock=new();double previousSeconds,phase,opening;bool motionEnabled=true;
  double[] levels=new double[5];
- public double[] Levels {get=>levels.ToArray();set {if(value.Length!=5||value.Any(v=>!double.IsFinite(v)||v<0||v>100))throw new ArgumentException("A prévia precisa de cinco intensidades de 0 a 100.");levels=value.ToArray();if(!IsLoaded||!motionEnabled)opening=TargetOpening;InvalidateVisual();}}
+ public double[] Levels {get=>levels.ToArray();set {if(value.Length!=5||value.Any(v=>!double.IsFinite(v)||v<0||v>100))throw new ArgumentException(I18n.T("A pr\u00E9via precisa de cinco intensidades de 0 a 100."));levels=value.ToArray();if(!IsLoaded||!motionEnabled)opening=TargetOpening;InvalidateVisual();}}
  public bool MotionEnabled {get=>motionEnabled;set {motionEnabled=value;if(!value){animation.Stop();opening=TargetOpening;}else if(IsLoaded&&IsVisible){clock.Restart();previousSeconds=0;animation.Start();}InvalidateVisual();}}
  public double CoralOpening=>opening;
  public static double OpeningFor(double brightness){double t=Math.Clamp((brightness-.04)/.86,0,1);return t*t*(3-2*t);}

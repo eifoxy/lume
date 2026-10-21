@@ -1,0 +1,7 @@
+using System.IO;
+using System.Text.Json;
+namespace Lume;
+public static class LanguageTests
+{
+ public static int Run(){int count=0;void Check(bool ok,string error){count++;if(!ok)throw new Exception(error);}using var stream=typeof(I18n).Assembly.GetManifestResourceStream("Lume.Strings.json")!;using var doc=JsonDocument.Parse(stream);var profile=Profile.Day("Personal Azul Branco",16,40,4);var original=Legacy.Encode(profile);var name=profile.Name;var channels=profile.Channels.ToArray();foreach(var lang in new[]{"en","es","pt-BR"}){I18n.Current.Set(lang,false);foreach(var row in doc.RootElement.EnumerateArray())Check(I18n.T(row.GetProperty("pt").GetString()!)==row.GetProperty(lang=="pt-BR"?"pt":lang).GetString(),"Translation mismatch: "+row.GetProperty("pt"));Check(Legacy.Encode(profile).SequenceEqual(original)&&profile.Name==name&&profile.Channels.SequenceEqual(channels),"Language must preserve profiles and wire data");}foreach(var pair in new[]{("pt-PT","pt-BR"),("es-MX","es"),("en-GB","en"),("ja-JP","en")})Check(I18n.Resolve("auto",pair.Item1)==pair.Item2,"System language fallback");I18n.Current.Set("en",false);var status=I18n.T("Controladora detectada. Nenhum comando enviado.");I18n.Current.Set("es",false);Check(I18n.Current.Relocalize(status,"en")==I18n.T("Controladora detectada. Nenhum comando enviado."),"Existing status must follow the new language");I18n.Current.Set("pt-BR",false);return count;}
+}

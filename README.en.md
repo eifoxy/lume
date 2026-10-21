@@ -1,6 +1,6 @@
 # ◒ Lume
 
-[Português (Brasil)](README.md) · **English**
+[Português (Brasil)](README.md) · **English** · [Español](README.es.md)
 
 > **Built with vibe coding to solve a real problem, with no profit motive.** Lume is a free, independent, open-source personal project created to make an old aquarium LED controller easier to use. It was developed with substantial AI assistance from OpenAI Codex, guided by a real user's requirements and feedback from their controller.
 
@@ -8,7 +8,7 @@
 
 ![Lume's reef interface, with corals and clownfish](docs/images/recife-dia.png)
 
-An aquarium lighting editor for compatible TC420 controllers and Pled V2.2 Wi-Fi modules. **Windows** and **Android** apps with five-channel curves, lighting profiles, and an animated reef that follows your schedule. The released app interfaces currently use Brazilian Portuguese; this repository opens in Brazilian Portuguese, with this English version and English guides also available.
+An aquarium lighting editor for compatible TC420 controllers and Pled V2.2 Wi-Fi modules. **Windows** and **Android** apps with five-channel curves, lighting profiles, and an animated reef that follows your schedule. The apps support Brazilian Portuguese, English, and Spanish. On first launch, they follow the device language; the Language selector lets you choose manually or return to Automatic (device). Other system languages fall back to English. Your choice is saved, without changing existing profile/channel names or schedules. This repository opens in Brazilian Portuguese, with English and Spanish versions available.
 
 [![Checks](https://github.com/eifoxy/lume/actions/workflows/checks.yml/badge.svg)](https://github.com/eifoxy/lume/actions/workflows/checks.yml)
 [![MIT license](https://img.shields.io/badge/license-MIT-91e3c7)](LICENSE)
@@ -19,13 +19,17 @@ An aquarium lighting editor for compatible TC420 controllers and Pled V2.2 Wi-Fi
 
 | App | Download | Installation |
 |---|---|---|
-| Windows x64 · 0.5.0 | [Full ZIP, .NET included](https://github.com/eifoxy/lume/releases/download/preview-2026.10.18/Lume-Windows-0.5.0-win-x64.zip) | Extract everything and open `Lume.exe`. |
-| Windows · 0.5.0 | [Small ZIP, requires .NET Desktop Runtime 8](https://github.com/eifoxy/lume/releases/download/preview-2026.10.18/Lume-Windows-0.5.0-portable.zip) | Install the runtime, extract everything, and open `Lume.exe`. |
-| Android 8+ · 1.0.6 | [APK](https://github.com/eifoxy/lume/releases/download/android-v1.0.6/Lume-Android-1.0.6.apk) | Download on your phone and open it in the file manager. |
+| Windows x64 · 0.6.0 | [Full ZIP, .NET included](https://github.com/eifoxy/lume/releases/download/windows-v0.6.0/Lume-Windows-0.6.0-win-x64.zip) | Extract everything and open `Lume.exe`. |
+| Windows · 0.6.0 | [Small ZIP, requires .NET Desktop Runtime 8](https://github.com/eifoxy/lume/releases/download/windows-v0.6.0/Lume-Windows-0.6.0-portable.zip) | Install the runtime, extract everything, and open `Lume.exe`. |
+| Android 8+ · 1.1.0 | [APK](https://github.com/eifoxy/lume/releases/download/android-v1.1.0/Lume-Android-1.1.0.apk) | Download on your phone and open it in the file manager. |
 
 [All releases and checksums](https://github.com/eifoxy/lume/releases) · [Windows guide](docs/en/INSTALL-WINDOWS.md) · [Android guide](docs/en/INSTALL-ANDROID.md) · [Wi-Fi setup](docs/en/WIFI.md)
 
 On Android, install updates **over the existing app, without uninstalling**, to keep your profiles.
+
+## Languages
+
+The selector appears at the top of Android and in the Windows sidebar. Choose Português (Brasil), English, Español, or Automatic (device). Language changes wait for searches/uploads/dialogs to finish and do not change protocol data. [Spanish documentation](README.es.md).
 
 ## Features
 
@@ -44,6 +48,7 @@ On Android, install updates **over the existing app, without uninstalling**, to 
 
 | Feature | Windows | Android |
 |---|:---:|:---:|
+| Portuguese, English, and Spanish | ✓ | ✓ |
 | Curves, table, cycles, five channels, profiles | ✓ | ✓ |
 | Animated reef and daily preview | ✓ | ✓ |
 | Wi-Fi discovery and setup | ✓ | ✓ |

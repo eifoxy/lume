@@ -39,6 +39,10 @@ public partial class MainWindow
   var wifiDemo=new WifiDevice("A1B2C3D4E5F6",System.Net.IPAddress.Parse("192.168.1.42"),"Wi-Fi");using var wifiChooser=new WifiChooser(true);wifiChooser.DemoDevice(wifiDemo);
   root=new Grid{Background=Background};root.Children.Add(wifiChooser);Content=root;Layout(650,940);Snapshot("previa-wifi.png");Content=localContent;
   wifiDevice=wifiDemo;device=null;EnableUsb();Assert(SyncButton.IsEnabled&&UploadButton.IsEnabled&&!ManualButton.IsEnabled,"Wi-Fi selection routes supported actions and disables unsupported live control");wifiDevice=null;EnableUsb();Assert(!UploadButton.IsEnabled&&!SyncButton.IsEnabled,"Disconnected actions remain disabled");
+  var encodedBeforeLanguages=Legacy.Encode(P);var profileNameBeforeLanguages=P.Name;
+  root=(Grid)localContent;
+  foreach(var locale in new[]{"en","es","pt-BR"}){I18n.Current.Set(locale,false);InitializeLanguage();Render();Layout();Assert(UploadButton.Content.ToString()!.Contains(locale=="en"?"Upload to TC420":locale=="es"?"Enviar a la TC420":"Enviar à TC420"),"Upload button language");Assert(Legacy.Encode(P).SequenceEqual(encodedBeforeLanguages)&&P.Name==profileNameBeforeLanguages,"Language switch must preserve user profiles");Snapshot("windows-"+locale+".png");}
+  I18n.Current.Set("pt-BR",false);InitializeLanguage();
   saveTimer.Stop();simTimer.Stop();dirty=false;
   File.WriteAllText(Path.Combine(AppContext.BaseDirectory,"ui-test-results.txt"),$"{checks} UI checks passed. {DateTime.Now:O}\nOffscreen WPF rendering. No USB commands sent.\n");
  }

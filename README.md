@@ -1,6 +1,6 @@
 # ◒ Lume
 
-**Português (Brasil)** · [English](README.en.md)
+**Português (Brasil)** · [English](README.en.md) · [Español](README.es.md)
 
 > **Feito com vibe coding para resolver um problema real, sem fins lucrativos.** O Lume é um projeto pessoal, independente, gratuito e de código aberto, criado para facilitar o uso de uma controladora antiga de LEDs de aquário. Foi desenvolvido com ampla assistência de IA do Codex, da OpenAI, guiado pelos requisitos e pelo retorno de um usuário com o aparelho real.
 
@@ -8,7 +8,7 @@
 
 ![Lume - recife da interface, com corais e peixes-palhaço](docs/images/recife-dia.png)
 
-Editor de iluminação para controladoras de aquário compatíveis com TC420 e com o protocolo Wi-Fi do Pled V2.2. Aplicativos para **Windows** e **Android**, em português, com curvas de cinco canais, perfis e um recife animado que acompanha a programação.
+Editor de iluminação para controladoras de aquário compatíveis com TC420 e com o protocolo Wi-Fi do Pled V2.2. Aplicativos para **Windows** e **Android**, em português, inglês e espanhol, com curvas de cinco canais, perfis e um recife animado que acompanha a programação.
 
 [![Verificações](https://github.com/eifoxy/lume/actions/workflows/checks.yml/badge.svg)](https://github.com/eifoxy/lume/actions/workflows/checks.yml)
 [![Licença MIT](https://img.shields.io/badge/licen%C3%A7a-MIT-91e3c7)](LICENSE)
@@ -19,11 +19,17 @@ Editor de iluminação para controladoras de aquário compatíveis com TC420 e c
 
 | Aplicativo | Download | Como instalar |
 |---|---|---|
-| Windows x64 · 0.5.0 | [ZIP completo, com .NET incluído](https://github.com/eifoxy/lume/releases/download/preview-2026.10.18/Lume-Windows-0.5.0-win-x64.zip) | Extraia tudo e abra `Lume.exe`. |
-| Windows · 0.5.0 | [ZIP leve, requer .NET Desktop Runtime 8](https://github.com/eifoxy/lume/releases/download/preview-2026.10.18/Lume-Windows-0.5.0-portable.zip) | Instale o runtime, extraia tudo e abra `Lume.exe`. |
-| Android 8+ · 1.0.6 | [APK](https://github.com/eifoxy/lume/releases/download/android-v1.0.6/Lume-Android-1.0.6.apk) | Baixe no telefone e abra pelo gerenciador de arquivos. |
+| Windows x64 · 0.6.0 | [ZIP completo, com .NET incluído](https://github.com/eifoxy/lume/releases/download/windows-v0.6.0/Lume-Windows-0.6.0-win-x64.zip) | Extraia tudo e abra `Lume.exe`. |
+| Windows · 0.6.0 | [ZIP leve, requer .NET Desktop Runtime 8](https://github.com/eifoxy/lume/releases/download/windows-v0.6.0/Lume-Windows-0.6.0-portable.zip) | Instale o runtime, extraia tudo e abra `Lume.exe`. |
+| Android 8+ · 1.1.0 | [APK](https://github.com/eifoxy/lume/releases/download/android-v1.1.0/Lume-Android-1.1.0.apk) | Baixe no telefone e abra pelo gerenciador de arquivos. |
 
 [Todas as versões e checksums](https://github.com/eifoxy/lume/releases) · [Tutorial Windows](docs/INSTALACAO-WINDOWS.md) · [Tutorial Android](docs/INSTALACAO-ANDROID.md) · [Configurar Wi-Fi](docs/WIFI.md)
+
+## Idiomas
+
+Ao abrir pela primeira vez, o aplicativo segue o idioma do dispositivo. O seletor Idioma aparece no topo do Android e na barra lateral do Windows: escolha Português (Brasil), English, Español ou Automático (dispositivo). A preferência fica salva. Sistemas em outros idiomas usam inglês como alternativa. Nomes já salvos de perfis/canais e a programação não são traduzidos nem alterados. A troca aguarda buscas, envios e diálogos terminarem.
+
+[Documentação em espanhol](README.es.md).
 
 ## Recursos
 
@@ -42,6 +48,7 @@ Editor de iluminação para controladoras de aquário compatíveis com TC420 e c
 
 | Função | Windows | Android |
 |---|:---:|:---:|
+| Português, inglês e espanhol | ✓ | ✓ |
 | Curvas, tabela, ciclos, cinco canais e perfis | ✓ | ✓ |
 | Recife animado com prévia do dia | ✓ | ✓ |
 | Descoberta e configuração Wi-Fi | ✓ | ✓ |
@@ -97,7 +104,7 @@ scripts/             Compilação e verificação
 
 O código e os desenhos do Lume usam a [licença MIT](LICENSE). O programa original Pled, bibliotecas proprietárias, chaves de assinatura e bibliotecas pessoais de perfis não são distribuídos neste repositório. A biblioteca Android inicial contém apenas um exemplo ilustrativo.
 
-O projeto é gratuito e mantido sem fins lucrativos. Isso descreve sua finalidade e não acrescenta restrições à licença MIT. A página inicial e os tutoriais vinculados estão em português brasileiro. Use o link English no topo para acessar a versão em inglês e seus guias. A interface dos aplicativos publicados continua em português.
+O projeto é gratuito e mantido sem fins lucrativos. Isso descreve sua finalidade e não acrescenta restrições à licença MIT. A página inicial e os tutoriais vinculados estão em português brasileiro. Use o link English no topo para acessar a versão em inglês e seus guias. Os aplicativos publicados agora incluem português, inglês e espanhol.
 
 Projeto independente, sem afiliação com os fabricantes das controladoras. Referências de protocolo e documentação oficial estão em [REFERENCIAS.md](docs/REFERENCIAS.md).
 

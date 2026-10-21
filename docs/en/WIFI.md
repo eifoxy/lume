@@ -2,7 +2,7 @@
 
 [Home](../../README.en.md) · **English** · [Português (Brasil)](../WIFI.md) · [Compatibility](COMPATIBILITY.md)
 
-Android uses Wi-Fi exclusively; Windows also offers USB. Wireless operation requires a compatible module. Software cannot add Wi-Fi hardware to a standard TC420. The released app buttons use Brazilian Portuguese.
+Android uses Wi-Fi exclusively; Windows also offers USB. Wireless operation requires a compatible module. Software cannot add Wi-Fi hardware to a standard TC420. The apps support Portuguese, English, and Spanish. Examples below retain Portuguese button names.
 
 ## 1. Join the controller's network
 

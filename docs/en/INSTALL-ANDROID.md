@@ -7,12 +7,12 @@
 - Android **8.0 or newer** (API 26), with an up-to-date Android System WebView.
 - Phone Wi-Fi and a controller with a compatible Pled V2.2/Smart Timer Wi-Fi module.
 
-No cable, computer, account, or cloud service is required. Android has no USB transport. A standard TC420 without a Wi-Fi module cannot connect through this app. The released interface is in Brazilian Portuguese; button names below match it.
+No cable, computer, account, or cloud service is required. Android has no USB transport. A standard TC420 without a Wi-Fi module cannot connect through this app. The app supports Portuguese, English, and Spanish, automatically or through the Language selector. Examples below retain Portuguese button names; select Português (Brasil) to follow them exactly.
 
 ## Install the APK
 
-1. Open the [Android release](https://github.com/eifoxy/lume/releases/tag/android-v1.0.6) on your phone.
-2. Download **`Lume-Android-1.0.6.apk`** under **Assets**. For updates, install over the previous version **without uninstalling** to keep your profiles.
+1. Open the [Android release](https://github.com/eifoxy/lume/releases/tag/android-v1.1.0) on your phone.
+2. Download **`Lume-Android-1.1.0.apk`** under **Assets**. For updates, install over the previous version **without uninstalling** to keep your profiles.
 3. Open the downloaded file in your file manager or download notification.
 4. If prompted, allow **that browser or file manager** to install apps. The setting name varies by manufacturer.
 5. Tap **Install** and open **Lume**.

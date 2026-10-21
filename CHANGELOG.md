@@ -2,6 +2,15 @@
 
 **English** · [Português (Brasil)](CHANGELOG.pt-BR.md) · [Home](README.en.md)
 
+## Android 1.1.0 / Windows 0.6.0 · 2026-10-21
+
+- Adds Brazilian Portuguese, English, and Spanish to both apps. Automatic device language is the default, with English fallback for unsupported languages; a visible selector saves manual preference and allows returning to automatic mode.
+- Live switching translates controls, dialogs, confirmations, progress, validation, and communication messages. Existing profile/channel names, schedules, and protocol fields are preserved. Changes wait for network operations/dialogs.
+- Shared offline catalog of 496 messages, with synchronization checks, catalog tests, wire-data preservation tests, browser language/persistence checks, and offscreen Windows rendering in all three languages.
+- Adds a Spanish README and installation, Wi-Fi, usage, and development guides. Portuguese remains the repository landing page, with English and Spanish links.
+- Android retains its signing key and Wi-Fi-only transport. Windows retains its existing USB/legacy Wi-Fi transport; this release does not add the Smart Timer framing adaptation to Windows.
+- New builds are locally verified; phone and physical controller testing of this release remain pending. No device commands were sent during automated checks.
+
 ## Documentation · 2026-10-19
 
 - Explicit opening disclosure: built with vibe coding and substantial AI assistance to solve a real problem, without a profit motive.
