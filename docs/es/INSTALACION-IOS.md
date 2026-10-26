@@ -4,9 +4,15 @@
 
 [← Lume](../../README.es.md)
 
-**0.1.0 es una versión de desarrollo sin firma para iOS/iPadOS 17+.** Incluye el editor y la comunicación Wi-Fi nativa. GitHub Actions compila y ejecuta pruebas en un Mac. Falta validar con un iPhone y una controladora reales. No hay publicación en App Store o TestFlight.
+**0.1.1 es una versión de desarrollo sin firma para iOS/iPadOS 15.4+.** Incluye el editor y la comunicación Wi-Fi nativa. GitHub Actions compila y ejecuta pruebas en un Mac. Falta validar con un iPhone y una controladora reales. No hay publicación en App Store o TestFlight.
 
 El archivo `UNSIGNED.ipa` **no se instala al descargarlo**: requiere firma Apple. El ZIP Simulator es para Xcode en un Mac, no para el teléfono. [Compilaciones y archivos](https://github.com/eifoxy/lume/actions/workflows/ios.yml). Sin acceso a un Mac o a firma Apple, utiliza Windows/Android por ahora. El proyecto no compra servicios ni crea cuentas o suscripciones.
+
+## iPhone antiguos
+
+La versión 0.1.1 reduce el mínimo a **iOS 15.4**, incluyendo iPhone 7/7 Plus, 6s y SE de primera generación actualizados. No admite iOS 15.0 a 15.3 ni dispositivos limitados a iOS 12. iOS 15.4 permite los diálogos del editor; las traducciones ya no dependen de funciones RegExp introducidas en iOS 16.4. Se mantienen Wi-Fi y los tres idiomas. [Notas de Apple para Safari 15.4](https://developer.apple.com/documentation/safari-release-notes/safari-15_4-release-notes).
+
+Se comprueba la compilación con mínimo 15.4, las traducciones sin funciones recientes y el diseño en pantalla pequeña. El simulador de GitHub usa un sistema más nuevo. **No se ha probado en iPhone 7, hardware A10 ni un runtime iOS 15.** Faltan pruebas físicas de rendimiento del arrecife y comunicación con la controladora. Sigue siendo necesaria la firma Apple.
 
 ## Funciones implementadas
 

@@ -1,7 +1,9 @@
 #!/bin/bash
 set -euo pipefail
 app="$1"
-device=$(xcrun simctl list devices available -j | python3 -c 'import json,sys; d=json.load(sys.stdin); print(next(v["udid"] for group in d["devices"].values() for v in group if v["name"].startswith("iPhone")))')
+# Prefer the SE's 375x667-point screen, matching the iPhone 7 viewport. This
+# checks layout on a modern simulator; it does not emulate iOS 15 or A10 hardware.
+device=$(xcrun simctl list devices available -j | python3 -c 'import json,sys; d=json.load(sys.stdin); phones=[v for group in d["devices"].values() for v in group if v["name"].startswith("iPhone")]; selected=next((v for v in phones if v["name"].startswith("iPhone SE")), phones[0]); print(selected["udid"])')
 xcrun simctl boot "$device"
 xcrun simctl bootstatus "$device" -b
 xcrun simctl install "$device" "$app"

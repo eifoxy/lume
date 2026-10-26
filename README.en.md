@@ -22,7 +22,7 @@ An aquarium lighting editor for compatible TC420 controllers and Pled V2.2 Wi-Fi
 | Windows x64 · 0.6.0 | [Full ZIP, .NET included](https://github.com/eifoxy/lume/releases/download/windows-v0.6.0/Lume-Windows-0.6.0-win-x64.zip) | Extract everything and open `Lume.exe`. |
 | Windows · 0.6.0 | [Small ZIP, requires .NET Desktop Runtime 8](https://github.com/eifoxy/lume/releases/download/windows-v0.6.0/Lume-Windows-0.6.0-portable.zip) | Install the runtime, extract everything, and open `Lume.exe`. |
 | Android 8+ · 1.2.0 | [APK](https://github.com/eifoxy/lume/releases/download/android-v1.2.0/Lume-Android-1.2.0.apk) | Download on your phone and open it in the file manager. |
-| iPhone/iPad · iOS 17+ · 0.1.0 | [Development preview](https://github.com/eifoxy/lume/actions/workflows/ios.yml) | Unsigned, cannot be installed as downloaded. [iOS guide](docs/en/INSTALL-IOS.md). |
+| iPhone/iPad · iOS 15.4+ · 0.1.1 | [Development preview](https://github.com/eifoxy/lume/actions/workflows/ios.yml) | Unsigned, cannot be installed as downloaded. [iOS guide](docs/en/INSTALL-IOS.md). |
 
 [All releases and checksums](https://github.com/eifoxy/lume/releases) · [Windows guide](docs/en/INSTALL-WINDOWS.md) · [Android guide](docs/en/INSTALL-ANDROID.md) · [Wi-Fi setup](docs/en/WIFI.md)
 

@@ -2,14 +2,24 @@
 window.LumeI18n=(()=>{
  const rows=window.LUME_MESSAGES,byText=new Map(rows.map(r=>[r.pt,r]));
  const escape=s=>Array.from(s,c=>'\\^$.*+?()[]{}|'.includes(c)?'\\'+c:c).join('');
- const pattern=new RegExp('(?<![\\p{L}\\p{N}_])(?:'+rows.map(r=>r.pt).sort((a,b)=>b.length-a.length).map(escape).join('|')+')(?![\\p{L}\\p{N}_])','gu');
+ // Check the left boundary explicitly: RegExp lookbehind is unavailable on iOS 15.
+ const pattern=new RegExp('(?:'+rows.map(r=>r.pt).sort((a,b)=>b.length-a.length).map(escape).join('|')+')(?![\\p{L}\\p{N}_])','gu');
+ const endsInWord=/[\p{L}\p{N}_]$/u;
  const bridge=window.Lume,selector=document.getElementById('languageSelect');
  const resolve=(choice,system)=>{const language=(choice==='auto'?system:choice).toLowerCase();return language.startsWith('pt')?'pt-BR':language.startsWith('es')?'es':'en';};
  let preference='auto',system=navigator.language||'en',language;
  try{if(bridge){preference=bridge.languagePreference();system=bridge.deviceLanguage();}else preference=localStorage.getItem('lume-language')||'auto';}catch{}
  if(!['auto','pt-BR','en','es'].includes(preference))preference='auto';
  language=resolve(preference,system);
- function text(value){return language==='pt-BR'?value:String(value).replace(pattern,key=>byText.get(key)[language]);}
+ function text(value){
+  if(language==='pt-BR')return value;
+  const source=String(value);let result='',end=0,match;pattern.lastIndex=0;
+  while((match=pattern.exec(source))){
+   if(endsInWord.test(source.slice(0,match.index))){pattern.lastIndex=match.index+(source.codePointAt(match.index)>65535?2:1);continue;}
+   result+=source.slice(end,match.index)+byText.get(match[0])[language];end=pattern.lastIndex;
+  }
+  return result+source.slice(end);
+ }
  const nodes=[],attrs=[];
  const walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);
  while(walker.nextNode()){const node=walker.currentNode;if(node.parentElement.closest('script,style,[data-no-i18n]'))continue;if(node.textContent.trim())nodes.push([node,node.textContent]);}

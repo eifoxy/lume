@@ -4,7 +4,7 @@
  {"pt":"Falha na comunicação UDP local.","en":"Local UDP communication failed.","es":"Falló la comunicación UDP local."},
  {"pt":"Falha na comunicação UDP. Permita Rede Local nos Ajustes do Lume e mantenha o Wi-Fi conectado.","en":"UDP communication failed. Allow Local Network in Lume settings and keep Wi-Fi connected.","es":"Falló la comunicación UDP. Permite Red local en los ajustes de Lume y mantén el Wi-Fi conectado."},
  {"pt":"Biblioteca não carregada. O arquivo original foi preservado: ","en":"Library not loaded. The original file was preserved: ","es":"No se cargó la biblioteca. El archivo original se conservó: "},
- {"pt":"Lume iOS 0.1.0. Faça uma busca para verificar a comunicação Wi-Fi.","en":"Lume iOS 0.1.0. Run a search to check Wi-Fi communication.","es":"Lume iOS 0.1.0. Busca para comprobar la comunicación Wi-Fi."},
+ {"pt":"Lume iOS 0.1.1. Faça uma busca para verificar a comunicação Wi-Fi.","en":"Lume iOS 0.1.1. Run a search to check Wi-Fi communication.","es":"Lume iOS 0.1.1. Busca para comprobar la comunicación Wi-Fi."},
  {"pt":"Nenhuma resposta recebida. Permita Rede Local nos Ajustes do Lume; tente o IP conhecido ou mantenha o Wi-Fi conectado.","en":"No response received. Allow Local Network in Lume settings; try the known IP or keep Wi-Fi connected.","es":"No se recibió respuesta. Permite Red local en los ajustes de Lume; prueba la IP conocida o mantén el Wi-Fi conectado."},
  {"pt":"descoberta unicast","en":"unicast discovery","es":"búsqueda unicast"},
  {"pt":"Consultas diretas limitadas: ","en":"Bounded direct queries: ","es":"Consultas directas limitadas: "}

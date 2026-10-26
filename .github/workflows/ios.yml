@@ -26,6 +26,7 @@ jobs:
           node scripts/generate-ios-project.cjs --check
           node ios/Tests/bridge-test.cjs
           node ios/Tests/i18n-test.cjs
+          node ios/Tests/legacy-test.cjs
       - name: Test protocol, validation and real loopback UDP
         run: swift test --package-path ios
       - name: Build simulator
@@ -39,13 +40,13 @@ jobs:
           mkdir -p artifacts/ios-preview/Payload
           cp -R artifacts/ios-device/Build/Products/Release-iphoneos/Lume.app artifacts/ios-preview/Payload/
           cd artifacts/ios-preview
-          zip -qry Lume-iOS-0.1.0-UNSIGNED.ipa Payload
+          zip -qry Lume-iOS-0.1.1-UNSIGNED.ipa Payload
           rm -r Payload
-          ditto -c -k --sequesterRsrc --keepParent ../ios-simulator/Build/Products/Release-iphonesimulator/Lume.app Lume-iOS-0.1.0-Simulator.zip
-          printf '%s\n' 'UNSIGNED DEVELOPMENT PREVIEW. The IPA cannot be installed as downloaded. Requires Apple signing and a compatible iOS 17+ device. Not hardware validated. No TestFlight or App Store distribution.' > READ-ME-FIRST.txt
+          ditto -c -k --sequesterRsrc --keepParent ../ios-simulator/Build/Products/Release-iphonesimulator/Lume.app Lume-iOS-0.1.1-Simulator.zip
+          printf '%s\n' 'UNSIGNED DEVELOPMENT PREVIEW. The IPA cannot be installed as downloaded. Requires Apple signing and a compatible iOS 15.4+ device. Not hardware validated. No TestFlight or App Store distribution.' > READ-ME-FIRST.txt
           shasum -a 256 *.ipa *.zip > SHA256SUMS.txt
       - uses: actions/upload-artifact@v4
         with:
-          name: Lume-iOS-0.1.0-unsigned-preview
+          name: Lume-iOS-0.1.1-unsigned-preview
           path: artifacts/ios-preview/
           retention-days: 30

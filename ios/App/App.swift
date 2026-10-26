@@ -38,12 +38,14 @@ final class LumeViewController: UIViewController, WKUIDelegate, WKNavigationDele
    if(!document.querySelector('#aquarium').children.length)throw Error('Reef empty');
    if(!document.querySelector('#chart').children.length)throw Error('Curve empty');
    if(Lume.previewRecovery()!=='')throw Error('Unexpected recovery marker');
-   if(!document.body.textContent.includes('iOS 0.1.0'))throw Error('Wrong platform assets');
+   if(!document.body.textContent.includes('iOS 0.1.1'))throw Error('Wrong platform assets');
    return {ok:true,languages:checks,profiles:library.Profiles.length,rows:48,bridge:typeof Lume.upload,network:'disabled for smoke test'};
   })()
   """
   webView.evaluateJavaScript(script) { value,error in
-   let result: [String:Any] = error.map { ["ok":false,"error":$0.localizedDescription] } ?? (value as? [String:Any] ?? ["ok":false,"error":"No UI result"])
+   var result: [String:Any] = error.map { ["ok":false,"error":$0.localizedDescription] } ?? (value as? [String:Any] ?? ["ok":false,"error":"No UI result"])
+   result["runtime_ios"] = UIDevice.current.systemVersion
+   result["minimum_ios"] = Bundle.main.object(forInfoDictionaryKey:"MinimumOSVersion") ?? "unknown"
    if let data = try? JSONSerialization.data(withJSONObject:result,options:.prettyPrinted), let documents = FileManager.default.urls(for:.documentDirectory,in:.userDomainMask).first { try? data.write(to:documents.appendingPathComponent("ios-smoke.json"),options:.atomic) }
   }
  }

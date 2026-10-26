@@ -24,7 +24,7 @@ Las aplicaciones incluyen **portugués, inglés y español**. Al abrir por prime
 | Windows x64 · 0.6.0 | [ZIP completo con .NET](https://github.com/eifoxy/lume/releases/download/windows-v0.6.0/Lume-Windows-0.6.0-win-x64.zip) | Extrae todo y abre `Lume.exe`. |
 | Windows · 0.6.0 | [ZIP ligero](https://github.com/eifoxy/lume/releases/download/windows-v0.6.0/Lume-Windows-0.6.0-portable.zip) | Requiere .NET Desktop Runtime 8. Extrae todo y abre `Lume.exe`. |
 | Android 8+ · 1.2.0 | [APK](https://github.com/eifoxy/lume/releases/download/android-v1.2.0/Lume-Android-1.2.0.apk) | Descarga en el teléfono y abre el archivo. |
-| iPhone/iPad · iOS 17+ · 0.1.0 | [Versión de desarrollo](https://github.com/eifoxy/lume/actions/workflows/ios.yml) | Sin firma, no se instala al descargar. [Guía iOS](docs/es/INSTALACION-IOS.md). |
+| iPhone/iPad · iOS 15.4+ · 0.1.1 | [Versión de desarrollo](https://github.com/eifoxy/lume/actions/workflows/ios.yml) | Sin firma, no se instala al descargar. [Guía iOS](docs/es/INSTALACION-IOS.md). |
 
 En Android, actualiza **sobre la versión anterior, sin desinstalar**, para conservar los perfiles. En Windows, exporta una copia de la biblioteca antes de actualizar. [Instalación detallada](docs/es/INSTALACION.md) · [Versiones y sumas SHA-256](https://github.com/eifoxy/lume/releases).
 

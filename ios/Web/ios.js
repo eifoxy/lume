@@ -11,6 +11,6 @@ window.Lume=Object.freeze(Object.fromEntries([
  if(response===null)throw Error('Native bridge unavailable');
  const result=JSON.parse(response);
  if(result.error)throw Error(result.error);
- if(!Object.hasOwn(result,'value'))throw Error('Invalid native response');
+ if(!Object.prototype.hasOwnProperty.call(result,'value'))throw Error('Invalid native response');
  return result.value;
 }])));

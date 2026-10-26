@@ -6,7 +6,7 @@
 
 ## Plataformas
 
-**iOS 0.1.0:** prévia para iPhone/iPad com iOS 17+, compilação para simulador e dispositivo sem assinatura no GitHub Actions. Editor compartilhado, Smart Timer e Pled Wi-Fi implementados; descoberta unicast limitada, sem broadcast. Teste no aparelho real pendente. Sem distribuição instalável/TestFlight. [Guia e limites](INSTALACAO-IOS.md).
+**iOS 0.1.1:** prévia para iPhone/iPad com iOS 15.4+, compilação para simulador e dispositivo sem assinatura no GitHub Actions. Editor compartilhado, Smart Timer e Pled Wi-Fi implementados; descoberta unicast limitada, sem broadcast. Teste no aparelho real pendente. Sem distribuição instalável/TestFlight. [Guia e limites](INSTALACAO-IOS.md).
 
 | Plataforma | Requisito | Situação |
 |---|---|---|
