@@ -8,7 +8,7 @@ Cada perfil tiene cinco canales y 48 puntos, uno cada 30 minutos. Las intensidad
 
 En **Curvas**, elige perfil y canal, toca el gráfico y ajusta el punto con controles, números o tabla. En Windows, activa **Dibujar curva** para editar con el ratón; sin activarlo, los clics solo seleccionan el horario de la vista previa. Amplía o aísla un canal si lo necesitas.
 
-**Crear ciclo** sustituye los 48 puntos por un amanecer y anochecer con rampas. El intervalo debe terminar el mismo día e incluir ambas rampas. **Deshacer** recupera la edición anterior. En **Arrecife**, recorre o reproduce el día. La animación no modifica la luz real ni predice la respuesta biológica de los corales.
+**Crear ciclo** sustituye los 48 puntos por un amanecer y anochecer con rampas. El intervalo debe terminar el mismo día e incluir ambas rampas. **Deshacer** recupera la edición anterior. En **Arrecife**, recorre o reproduce el día. Por sí sola, sin vínculo en vivo, la animación no modifica la luz real ni predice la respuesta biológica de los corales.
 
 ## Biblioteca y copias
 
@@ -34,3 +34,7 @@ Un fallo puede dejar la memoria vacía o parcial. Copia el diagnóstico, vuelve 
 ## Otros comandos
 
 **Sincronizar reloj** envía la fecha y hora local del dispositivo. **Reanudar programa** sale del modo manual; no elige un perfil. **Aplicar este instante a los LED**, solo en Windows por USB, modifica las intensidades físicas tras confirmación.
+
+## Arrecife en la luz real
+
+La vista previa local sigue sin efectos físicos. En Android 1.2.0, Vincular luminaria activa explícitamente la vista previa Smart Timer por Wi-Fi. El horario y la reproducción envían las cinco intensidades sin regrabar perfiles ni cambiar el reloj del aparato. Pausar el día mantiene el instante actual hasta finalizar la vista previa. [Uso, recuperación y límites](VISTA-EN-VIVO.md).

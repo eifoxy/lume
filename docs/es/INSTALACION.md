@@ -12,8 +12,8 @@ El selector **Idioma** aparece al entrar, sobre el contenido en Android y en la 
 
 Requiere Android 8 o superior, WebView actualizado y controladora con Wi-Fi compatible. No requiere cable, cuenta, nube ni depuración USB.
 
-1. Abre la [versión Android](https://github.com/eifoxy/lume/releases/tag/android-v1.1.0).
-2. Descarga `Lume-Android-1.1.0.apk` en **Assets**.
+1. Abre la [versión Android](https://github.com/eifoxy/lume/releases/tag/android-v1.2.0).
+2. Descarga `Lume-Android-1.2.0.apk` en **Assets**.
 3. Abre el archivo. Si Android lo solicita, permite instalar aplicaciones a ese navegador o gestor de archivos.
 4. Instala y abre Lume. Si ya lo usabas, instala encima, **sin desinstalar**, para conservar los perfiles.
 5. Elige **Español** en el selector si tu dispositivo usa otro idioma.
@@ -42,3 +42,7 @@ Para USB, cierra Pled, conecta un cable de datos y pulsa **Buscar USB**. Para Wi
 ## Verificación
 
 Las versiones incluyen archivos `SHA256SUMS.txt`. Los tests locales y la firma del APK se verifican antes de publicar. La traducción se prueba con eventos, temporizadores, navegador y renderizado WPF. Esas pruebas no sustituyen la ejecución en un teléfono real o la validación física de cada comando.
+
+## Vista previa en vivo
+
+Android 1.2.0 añade Vincular luminaria en Arrecife para Smart Timer por Wi-Fi. Mover el horario o reproducir el día envía intensidades reales tras confirmación. [Instrucciones y límites](VISTA-EN-VIVO.md).

@@ -12,6 +12,9 @@ public final class PacketIO {
   exchange(socket,target,port,frame,command,accepted,timeoutMs,guard,null);
  }
  public static void exchange(DatagramSocket socket,InetAddress target,int port,byte[] frame,int command,int[] accepted,int timeoutMs,Guard guard,String identifier)throws Exception{
+  exchange(socket,target,port,frame,command,accepted,timeoutMs,guard,identifier,false);
+ }
+ public static void exchange(DatagramSocket socket,InetAddress target,int port,byte[] frame,int command,int[] accepted,int timeoutMs,Guard guard,String identifier,boolean smartOnly)throws Exception{
   guard.check();
   // Discard queued replies from the preceding command; they cannot confirm this one.
   socket.setSoTimeout(1);for(int i=0;i<32;i++){guard.check();try{socket.receive(new DatagramPacket(new byte[65],65));}catch(SocketTimeoutException empty){break;}}
@@ -22,7 +25,7 @@ public final class PacketIO {
    try{socket.receive(response);}catch(SocketTimeoutException e){continue;}
    received++;
    if(response.getPort()!=port||!response.getAddress().equals(target)){detail="Resposta ignorada: origem/porta diferente do destino.";continue;}
-   for(int expected:accepted)if(Protocol.accepts(bytes,response.getLength(),command,expected,identifier))return;
+   for(int expected:accepted)if((!smartOnly||Protocol.smartReply(bytes,response.getLength()))&&Protocol.accepts(bytes,response.getLength(),command,expected,identifier))return;
    boolean own=false;if(identifier!=null&&Protocol.smartReply(bytes,response.getLength()))try{own=java.util.Arrays.equals(java.util.Arrays.copyOfRange(bytes,49,61),Protocol.identity(identifier));}catch(IllegalArgumentException ignored){}
    deviceReplied|=own;
    detail="Resposta não aceita: "+response.getLength()+" bytes";

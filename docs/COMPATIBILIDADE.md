@@ -62,3 +62,7 @@ O relato seguinte mostrou limpeza confirmada e silêncio ao iniciar o primeiro p
 Cinco canais; 48 pontos com intervalo de 30 minutos; intensidades inteiras 0-100; até 100 perfis locais e 16 posições de envio. Nomes no aparelho têm até sete caracteres ASCII. Rede IPv4 local, UDP 5000, sem conexão remota pela internet. SSID de 1-32 e senha de 8-32 caracteres ASCII; WPA/WPA2, AES/TKIP. WPA3 não implementado.
 
 Não há leitura completa de memória, rollback do aparelho, atualização de firmware, descoberta Bluetooth, comunicação USB no Android ou telemetria na nuvem. Uma falha depois de um comando de limpeza pode deixar a memória apagada ou parcial. O app para e orienta reconectar e reenviar, limitando a recuperação automática ao mesmo ponto Smart Timer indexado (até três tentativas totais em timeout sem resposta válida).
+
+## Prévia Wi-Fi, Android 1.2.0
+
+Implementada apenas para Smart Timer com comandos `06 01`/`06 02` encontrados no APK original. Intensidades enviadas sem ACK individual; retomada `03 08` exige ACK Smart `83` e identidade correta. Testes com fixtures, caixa de valor mais recente, cancelamento, ausência de atividade, falhas de retomada e UDP real em loopback passaram. Interface testada nos três idiomas com ponte nativa simulada. O efeito na luminária ainda depende de teste físico. O Windows não recebe esta função. [Uso e limitações](PREVIA-AO-VIVO.md).

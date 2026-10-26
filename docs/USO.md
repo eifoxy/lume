@@ -67,6 +67,10 @@ Um envio confirmado não faz leitura de retorno de toda a memória. No formato S
 - **Sincronizar horário:** envia a data e a hora local do PC/telefone. Confira o relógio e fuso do sistema antes de usar.
 - **Retomar programa:** sai do modo manual; não é um seletor de perfil.
 - **Aplicar este instante aos LEDs:** disponível apenas no Windows por USB; envia as intensidades reais depois de confirmação.
-- **Recife / prévia do dia:** não envia comandos. Corais e peixes são uma representação visual; o movimento não comprova o estado físico da luminária.
+- **Recife / prévia local do dia:** não envia comandos sem vínculo ao vivo. Corais e peixes são uma representação visual; o movimento não comprova o estado físico da luminária.
 
 A ativação real, o relógio e a gravação ainda aguardam confirmação no hardware. Consulte a [matriz de validação](COMPATIBILIDADE.md).
+
+## Recife na luminária
+
+A prévia local continua sem efeitos no aparelho. No Android 1.2.0, Vincular luminária ativa explicitamente a prévia Wi-Fi Smart Timer: mover o horário ou reproduzir o dia envia as mesmas cinco intensidades à luminária. Isso não regrava perfis nem altera o relógio do aparelho. Ao pausar o dia, a luz permanece no instante atual até encerrar a prévia. [Operação, retomada e limites](PREVIA-AO-VIVO.md).

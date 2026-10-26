@@ -21,7 +21,7 @@ An aquarium lighting editor for compatible TC420 controllers and Pled V2.2 Wi-Fi
 |---|---|---|
 | Windows x64 · 0.6.0 | [Full ZIP, .NET included](https://github.com/eifoxy/lume/releases/download/windows-v0.6.0/Lume-Windows-0.6.0-win-x64.zip) | Extract everything and open `Lume.exe`. |
 | Windows · 0.6.0 | [Small ZIP, requires .NET Desktop Runtime 8](https://github.com/eifoxy/lume/releases/download/windows-v0.6.0/Lume-Windows-0.6.0-portable.zip) | Install the runtime, extract everything, and open `Lume.exe`. |
-| Android 8+ · 1.1.0 | [APK](https://github.com/eifoxy/lume/releases/download/android-v1.1.0/Lume-Android-1.1.0.apk) | Download on your phone and open it in the file manager. |
+| Android 8+ · 1.2.0 | [APK](https://github.com/eifoxy/lume/releases/download/android-v1.2.0/Lume-Android-1.2.0.apk) | Download on your phone and open it in the file manager. |
 
 [All releases and checksums](https://github.com/eifoxy/lume/releases) · [Windows guide](docs/en/INSTALL-WINDOWS.md) · [Android guide](docs/en/INSTALL-ANDROID.md) · [Wi-Fi setup](docs/en/WIFI.md)
 
@@ -30,6 +30,10 @@ On Android, install updates **over the existing app, without uninstalling**, to 
 ## Languages
 
 The selector appears at the top of Android and in the Windows sidebar. Choose Português (Brasil), English, Español, or Automatic (device). Language changes wait for searches/uploads/dialogs to finish and do not change protocol data. [Spanish documentation](README.es.md).
+
+## Live light preview on Android
+
+In Reef, use **Link light fixture** to make a Smart Timer light follow the timeline and accelerated day playback over Wi-Fi. Activation is explicit; uploads do not turn it on automatically. The app attempts schedule resume when ending or leaving the foreground and remembers recovery if that cannot be confirmed. Individual intensities have no acknowledgment or physical readback. [Use and limitations](docs/en/LIVE-PREVIEW.md). This new function still needs a hardware retest.
 
 ## Features
 
@@ -55,7 +59,7 @@ The selector appears at the top of Android and in the Windows sidebar. Choose Po
 | Profile uploads and clock sync over Wi-Fi | ✓ | ✓ |
 | Automatic discovery and reconnection | - | ✓ |
 | USB HID | ✓ | - |
-| Instant physical LED adjustment | USB, experimental | - |
+| Instant physical LED adjustment | USB, experimental | Wi-Fi live preview, Smart Timer |
 | `.lmf` / JSON import | ✓ | ✓ |
 | `.lcm` project import | ✓ | - |
 | `.lmf` / JSON export | ✓ | JSON |
@@ -64,7 +68,7 @@ The selector appears at the top of Android and in the Windows sidebar. Choose Po
 
 <img src="docs/images/recife-celular.png" alt="Android interface preview at phone width, with corals open at noon" width="320" />
 
-*Browser capture of the Android interface at phone width, not a capture from a physical Android device. The reef is illustrative: it does not measure PAR, spectrum, power, or animal response, and does not change the physical LEDs.*
+*Browser capture of the Android interface at phone width, not a capture from a physical Android device. The reef is illustrative: it does not measure PAR, spectrum, power, or animal response, and, without the live link, does not change the physical LEDs.*
 
 ## Start with Wi-Fi
 

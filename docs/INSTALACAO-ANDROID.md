@@ -18,8 +18,8 @@ Não é necessário cabo, PC conectado ao telefone, conta ou serviço na nuvem. 
 
 ## Instalar o APK
 
-1. No telefone, abra a [versão Android publicada](https://github.com/eifoxy/lume/releases/tag/android-v1.1.0).
-2. Baixe **`Lume-Android-1.1.0.apk`** na área **Assets**. Se já usa uma versão anterior, instale por cima, sem desinstalar, para manter os perfis.
+1. No telefone, abra a [versão Android publicada](https://github.com/eifoxy/lume/releases/tag/android-v1.2.0).
+2. Baixe **`Lume-Android-1.2.0.apk`** na área **Assets**. Se já usa uma versão anterior, instale por cima, sem desinstalar, para manter os perfis.
 3. Abra o download pelo gerenciador de arquivos ou pela notificação de conclusão.
 4. Se o Android pedir, permita que **esse navegador ou gerenciador de arquivos** instale aplicativos. O nome da tela varia entre fabricantes.
 5. Toque em **Instalar** e abra **Lume**.
@@ -41,7 +41,7 @@ O aplicativo não precisa que a rede do aparelho tenha internet. Se o Android av
 1. Em **Curvas**, selecione um perfil e um canal.
 2. Toque na curva para escolher um horário. Use as setas para avançar em passos de 30 minutos.
 3. Edite as intensidades pelos controles ou pela tabela. **Criar ciclo** preenche o dia com rampas suaves.
-4. Em **Recife**, deslize o relógio ou reproduza um dia. A prévia não altera os LEDs físicos.
+4. Em **Recife**, deslize o relógio ou reproduza um dia. A prévia local, sem vínculo ao vivo, não altera os LEDs físicos.
 5. Com o aparelho encontrado e selecionado, toque **Enviar**. Revise perfil, posição e nome curto antes de confirmar.
 6. Em **Conexão**, use **Sincronizar horário** para enviar a hora local do telefone.
 
@@ -64,3 +64,7 @@ O alvo atual é SDK 36. Ao migrar para alvo SDK 37, o app precisará declarar e 
 ## Estado da versão
 
 Compilação, assinatura e testes locais passaram. O usuário confirmou a descoberta e relatou bom funcionamento após a 1.0.5. A busca e reconexão automáticas da 1.0.6 ainda precisam de reteste no telefone. Veja os limites e evidências na [matriz de compatibilidade](COMPATIBILIDADE.md).
+
+## Prévia ao vivo
+
+No Android 1.2.0, o Recife oferece Vincular luminária para Smart Timer pelo Wi-Fi. Após confirmar, o horário e a reprodução do dia enviam intensidades reais sem regravar perfis. Encerre a prévia para retomar o programa; reconecte o mesmo aparelho se a retomada ficar pendente. [Instruções e limites](PREVIA-AO-VIVO.md).

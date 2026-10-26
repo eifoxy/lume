@@ -61,3 +61,7 @@ See the [protocol analysis](SMART-WIFI-TIMER-ANALYSIS.md) for packet-level evide
 Five channels, 48 half-hour points, integer intensities 0-100; 100 local profiles and 16 upload slots. Device names use at most seven ASCII characters. Local IPv4/UDP 5000 only, with no remote internet control. SSID 1-32 and password 8-32 ASCII characters; WPA/WPA2 and AES/TKIP; no WPA3.
 
 No full memory readback, physical rollback, firmware updates, Bluetooth discovery, Android USB, or cloud telemetry. A failure after erasure can leave device memory empty or partial. Automatic upload recovery is bounded to the same indexed Smart point or initial header before points begin, only for timeout without a valid reply, up to three total attempts. Erasure is never automatically repeated.
+
+## Wi-Fi preview, Android 1.2.0
+
+Implemented only for Smart Timer, using vendor APK `06 01`/`06 02` commands. Intensities have no individual ACK; `03 08` resume requires Smart `83` and matching identity. Fixtures, latest-value mailbox, cancellation, heartbeat expiry, restoration failures, and real loopback UDP passed. UI was tested in all three languages with a simulated native bridge. Physical light behavior remains pending a hardware test. Windows does not receive this feature. [Usage and limits](LIVE-PREVIEW.md).

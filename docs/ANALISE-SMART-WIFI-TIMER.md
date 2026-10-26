@@ -136,3 +136,7 @@ Esses testes não foram executados na controladora física. A evidência física
 
 ## Atualização 1.0.4
 A descoberta foi confirmada fisicamente, mas um envio parou no sexto ponto por timeout. A versão 1.0.4 usa 150 ms entre pontos e recuperação limitada do mesmo ponto, com diagnóstico persistente. O teste de loopback que perde o ACK do sexto ponto recupera e encerra o perfil. Essa simulação não confirma a causa ou a recuperação no aparelho real.
+
+## Prévia ao vivo, Android 1.2.0
+
+A análise de `MyProtocol.StartPreview`, `PreviewProcess` e da reprodução em `ModeActivity` confirmou um caminho separado de gravar perfis. Início: `06 01`, byte 5 com tamanho do nome, nome a partir de 6; o original envia duas vezes com 300 ms de intervalo. Intensidades: `06 02`, tamanho 5, canais nos bytes 6 a 10, valores de 0 a 100. Os dois caminhos enviam sem aguardar ACK individual. O laço original chega a enviar a cada 10 ms durante rampas; o Lume usa até cinco quadros por segundo e caixa de valor mais recente. Encerramento original: `03 08`, ACK `83`. Quadros de 64 bytes, identidade 49 a 60 e checksum 61, sem alteração. O Lume exige ACK Smart com identidade correta para confirmar a retomada e persiste recuperação antes do primeiro início. [Operação e limites](PREVIA-AO-VIVO.md). Não é leitura da luz física nem comprovação do resultado na luminária.

@@ -3,3 +3,6 @@
 #diagnosticText{white-space:pre-wrap;overflow-wrap:anywhere;font:12px/1.7 ui-monospace,monospace;color:var(--muted);padding:12px;background:#10212a;border-radius:10px}
 
 .languagebar{display:flex;align-items:center;justify-content:flex-end;gap:12px;padding:8px 18px;color:var(--muted,#a9c0c7);font-size:12px}.languagebar select{width:auto;max-width:240px;padding:8px;font-size:12px}
+
+.live-floating{position:fixed;bottom:92px;left:16px;right:16px;z-index:35;background:#91e3c7;color:#10372d;border-color:#91e3c7;font-size:13px;box-shadow:0 4px 20px #0007}.live-floating[hidden]{display:none}body.live-active main{padding-bottom:175px}
+body.live-active #toast{bottom:160px}.live-floating{z-index:45}

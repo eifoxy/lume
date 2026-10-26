@@ -11,8 +11,8 @@ No cable, computer, account, or cloud service is required. Android has no USB tr
 
 ## Install the APK
 
-1. Open the [Android release](https://github.com/eifoxy/lume/releases/tag/android-v1.1.0) on your phone.
-2. Download **`Lume-Android-1.1.0.apk`** under **Assets**. For updates, install over the previous version **without uninstalling** to keep your profiles.
+1. Open the [Android release](https://github.com/eifoxy/lume/releases/tag/android-v1.2.0) on your phone.
+2. Download **`Lume-Android-1.2.0.apk`** under **Assets**. For updates, install over the previous version **without uninstalling** to keep your profiles.
 3. Open the downloaded file in your file manager or download notification.
 4. If prompted, allow **that browser or file manager** to install apps. The setting name varies by manufacturer.
 5. Tap **Install** and open **Lume**.
@@ -32,7 +32,7 @@ Close Smart WiFi Timer before using Lume; if its background receiver holds UDP p
 1. In **Curvas** (Curves), choose a profile and channel.
 2. Tap the curve to select a point; use arrows to move in 30-minute steps.
 3. Edit with sliders, numeric inputs, or the table. **Criar ciclo** creates a day with smooth ramps.
-4. In **Recife** (Reef), scrub or play the day. This preview does not change physical LEDs.
+4. In **Recife** (Reef), scrub or play the day. Without the live link, this preview does not change physical LEDs.
 5. Once a controller is selected, tap **Enviar** (Upload). Review the profile, slot, and short device name before confirming.
 6. In **Conexão**, **Sincronizar horário** sends your phone's local date and time.
 
@@ -51,3 +51,7 @@ Declared permissions: `INTERNET`, `ACCESS_NETWORK_STATE`, `ACCESS_WIFI_STATE`, a
 The target SDK is 36. A migration to target 37 must account for Android 17's local-network permission; see the [platform reference](https://developer.android.com/privacy-and-security/local-network-permission).
 
 Build, signature verification, and local tests passed. The user confirmed discovery and reported good results after 1.0.5. Automatic discovery/reconnection in 1.0.6 still needs a phone retest. See the [compatibility matrix](COMPATIBILITY.md).
+
+## Live light preview
+
+Android 1.2.0 adds opt-in Wi-Fi preview for Smart Timer. In Reef, choose Link light fixture and confirm. Moving the timeline or playing the day sends real intensities without rewriting profiles. End preview to resume the schedule; reconnect the same device if restoration is unconfirmed. [Instructions and limits](LIVE-PREVIEW.md).

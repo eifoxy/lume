@@ -2,6 +2,15 @@
 
 [English](CHANGELOG.md) · **Português (Brasil)** · [Início](README.pt-BR.md)
 
+## Android 1.2.0 · 2026-10-26
+
+- **Vincular luminária** no Recife para Smart Timer pelo Wi-Fi. O horário, a edição do perfil atual e a reprodução acelerada enviam as cinco intensidades interpoladas por `06 01`/`06 02`, sem apagar/regravar perfis ou mudar o relógio.
+- Ativação com confirmação de luz real. Enviar a programação apenas abre o Recife e oferece o modo, sem ativá-lo sozinho. Botão flutuante de encerrar e retomar fica acessível. Até cinco quadros por segundo, sem fila de valores antigos, e prazo de três segundos sem atualizações da interface.
+- Ao sair do primeiro plano, para o envio e tenta retomar por `03 08`, exigindo ACK Smart `83` da origem e identificação selecionadas. As intensidades não têm confirmação individual/leitura de retorno; a tela informa os valores enviados.
+- Guarda a recuperação antes do primeiro comando. Se não confirmar a retomada, preserva o aviso ao reabrir e bloqueia novas gravações/prévias até reconectar a mesma controladora. Perda de rede ou encerramento do processo pode deixar a luz em modo manual; não presume watchdog do aparelho.
+- Bloqueia busca, envio, configuração de Wi-Fi, relógio e troca de perfil durante a sessão. Mantém PT-BR, inglês e espanhol e acrescenta diagnóstico copiável sem credenciais ou pacotes brutos.
+- Testes locais com simuladores, UDP em loopback e navegador passaram; reteste físico pendente. Windows não recebe esta função. [Uso e limites](docs/PREVIA-AO-VIVO.md).
+
 ## Android 1.1.0 / Windows 0.6.0 · 2026-10-21
 
 - Português brasileiro, inglês e espanhol nos dois apps, com idioma automático do dispositivo por padrão e inglês como alternativa para idiomas não suportados.

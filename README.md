@@ -21,7 +21,7 @@ Editor de iluminação para controladoras de aquário compatíveis com TC420 e c
 |---|---|---|
 | Windows x64 · 0.6.0 | [ZIP completo, com .NET incluído](https://github.com/eifoxy/lume/releases/download/windows-v0.6.0/Lume-Windows-0.6.0-win-x64.zip) | Extraia tudo e abra `Lume.exe`. |
 | Windows · 0.6.0 | [ZIP leve, requer .NET Desktop Runtime 8](https://github.com/eifoxy/lume/releases/download/windows-v0.6.0/Lume-Windows-0.6.0-portable.zip) | Instale o runtime, extraia tudo e abra `Lume.exe`. |
-| Android 8+ · 1.1.0 | [APK](https://github.com/eifoxy/lume/releases/download/android-v1.1.0/Lume-Android-1.1.0.apk) | Baixe no telefone e abra pelo gerenciador de arquivos. |
+| Android 8+ · 1.2.0 | [APK](https://github.com/eifoxy/lume/releases/download/android-v1.2.0/Lume-Android-1.2.0.apk) | Baixe no telefone e abra pelo gerenciador de arquivos. |
 
 [Todas as versões e checksums](https://github.com/eifoxy/lume/releases) · [Tutorial Windows](docs/INSTALACAO-WINDOWS.md) · [Tutorial Android](docs/INSTALACAO-ANDROID.md) · [Configurar Wi-Fi](docs/WIFI.md)
 
@@ -30,6 +30,10 @@ Editor de iluminação para controladoras de aquário compatíveis com TC420 e c
 Ao abrir pela primeira vez, o aplicativo segue o idioma do dispositivo. O seletor Idioma aparece no topo do Android e na barra lateral do Windows: escolha Português (Brasil), English, Español ou Automático (dispositivo). A preferência fica salva. Sistemas em outros idiomas usam inglês como alternativa. Nomes já salvos de perfis/canais e a programação não são traduzidos nem alterados. A troca aguarda buscas, envios e diálogos terminarem.
 
 [Documentação em espanhol](README.es.md).
+
+## Prévia na luminária pelo Wi-Fi
+
+No Recife, use **Vincular luminária** para uma controladora Smart Timer acompanhar o horário e a reprodução acelerada do dia. A ativação exige confirmação; enviar perfis não inicia a prévia sozinho. Ao encerrar ou sair do primeiro plano, o app tenta retomar o programa e guarda um aviso se não confirmar. Não há confirmação individual de intensidade nem leitura da luz física. [Como usar e limites](docs/PREVIA-AO-VIVO.md). Esta função nova ainda precisa de reteste no aparelho.
 
 ## Recursos
 
@@ -55,7 +59,7 @@ Ao abrir pela primeira vez, o aplicativo segue o idioma do dispositivo. O seleto
 | Envio de perfis e relógio por Wi-Fi | ✓ | ✓ |
 | Busca e reconexão automáticas | - | ✓ |
 | USB HID | ✓ | - |
-| Ajuste instantâneo dos LEDs físicos | USB, experimental | - |
+| Ajuste instantâneo dos LEDs físicos | USB, experimental | Prévia Wi-Fi, Smart Timer |
 | Importação `.lmf` / JSON | ✓ | ✓ |
 | Importação de projeto `.lcm` | ✓ | - |
 | Exportação `.lmf` / JSON | ✓ | JSON |
@@ -66,7 +70,7 @@ Ao abrir pela primeira vez, o aplicativo segue o idioma do dispositivo. O seleto
 
 *Captura da interface Android no navegador em largura de celular; não é uma captura de execução num Android físico.*
 
-*O visual é ilustrativo: não mede PAR, espectro, potência ou resposta biológica dos animais. A simulação não altera a luz física.*
+*O visual é ilustrativo: não mede PAR, espectro, potência ou resposta biológica dos animais. A simulação local, sem vínculo ao vivo, não altera a luz física.*
 
 ## Começar pelo Wi-Fi
 

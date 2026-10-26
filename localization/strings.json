@@ -2478,5 +2478,185 @@
     "pt": "Edição local · v0.6",
     "en": "Local editing · v0.6",
     "es": "Edición local · v0.6"
+  },
+  {
+    "pt": "LUZ REAL · WI-FI",
+    "en": "REAL LIGHT · WI-FI",
+    "es": "LUZ REAL · WI-FI"
+  },
+  {
+    "pt": "Recife e luminária juntos",
+    "en": "Reef and light together",
+    "es": "Arrecife y luminaria juntos"
+  },
+  {
+    "pt": "Vincular luminária",
+    "en": "Link light fixture",
+    "es": "Vincular luminaria"
+  },
+  {
+    "pt": "Encerrar prévia e retomar programa",
+    "en": "End preview and resume schedule",
+    "es": "Finalizar vista previa y reanudar programa"
+  },
+  {
+    "pt": "Retomar programação no aparelho",
+    "en": "Resume schedule on device",
+    "es": "Reanudar programación en el aparato"
+  },
+  {
+    "pt": "Vincular a luz real?",
+    "en": "Link the real light?",
+    "es": "¿Vincular la luz real?"
+  },
+  {
+    "pt": "A luminária acompanhará o horário e a reprodução do Recife, inclusive em modo acelerado. Isso altera a luz real do aquário.",
+    "en": "The light fixture will follow the Reef timeline and playback, including accelerated playback. This changes the real aquarium light.",
+    "es": "La luminaria seguirá el horario y la reproducción del Arrecife, incluso en modo acelerado. Esto modifica la luz real del acuario."
+  },
+  {
+    "pt": "Não regrava os perfis. Ao encerrar, o app tenta retomar a programação. Se perder a conexão, a retomada pode não ser confirmada.",
+    "en": "Profiles are not rewritten. When ending, the app tries to resume the schedule. If the connection is lost, resuming may not be confirmed.",
+    "es": "No regraba los perfiles. Al finalizar, la aplicación intenta reanudar la programación. Si se pierde la conexión, la reanudación puede no confirmarse."
+  },
+  {
+    "pt": "O aparelho não confirma cada intensidade. O Recife mostra os valores enviados, sem leitura da luz física.",
+    "en": "The device does not acknowledge each intensity. The Reef shows the values sent, without reading the physical light.",
+    "es": "El aparato no confirma cada intensidad. El Arrecife muestra los valores enviados, sin leer la luz física."
+  },
+  {
+    "pt": "Prévia local. Vincule uma controladora Smart Timer para alterar a luz real.",
+    "en": "Local preview. Link a Smart Timer controller to change the real light.",
+    "es": "Vista previa local. Vincula una controladora Smart Timer para modificar la luz real."
+  },
+  {
+    "pt": "Último envio:",
+    "en": "Last sent:",
+    "es": "Último envío:"
+  },
+  {
+    "pt": "Preparando prévia na luminária…",
+    "en": "Preparing live light preview…",
+    "es": "Preparando la vista previa en la luminaria…"
+  },
+  {
+    "pt": "Prévia ao vivo · enviando pelo Wi-Fi",
+    "en": "Live preview · sending over Wi-Fi",
+    "es": "Vista previa en vivo · enviando por Wi-Fi"
+  },
+  {
+    "pt": "Retomando programação no aparelho…",
+    "en": "Resuming the device schedule…",
+    "es": "Reanudando la programación en el aparato…"
+  },
+  {
+    "pt": "Prévia encerrada. Retomada do programa confirmada.",
+    "en": "Preview ended. Schedule resume acknowledged.",
+    "es": "Vista previa finalizada. Reanudación del programa confirmada."
+  },
+  {
+    "pt": "Prévia não iniciada.",
+    "en": "Preview not started.",
+    "es": "Vista previa no iniciada."
+  },
+  {
+    "pt": "A prévia ao vivo precisa do app aberto.",
+    "en": "Live preview requires the app to remain open.",
+    "es": "La vista previa en vivo requiere mantener la aplicación abierta."
+  },
+  {
+    "pt": "Retome o programa antes de iniciar outra prévia.",
+    "en": "Resume the schedule before starting another preview.",
+    "es": "Reanuda el programa antes de iniciar otra vista previa."
+  },
+  {
+    "pt": "A prévia Wi-Fi está disponível apenas para Smart Timer.",
+    "en": "Wi-Fi live preview is available only for Smart Timer.",
+    "es": "La vista previa Wi-Fi está disponible solo para Smart Timer."
+  },
+  {
+    "pt": "Não foi possível salvar a recuperação da prévia.",
+    "en": "Could not save preview recovery information.",
+    "es": "No se pudo guardar la recuperación de la vista previa."
+  },
+  {
+    "pt": "A prévia parou de receber atualizações do celular.",
+    "en": "The preview stopped receiving updates from the phone.",
+    "es": "La vista previa dejó de recibir actualizaciones del teléfono."
+  },
+  {
+    "pt": "Prévia não está ativa.",
+    "en": "Preview is not active.",
+    "es": "La vista previa no está activa."
+  },
+  {
+    "pt": "A luminária pode continuar em modo manual. Reconecte o mesmo aparelho e retome o programa.",
+    "en": "The light may still be in manual mode. Reconnect the same device and resume its schedule.",
+    "es": "La luminaria puede seguir en modo manual. Reconecta el mismo aparato y reanuda el programa."
+  },
+  {
+    "pt": "Não foi possível confirmar a retomada. A luminária pode continuar em modo manual. Reconecte e use Retomar programa.",
+    "en": "Could not confirm schedule resume. The light may still be in manual mode. Reconnect and use Resume schedule.",
+    "es": "No se pudo confirmar la reanudación. La luminaria puede seguir en modo manual. Reconecta y usa Reanudar programa."
+  },
+  {
+    "pt": "A prévia ao vivo funciona no APK Android.",
+    "en": "Live preview works in the Android APK.",
+    "es": "La vista previa en vivo funciona en el APK de Android."
+  },
+  {
+    "pt": "Encerre a prévia ao vivo antes desta operação.",
+    "en": "End live preview before this operation.",
+    "es": "Finaliza la vista previa en vivo antes de esta operación."
+  },
+  {
+    "pt": "Programação enviada. Use Vincular luminária para testar a prévia na luz real.",
+    "en": "Schedule uploaded. Use Link light fixture to test the preview on the real light.",
+    "es": "Programación enviada. Usa Vincular luminaria para probar la vista previa en la luz real."
+  },
+  {
+    "pt": "prévia ao vivo",
+    "en": "live preview",
+    "es": "vista previa en vivo"
+  },
+  {
+    "pt": "Destino:",
+    "en": "Target:",
+    "es": "Destino:"
+  },
+  {
+    "pt": "Inícios enviados:",
+    "en": "Start frames sent:",
+    "es": "Inicios enviados:"
+  },
+  {
+    "pt": "Quadros de intensidade enviados:",
+    "en": "Intensity frames sent:",
+    "es": "Tramas de intensidad enviadas:"
+  },
+  {
+    "pt": "Último minuto enviado:",
+    "en": "Last minute sent:",
+    "es": "Último minuto enviado:"
+  },
+  {
+    "pt": "Retomada confirmada:",
+    "en": "Schedule resume acknowledged:",
+    "es": "Reanudación confirmada:"
+  },
+  {
+    "pt": "Recuperação pendente:",
+    "en": "Recovery pending:",
+    "es": "Recuperación pendiente:"
+  },
+  {
+    "pt": "O aparelho não confirma cada intensidade.",
+    "en": "The device does not acknowledge each intensity.",
+    "es": "El aparato no confirma cada intensidad."
+  },
+  {
+    "pt": "A cena é ilustrativa. Com a luminária vinculada, a prévia envia intensidades reais; sem vínculo, é apenas local. Não prevê a resposta biológica dos corais.",
+    "en": "The scene is illustrative. When the light is linked, preview sends real intensities; otherwise it is local only. It does not predict coral biology.",
+    "es": "La escena es ilustrativa. Con la luminaria vinculada, la vista previa envía intensidades reales; sin vínculo, es solo local. No predice la respuesta biológica de los corales."
   }
 ]

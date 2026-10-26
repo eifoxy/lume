@@ -51,6 +51,10 @@ Use **Conexão → Diagnóstico da última comunicação → Copiar diagnóstico
 - **Sincronizar horário:** sends local system date/time; verify your PC/phone clock and time zone first.
 - **Retomar programa:** exits manual mode; it is not a profile selector.
 - **Aplicar este instante aos LEDs:** Windows USB only; sends real intensities after confirmation.
-- **Recife / daily preview:** sends no commands. Coral/fish animation does not prove the fixture's physical state.
+- **Recife / local daily preview:** sends no commands without the live link. Coral/fish animation does not prove the fixture's physical state.
 
 See [compatibility and hardware evidence](COMPATIBILITY.md) for the limits of each function's validation.
+
+## Reef on the real light
+
+Local preview remains hardware-free. In Android 1.2.0, Link light fixture explicitly enables Smart Timer Wi-Fi preview: timeline scrubbing and day playback send the same five intensities to the light. It does not rewrite profiles or change the device clock. Pausing playback holds the current moment until you end live preview. [Operation, recovery, and limits](LIVE-PREVIEW.md).

@@ -21,6 +21,10 @@ public final class MainActivity extends Activity {
  private final ExecutorService worker=Executors.newSingleThreadExecutor();
  private volatile boolean busy,cancelled,destroyed;
  private volatile DatagramSocket activeSocket;
+ private volatile Preview livePreview;
+ private volatile boolean foreground;
+ private long previewSerial;
+ private volatile String previewToken="";
  private final Object storageLock=new Object();
  private String pendingExport;
  private volatile String lastDiagnostic="Ainda não foi feita uma busca nesta sessão.";
@@ -42,27 +46,75 @@ public final class MainActivity extends Activity {
  private class Route implements AutoCloseable{
   final Network network;final LinkAddress address;final DatagramSocket socket;final List<InetAddress> gateways=new ArrayList<>();
   Route()throws Exception{ConnectivityManager cm=(ConnectivityManager)getSystemService(CONNECTIVITY_SERVICE);Network found=null;LinkAddress chosen=null;for(Network n:cm.getAllNetworks()){NetworkCapabilities cap=cm.getNetworkCapabilities(n);if(cap==null||!cap.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)||cap.hasTransport(NetworkCapabilities.TRANSPORT_VPN))continue;LinkProperties lp=cm.getLinkProperties(n);if(lp==null)continue;for(LinkAddress a:lp.getLinkAddresses())if(a.getAddress() instanceof Inet4Address&&a.getPrefixLength()>0){found=n;chosen=a;break;}if(found!=null)break;}if(found==null)throw new IOException("Conecte o celular ao Wi-Fi do aparelho ou da sua casa. Se a rede estiver sem internet, escolha permanecer conectado.");network=found;address=chosen;LinkProperties selectedProperties=cm.getLinkProperties(network);if(selectedProperties!=null)for(RouteInfo r:selectedProperties.getRoutes()){InetAddress gateway=r.getGateway();if(r.hasGateway()&&Discovery.host(address.getAddress(),address.getPrefixLength(),gateway)&&!gateways.contains(gateway))gateways.add(gateway);}DatagramSocket opened=new DatagramSocket(null);try{opened.setReuseAddress(false);opened.setBroadcast(true);network.bindSocket(opened);opened.bind(new InetSocketAddress(5000));opened.setSoTimeout(200);socket=opened;activeSocket=socket;}catch(Exception e){opened.close();throw new IOException("Não foi possível abrir a porta Wi-Fi 5000. Feche outros apps de controle e confira as permissões de rede local.",e);}}
-  void checkRoute()throws Exception{check();ConnectivityManager cm=(ConnectivityManager)getSystemService(CONNECTIVITY_SERVICE);NetworkCapabilities caps=cm.getNetworkCapabilities(network);if(caps==null||!caps.hasTransport(NetworkCapabilities.TRANSPORT_WIFI))throw new IOException("O Wi-Fi mudou ou desconectou durante a operação.");}
+  void checkRoute()throws Exception{check();checkWifi();}
+  void checkWifi()throws Exception{ConnectivityManager cm=(ConnectivityManager)getSystemService(CONNECTIVITY_SERVICE);NetworkCapabilities caps=cm.getNetworkCapabilities(network);if(caps==null||!caps.hasTransport(NetworkCapabilities.TRANSPORT_WIFI))throw new IOException("O Wi-Fi mudou ou desconectou durante a operação.");}
+  void target(InetAddress ip)throws IOException{if(!Discovery.host(address.getAddress(),address.getPrefixLength(),ip))throw new IOException("Selecione um dispositivo da mesma rede Wi-Fi.");}
   boolean local(InetAddress ip){return Protocol.sameSubnet(address.getAddress().getAddress(),ip.getAddress(),address.getPrefixLength());}
   public void close(){socket.close();if(activeSocket==socket)activeSocket=null;}
   void exchange(byte[] b,String identifier,InetAddress target,int command,int... accepted)throws Exception{checkRoute();if(!local(target)||target.isLoopbackAddress()||target.isMulticastAddress()||target.equals(address.getAddress()))throw new IOException("Selecione um dispositivo da mesma rede Wi-Fi.");PacketIO.exchange(socket,target,5000,b,command,accepted,2500,()->checkRoute(),identifier);}
   void send(byte[] p,String id,InetAddress target,int ack)throws Exception{exchange(Protocol.frame(p,id),id,target,p[0]&255,ack);}
+  void previewSend(byte[] payload,String id,InetAddress ip)throws Exception{checkRoute();target(ip);byte[] frame=Protocol.frame(payload,id);socket.send(new DatagramPacket(frame,frame.length,ip,5000));}
+  void previewResume(String id,InetAddress ip)throws Exception{checkWifi();target(ip);PacketIO.exchange(socket,ip,5000,Protocol.frame(new byte[]{3,8},id),3,new int[]{0x83},2500,()->checkWifi(),id,true);}
+ }
+ private String pendingPreview(){return getSharedPreferences("connection",MODE_PRIVATE).getString("previewRecovery","");}
+ private boolean clearPreviewRecovery(String id)throws Exception{String pending=pendingPreview();if(pending.isEmpty())return true;if(!new JSONObject(pending).getString("id").equalsIgnoreCase(id))return false;return getSharedPreferences("connection",MODE_PRIVATE).edit().remove("previewRecovery").commit();}
+ private void previewEvent(String state,String token,String text,boolean needsRestore){try{event("previewState",new JSONObject().put("state",state).put("token",token).put("message",text).put("needsRestore",needsRestore));}catch(JSONException ignored){}}
+ private synchronized String beginPreview(String deviceJson,String alias,int minute,int[] levels){
+  if(busy||livePreview!=null)return "Aguarde a operação atual.";
+  if(!foreground||destroyed)return "A prévia ao vivo precisa do app aberto.";
+  if(!pendingPreview().isEmpty())return "Retome o programa antes de iniciar outra prévia.";
+  try{
+   JSONObject d=new JSONObject(deviceJson);if(!d.optString("protocol").equals("smart"))throw new IOException("A prévia Wi-Fi está disponível apenas para Smart Timer.");
+   String id=d.getString("id");Protocol.id(id);if(!d.getString("ip").matches("[0-9]{1,3}(\\.[0-9]{1,3}){3}"))throw new IOException("Informe somente um endereço IPv4.");Protocol.previewStart(alias);Preview session=new Preview();session.update(minute,levels,SystemClock.elapsedRealtime());
+   String token=Long.toString(++previewSerial);previewToken=token;livePreview=session;busy=true;cancelled=false;
+   previewEvent("starting",token,"Preparando prévia na luminária…",false);
+   runOnUiThread(()->getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON));
+   worker.execute(()->{
+    Preview.Result result=null;String failure=null;
+    try(Route route=new Route()){
+     InetAddress ip=InetAddress.getByName(d.getString("ip"));route.target(ip);
+     result=session.run(alias,new Preview.Wire(){
+      public void arm()throws Exception{if(!getSharedPreferences("connection",MODE_PRIVATE).edit().putString("previewRecovery",d.toString()).commit())throw new IOException("Não foi possível salvar a recuperação da prévia.");}
+      public void send(byte[] payload)throws Exception{route.previewSend(payload,id,ip);}
+      public void resume()throws Exception{route.previewResume(id,ip);}
+     },()->{route.checkRoute();if(!foreground)throw new IOException("A prévia ao vivo precisa do app aberto.");},()->SystemClock.elapsedRealtime(),millis->Thread.sleep(millis),new Preview.Listener(){
+      public void running(){previewEvent("running",token,"Prévia ao vivo · enviando pelo Wi-Fi",false);}
+      public void sent(int at,int[] values){try{event("previewFrame",new JSONObject().put("token",token).put("minute",at).put("levels",new JSONArray(Arrays.asList(values[0],values[1],values[2],values[3],values[4]))));}catch(JSONException ignored){}}
+      public void stopping(){previewEvent("stopping",token,"Retomando programação no aparelho…",true);}
+     });
+     if(result.restored&&!clearPreviewRecovery(id))failure="Não foi possível salvar a recuperação da prévia.";
+     if(result.restoreFailure!=null)failure=message(result.restoreFailure);else if(result.failure!=null)failure=message(result.failure);
+    }catch(Exception e){failure=message(e);}
+    finally{
+     boolean needsRestore=!pendingPreview().isEmpty();livePreview=null;previewToken="";busy=false;
+     String text=needsRestore?"Não foi possível confirmar a retomada. A luminária pode continuar em modo manual. Reconecte e use Retomar programa.":result!=null&&result.restored?"Prévia encerrada. Retomada do programa confirmada.":"Prévia não iniciada.";
+     if(failure!=null)text+=" "+failure;
+     lastDiagnostic="Lume Android 1.2.0 · prévia ao vivo\nDestino: "+d.optString("ip")+"\nInícios enviados: "+(result==null?0:result.headersSent)+"\nQuadros de intensidade enviados: "+(result==null?0:result.framesSent)+"\nÚltimo minuto enviado: "+(result==null?-1:result.lastMinute)+"\nRetomada confirmada: "+(result!=null&&result.restored)+"\nRecuperação pendente: "+needsRestore+"\nO aparelho não confirma cada intensidade.\n"+text;event("diagnostic",lastDiagnostic);
+     previewEvent(needsRestore?"failed":"idle",token,text,needsRestore);
+     runOnUiThread(()->getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON));
+    }
+   });return "OK:"+token;
+  }catch(Exception e){return message(e);}
  }
  public final class Bridge{
+  @JavascriptInterface public String previewRecovery(){return pendingPreview();}
+  @JavascriptInterface public String startPreview(String deviceJson,String alias,int minute,int a,int b,int c,int d,int e){return beginPreview(deviceJson,alias,minute,new int[]{a,b,c,d,e});}
+  @JavascriptInterface public String previewLevels(String token,int minute,int a,int b,int c,int d,int e){Preview session=livePreview;if(session==null||!previewToken.equals(token)||session.stopping())return "Prévia não está ativa.";try{session.update(minute,new int[]{a,b,c,d,e},SystemClock.elapsedRealtime());return "";}catch(Exception failure){session.stop();return message(failure);}}
+  @JavascriptInterface public void stopPreview(String token){Preview session=livePreview;if(session!=null&&previewToken.equals(token))session.stop();}
   @JavascriptInterface public String languagePreference(){return getSharedPreferences("connection",MODE_PRIVATE).getString("language","auto");}
   @JavascriptInterface public String deviceLanguage(){return Locale.getDefault().toLanguageTag();}
   @JavascriptInterface public String saveLanguage(String value){if(!Arrays.asList("auto","pt-BR","en","es").contains(value))return "Invalid language";return getSharedPreferences("connection",MODE_PRIVATE).edit().putString("language",value).commit()?"":"Could not save language";}
   @JavascriptInterface public String loadLibrary(){return load();}
   @JavascriptInterface public String saveLibrary(String text){try{store(text);return "";}catch(Exception e){return message(e);}}
   @JavascriptInterface public void wifi(){runOnUiThread(()->{try{startActivity(new Intent(Build.VERSION.SDK_INT>=29?Settings.Panel.ACTION_WIFI:Settings.ACTION_WIFI_SETTINGS));}catch(Exception e){startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));}});}
-  @JavascriptInterface public void cancel(){cancelled=true;DatagramSocket s=activeSocket;if(s!=null)s.close();}
+  @JavascriptInterface public void cancel(){Preview session=livePreview;if(session!=null){session.stop();return;}cancelled=true;DatagramSocket s=activeSocket;if(s!=null)s.close();}
   @JavascriptInterface public void copyDiagnostic(String shown){final String report=shown!=null&&shown.length()<=40000?shown:lastDiagnostic;runOnUiThread(()->{android.content.ClipboardManager clipboard=(android.content.ClipboardManager)getSystemService(CLIPBOARD_SERVICE);clipboard.setPrimaryClip(ClipData.newPlainText("Lume",report));event("success","Diagnóstico copiado. Ele não contém senha nem nome da rede.");});}
   @JavascriptInterface public String preferredDevice(){return getSharedPreferences("connection",MODE_PRIVATE).getString("device","");}
   @JavascriptInterface public void rememberDevice(String id){if(id.length()<=40)getSharedPreferences("connection",MODE_PRIVATE).edit().putString("device",id).apply();}
   @JavascriptInterface public void discover(String direct){discoverNow(direct,false);}
   @JavascriptInterface public void discoverAutomatic(){discoverNow("",true);}
   private void discoverNow(String direct,boolean automatic){job(()->{
-   StringBuilder report=new StringBuilder("Lume Android 1.1.0 · API "+Build.VERSION.SDK_INT+" · "+Build.MANUFACTURER+" "+Build.MODEL+"\n");
+   StringBuilder report=new StringBuilder("Lume Android 1.2.0 · API "+Build.VERSION.SDK_INT+" · "+Build.MANUFACTURER+" "+Build.MODEL+"\n");
    WifiManager.MulticastLock lock=null;int received=0,rejected=0,sent=0;Map<String,JSONObject> found=new LinkedHashMap<>();
    try{
     WifiManager wm=(WifiManager)getApplicationContext().getSystemService(WIFI_SERVICE);lock=wm.createMulticastLock("lume-discovery");lock.acquire();
@@ -88,26 +140,26 @@ public final class MainActivity extends Activity {
    }catch(Exception e){report.append("Falha: ").append(message(e)).append("\n");throw e;}
    finally{if(lock!=null&&lock.isHeld())lock.release();report.append("Consultas enviadas: ").append(sent).append("\nDatagramas recebidos: ").append(received).append("\nNão reconhecidos: ").append(rejected).append("\nControladoras: ").append(found.size()).append("\nSomente descoberta; nenhuma configuração ou programação enviada.");if(automatic){event("autoDevices",new JSONArray(found.values()));}else{lastDiagnostic=report.toString();event("diagnostic",lastDiagnostic);}}
   },automatic);}
-  @JavascriptInterface public void configure(String deviceJson,String ssid,String password,boolean wpa2,boolean aes){job(()->{JSONObject device=new JSONObject(deviceJson);String id=device.getString("id");byte[][] frames=Protocol.provision(id,ssid,password,wpa2,aes);try(Route route=new Route()){InetAddress ip=InetAddress.getByName(device.getString("ip"));progress("Configurando o roteador…",20);route.exchange(frames[0],id,ip,0x18,device.optString("protocol").equals("smart")?new int[]{0x70}:new int[]{0x70,0x74});progress("Enviando credenciais…",60);try{route.exchange(frames[1],id,ip,0x18,0x72);}catch(Exception e){throw new IOException("Credenciais enviadas, mas sem confirmação final. O aparelho pode já ter trocado de rede. Conecte o celular ao Wi-Fi de casa e faça uma nova busca antes de tentar configurar novamente.");}event("configured","Configuração confirmada. Agora conecte o celular à rede de casa e busque a controladora novamente.");}finally{for(byte[] b:frames)Arrays.fill(b,(byte)0);}});}
-  @JavascriptInterface public void command(String deviceJson,String command){job(()->{JSONObject d=new JSONObject(deviceJson);String id=d.getString("id");Protocol.id(id);try(Route route=new Route()){InetAddress ip=InetAddress.getByName(d.getString("ip"));if(command.equals("clock")){route.send(Protocol.clock(Calendar.getInstance()),id,ip,0x85);event("success","Relógio sincronizado com a data e a hora local do celular.");}else if(command.equals("resume")){route.send(new byte[]{3,8},id,ip,0x83);event("success","Retomada do programa confirmada.");}else throw new IOException("Comando desconhecido.");}});}
+  @JavascriptInterface public void configure(String deviceJson,String ssid,String password,boolean wpa2,boolean aes){job(()->{if(!pendingPreview().isEmpty())throw new IOException("Retome o programa antes de iniciar outra prévia.");JSONObject device=new JSONObject(deviceJson);String id=device.getString("id");byte[][] frames=Protocol.provision(id,ssid,password,wpa2,aes);try(Route route=new Route()){InetAddress ip=InetAddress.getByName(device.getString("ip"));progress("Configurando o roteador…",20);route.exchange(frames[0],id,ip,0x18,device.optString("protocol").equals("smart")?new int[]{0x70}:new int[]{0x70,0x74});progress("Enviando credenciais…",60);try{route.exchange(frames[1],id,ip,0x18,0x72);}catch(Exception e){throw new IOException("Credenciais enviadas, mas sem confirmação final. O aparelho pode já ter trocado de rede. Conecte o celular ao Wi-Fi de casa e faça uma nova busca antes de tentar configurar novamente.");}event("configured","Configuração confirmada. Agora conecte o celular à rede de casa e busque a controladora novamente.");}finally{for(byte[] b:frames)Arrays.fill(b,(byte)0);}});}
+  @JavascriptInterface public void command(String deviceJson,String command){job(()->{JSONObject d=new JSONObject(deviceJson);String id=d.getString("id");Protocol.id(id);String pending=pendingPreview();if(!pending.isEmpty()&&(!command.equals("resume")||!new JSONObject(pending).getString("id").equalsIgnoreCase(id)))throw new IOException("A luminária pode continuar em modo manual. Reconecte o mesmo aparelho e retome o programa.");try(Route route=new Route()){InetAddress ip=InetAddress.getByName(d.getString("ip"));if(command.equals("clock")){route.send(Protocol.clock(Calendar.getInstance()),id,ip,0x85);event("success","Relógio sincronizado com a data e a hora local do celular.");}else if(command.equals("resume")){route.send(new byte[]{3,8},id,ip,0x83);clearPreviewRecovery(id);event("previewRecovered",true);event("success","Retomada do programa confirmada.");}else throw new IOException("Comando desconhecido.");}});}
   @JavascriptInterface public void upload(String deviceJson,String libraryJson,boolean replace,int selected,int slot){job(()->{
-   JSONObject root=validate(new JSONObject(libraryJson)),d=new JSONObject(deviceJson);String id=d.getString("id");Protocol.id(id);boolean smart=d.optString("protocol").equals("smart");
+   if(!pendingPreview().isEmpty())throw new IOException("Retome o programa antes de iniciar outra prévia.");JSONObject root=validate(new JSONObject(libraryJson)),d=new JSONObject(deviceJson);String id=d.getString("id");Protocol.id(id);boolean smart=d.optString("protocol").equals("smart");
    int firstSlot=replace?0:slot;JSONArray all=root.getJSONArray("Profiles");List<JSONObject> profiles=new ArrayList<>();
    if(replace){if(all.length()>16)throw new IOException("A controladora aceita até 16 perfis por conjunto.");for(int i=0;i<all.length();i++)profiles.add(all.getJSONObject(i));}
    else{if(selected<0||selected>=all.length()||slot<0||slot>=16)throw new IOException("Perfil ou posição inválida.");profiles.add(all.getJSONObject(selected));}
    List<String> names=new ArrayList<>();for(JSONObject p:profiles)names.add(p.getString("Name"));List<String> aliases=Protocol.aliases(names);List<Upload.Item> items=new ArrayList<>();
    for(int i=0;i<profiles.size();i++){JSONArray rows=profiles.get(i).getJSONArray("Values");int[][] values=new int[48][5];for(int r=0;r<48;r++)for(int c=0;c<5;c++)values[r][c]=rows.getJSONArray(r).getInt(c);items.add(new Upload.Item(firstSlot+i,aliases.get(i),values));}
    backup(root.toString());
-   try(Route route=new Route()){InetAddress ip=InetAddress.getByName(d.getString("ip"));Upload.run(items,replace,smart,(payload,ack)->route.send(payload,id,ip,ack),()->route.checkRoute(),(percent,phase)->progress(phase,percent),()->{check();Thread.sleep(150);});}catch(Exception e){lastDiagnostic="Lume Android 1.1.0 · envio de perfis\n"+message(e);event("diagnostic",lastDiagnostic);throw e;}
-   event("success",profiles.size()+" perfil(is) confirmado(s). Confira no aparelho o perfil ativo.");
+   try(Route route=new Route()){InetAddress ip=InetAddress.getByName(d.getString("ip"));Upload.run(items,replace,smart,(payload,ack)->route.send(payload,id,ip,ack),()->route.checkRoute(),(percent,phase)->progress(phase,percent),()->{check();Thread.sleep(150);});}catch(Exception e){lastDiagnostic="Lume Android 1.2.0 · envio de perfis\n"+message(e);event("diagnostic",lastDiagnostic);throw e;}
+   event("success",profiles.size()+" perfil(is) confirmado(s). Confira no aparelho o perfil ativo.");event("uploadComplete",true);
   });}
   @JavascriptInterface public void exportLibrary(String json){try{String validated=validate(new JSONObject(json)).toString(2);runOnUiThread(()->{pendingExport=validated;Intent i=new Intent(Intent.ACTION_CREATE_DOCUMENT).setType("application/json").addCategory(Intent.CATEGORY_OPENABLE).putExtra(Intent.EXTRA_TITLE,"Lume-perfis.json");startActivityForResult(i,10);});}catch(Exception e){event("error",message(e));}}
   @JavascriptInterface public void importLibrary(){runOnUiThread(()->startActivityForResult(new Intent(Intent.ACTION_OPEN_DOCUMENT).setType("*/*").addCategory(Intent.CATEGORY_OPENABLE),11));}
  }
  @Override protected void onActivityResult(int request,int result,Intent data){super.onActivityResult(request,result,data);if(result!=RESULT_OK||data==null){pendingExport=null;return;}Uri uri=data.getData();if(uri==null)return;if(request==10){String content=pendingExport;pendingExport=null;if(content!=null)worker.execute(()->{try(OutputStream out=getContentResolver().openOutputStream(uri,"wt")){if(out==null)throw new IOException("Arquivo indisponível");out.write(content.getBytes(StandardCharsets.UTF_8));event("success","Biblioteca exportada.");}catch(Exception e){event("error",message(e));}});}else if(request==11)worker.execute(()->{try{byte[] b=readLimited(getContentResolver().openInputStream(uri),2000000);JSONObject imported;if(b.length==960){JSONArray rows=new JSONArray();for(int r=0;r<48;r++){JSONArray row=new JSONArray();for(int c=0;c<5;c++){int n=(r*5+c)*4;if(b[n+1]!=0||b[n+2]!=0||b[n+3]!=0)throw new IOException("Arquivo LMF inválido.");int raw=b[n]&255,value=((raw&15)<<4)|(raw>>4);if(value>100)throw new IOException("Intensidade inválida no LMF.");row.put(value);}rows.put(row);}JSONObject p=new JSONObject().put("Name","Perfil importado").put("Channels",new JSONArray(Arrays.asList("Canal 1","Canal 2","Canal 3","Canal 4","Canal 5"))).put("Values",rows);imported=new JSONObject().put("Profiles",new JSONArray().put(p)).put("Selected",0);}else imported=new JSONObject(new String(b,StandardCharsets.UTF_8));event("import",validate(imported));}catch(Exception e){event("error","Não foi possível importar. "+message(e));}});}
- @Override protected void onResume(){super.onResume();if(web!=null)event("foreground",true);}
- @Override protected void onPause(){if(web!=null)event("foreground",false);super.onPause();}
- @Override protected void onStop(){super.onStop();if(busy){cancelled=true;DatagramSocket s=activeSocket;if(s!=null)s.close();}}
- @Override protected void onDestroy(){destroyed=true;cancelled=true;if(activeSocket!=null)activeSocket.close();worker.shutdownNow();web.removeJavascriptInterface("Lume");web.destroy();super.onDestroy();}
+ @Override protected void onResume(){super.onResume();foreground=true;if(web!=null)event("foreground",true);}
+ @Override protected void onPause(){foreground=false;Preview session=livePreview;if(session!=null)session.stop();if(web!=null)event("foreground",false);super.onPause();}
+ @Override protected void onStop(){super.onStop();Preview session=livePreview;if(session!=null){session.stop();return;}if(busy){cancelled=true;DatagramSocket s=activeSocket;if(s!=null)s.close();}}
+ @Override protected void onDestroy(){destroyed=true;Preview session=livePreview;if(session!=null){session.stop();worker.shutdown();}else{cancelled=true;if(activeSocket!=null)activeSocket.close();worker.shutdownNow();}web.removeJavascriptInterface("Lume");web.destroy();super.onDestroy();}
  @Override public void onBackPressed(){web.evaluateJavascript("window.back()",null);}
 }

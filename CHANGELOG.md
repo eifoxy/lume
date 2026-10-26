@@ -2,6 +2,15 @@
 
 **English** · [Português (Brasil)](CHANGELOG.pt-BR.md) · [Home](README.en.md)
 
+## Android 1.2.0 · 2026-10-26
+
+- Adds opt-in **Link light fixture** in Reef for Smart Timer Wi-Fi. Timeline scrubbing, current-profile edits, and accelerated playback send five interpolated intensities using vendor preview commands `06 01`/`06 02`, without erasing or rewriting profiles or changing the device clock.
+- Explicit physical-light confirmation; uploading only opens Reef and offers the feature. A floating stop/resume button stays accessible. Uses a latest-value mailbox, at most five intensity frames per second, and a three-second UI heartbeat deadline.
+- Leaving the foreground stops streaming and attempts `03 08` schedule resume, requiring Smart `83` from the selected source and identity. Individual intensities have no acknowledgment/readback, so the UI reports sent values rather than measured light.
+- Recovery identity is persisted before the first preview command. Unconfirmed restoration survives app reopening, blocks new writes/preview, and requires reconnecting the same controller. Process death or network loss can leave the light in manual mode; no hardware watchdog is assumed.
+- Excludes discovery, uploads, Wi-Fi setup, clock changes, and profile switching during preview. Supports PT-BR, English, and Spanish. Adds native/JavaScript/UI tests and a copyable preview diagnostic without credentials or raw packets.
+- Local simulator, real loopback UDP, and browser checks passed; physical controller retest pending. Windows transport/features are unchanged. [Usage and limitations](docs/en/LIVE-PREVIEW.md).
+
 ## Android 1.1.0 / Windows 0.6.0 · 2026-10-21
 
 - Adds Brazilian Portuguese, English, and Spanish to both apps. Automatic device language is the default, with English fallback for unsupported languages; a visible selector saves manual preference and allows returning to automatic mode.

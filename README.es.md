@@ -23,9 +23,13 @@ Las aplicaciones incluyen **portugués, inglés y español**. Al abrir por prime
 |---|---|---|
 | Windows x64 · 0.6.0 | [ZIP completo con .NET](https://github.com/eifoxy/lume/releases/download/windows-v0.6.0/Lume-Windows-0.6.0-win-x64.zip) | Extrae todo y abre `Lume.exe`. |
 | Windows · 0.6.0 | [ZIP ligero](https://github.com/eifoxy/lume/releases/download/windows-v0.6.0/Lume-Windows-0.6.0-portable.zip) | Requiere .NET Desktop Runtime 8. Extrae todo y abre `Lume.exe`. |
-| Android 8+ · 1.1.0 | [APK](https://github.com/eifoxy/lume/releases/download/android-v1.1.0/Lume-Android-1.1.0.apk) | Descarga en el teléfono y abre el archivo. |
+| Android 8+ · 1.2.0 | [APK](https://github.com/eifoxy/lume/releases/download/android-v1.2.0/Lume-Android-1.2.0.apk) | Descarga en el teléfono y abre el archivo. |
 
 En Android, actualiza **sobre la versión anterior, sin desinstalar**, para conservar los perfiles. En Windows, exporta una copia de la biblioteca antes de actualizar. [Instalación detallada](docs/es/INSTALACION.md) · [Versiones y sumas SHA-256](https://github.com/eifoxy/lume/releases).
+
+## Vista previa en la luminaria
+
+En Arrecife, usa **Vincular luminaria** para que una Smart Timer siga el horario y la reproducción acelerada por Wi-Fi. Se activa con confirmación; enviar perfiles no la activa automáticamente. Al finalizar o salir del primer plano, el app intenta reanudar el programa y conserva un aviso si no se confirma. No hay confirmación de cada intensidad ni lectura de la luz física. [Uso y límites](docs/es/VISTA-EN-VIVO.md). Falta probar la nueva función en el aparato real.
 
 ## Funciones
 
@@ -50,7 +54,7 @@ En Android, actualiza **sobre la versión anterior, sin desinstalar**, para cons
 | Configuración y envío por Wi-Fi | Sí, protocolo de escritorio | Sí, incluye Smart Timer |
 | Búsqueda y reconexión automáticas | No | Sí |
 | USB HID | Sí | No |
-| Ajuste instantáneo de los LED físicos | USB, experimental | No |
+| Ajuste instantáneo de los LED físicos | USB, experimental | Vista previa Wi-Fi, Smart Timer |
 | Importar LMF / JSON | Sí | Sí |
 | Importar proyectos LCM | Sí | No |
 | Exportar LMF / JSON | Sí | JSON |
@@ -71,7 +75,7 @@ Se necesita **hardware Wi-Fi compatible**. Una TC420 sin módulo inalámbrico no
 
 <img src="docs/images/android-es.png" alt="Vista previa de la interfaz móvil y el arrecife" width="320" />
 
-Captura de la interfaz en español, renderizada en navegador. La animación es ilustrativa: no mide PAR, espectro ni respuesta biológica y no modifica la luz física.
+Captura de la interfaz en español, renderizada en navegador. La animación es ilustrativa: no mide PAR, espectro ni respuesta biológica y, sin vínculo en vivo, no modifica la luz física.
 
 ## Documentación
 
