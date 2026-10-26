@@ -22,10 +22,13 @@ Editor de iluminação para controladoras de aquário compatíveis com TC420 e c
 | Windows x64 · 0.6.0 | [ZIP completo, com .NET incluído](https://github.com/eifoxy/lume/releases/download/windows-v0.6.0/Lume-Windows-0.6.0-win-x64.zip) | Extraia tudo e abra `Lume.exe`. |
 | Windows · 0.6.0 | [ZIP leve, requer .NET Desktop Runtime 8](https://github.com/eifoxy/lume/releases/download/windows-v0.6.0/Lume-Windows-0.6.0-portable.zip) | Instale o runtime, extraia tudo e abra `Lume.exe`. |
 | Android 8+ · 1.2.0 | [APK](https://github.com/eifoxy/lume/releases/download/android-v1.2.0/Lume-Android-1.2.0.apk) | Baixe no telefone e abra pelo gerenciador de arquivos. |
+| iPhone/iPad · iOS 17+ · 0.1.0 | [Prévia de desenvolvimento](https://github.com/eifoxy/lume/actions/workflows/ios.yml) | Sem assinatura, não instalável ao baixar. [Guia iOS](docs/INSTALACAO-IOS.md). |
 
 [Todas as versões e checksums](https://github.com/eifoxy/lume/releases) · [Tutorial Windows](docs/INSTALACAO-WINDOWS.md) · [Tutorial Android](docs/INSTALACAO-ANDROID.md) · [Configurar Wi-Fi](docs/WIFI.md)
 
 ## Idiomas
+
+**iOS em desenvolvimento:** o editor, os três idiomas e as funções Wi-Fi foram portados, incluindo prévia Smart Timer na luminária. A descoberta usa consultas diretas na rede local, com busca por IP. Ainda falta teste com iPhone/controladora reais e assinatura Apple para instalar; não há TestFlight/App Store. [Situação, instalação e limites](docs/INSTALACAO-IOS.md).
 
 Ao abrir pela primeira vez, o aplicativo segue o idioma do dispositivo. O seletor Idioma aparece no topo do Android e na barra lateral do Windows: escolha Português (Brasil), English, Español ou Automático (dispositivo). A preferência fica salva. Sistemas em outros idiomas usam inglês como alternativa. Nomes já salvos de perfis/canais e a programação não são traduzidos nem alterados. A troca aguarda buscas, envios e diálogos terminarem.
 

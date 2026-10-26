@@ -31,6 +31,8 @@ jobs:
         run: xcodebuild -project ios/Lume.xcodeproj -scheme Lume -configuration Release -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' -derivedDataPath artifacts/ios-simulator CODE_SIGNING_ALLOWED=NO build
       - name: Build unsigned iPhone app
         run: xcodebuild -project ios/Lume.xcodeproj -scheme Lume -configuration Release -sdk iphoneos -destination 'generic/platform=iOS' -derivedDataPath artifacts/ios-device CODE_SIGNING_ALLOWED=NO build
+      - name: Run offline editor and native bridge in iOS simulator
+        run: bash scripts/test-ios-simulator.sh artifacts/ios-simulator/Build/Products/Release-iphonesimulator/Lume.app
       - name: Package unsigned development artifacts
         run: |
           mkdir -p artifacts/ios-preview/Payload

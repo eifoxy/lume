@@ -15,9 +15,11 @@ const extra=[
  {pt:replacements[3][1],en:'Last communication diagnostics · iOS 0.1.0',es:'Diagnóstico de la última comunicación · iOS 0.1.0'},
  {pt:replacements[4][1],en:'iOS development preview. Discovery uses direct local network queries, without broadcast. Try a known IP if needed. TC420 without Wi-Fi is unsupported. Real iPhone testing is pending.',es:'Versión iOS en desarrollo. Búsqueda mediante consultas directas en la red local, sin broadcast. Prueba una IP conocida si es necesario. TC420 sin Wi-Fi no es compatible. Falta probar en un iPhone real.'}
 ];
+extra.push(...JSON.parse(fs.readFileSync(path.join(root,'ios/Resources/messages.json'),'utf8')));
+const combined=[...rows,...extra],seen=new Set();for(const row of combined){if(!row.pt||!row.en||!row.es||seen.has(row.pt))throw Error('Missing or duplicate iOS translation: '+row.pt);seen.add(row.pt);}
 const files=['index.html','app.js','app.css','i18n.js','live.js','library.json','strings.js','ios.js'];
 for(const file of files){let data;
- if(file==='strings.js')data=Buffer.from('window.LUME_MESSAGES='+JSON.stringify([...rows,...extra])+';\n');
+ if(file==='strings.js')data=Buffer.from('window.LUME_MESSAGES='+JSON.stringify(combined)+';\n');
  else if(file==='ios.js')data=fs.readFileSync(path.join(root,'ios/Bridge/ios.js'));
  else if(file==='index.html'){let html=fs.readFileSync(path.join(source,file),'utf8');for(const [from,to]of replacements){if(!html.includes(from))throw Error('Shared HTML changed: '+from);html=html.replaceAll(from,to);}data=Buffer.from(html.replace('<script src="strings.js">','<script src="ios.js"></script><script src="strings.js">'));}
  else data=fs.readFileSync(path.join(source,file));

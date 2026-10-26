@@ -1,5 +1,7 @@
 # Compatibility and validation
 
+**iOS 0.1.0:** iPhone/iPad development preview for iOS 17+. GitHub Actions builds the simulator and unsigned device app. Shared editor, Smart Timer and legacy Pled Wi-Fi are implemented. Discovery uses bounded unicast, without broadcast. Real iPhone/controller validation is pending. No installable distribution or TestFlight. [iOS guide and limits](INSTALL-IOS.md).
+
 [Home](../../README.en.md) · **English** · [Português (Brasil)](../COMPATIBILIDADE.md)
 
 ## Platforms

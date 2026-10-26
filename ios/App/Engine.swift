@@ -28,14 +28,16 @@ final class ControllerEngine {
  private func job(quiet: Bool = false, _ body: @escaping () throws -> Void) { guard acquire() else { emit(quiet ? "searching" : "error", quiet ? false : "Aguarde a operação atual."); return }; emit(quiet ? "searching" : "busy", true); worker.async { defer { self.release(); self.emit(quiet ? "searching" : "busy",false) }; do { try body() } catch { if !quiet { self.emit("error",error.localizedDescription) } } } }
  private func report(_ text: String) { diagnostic = text; emit("diagnostic",text) }
  private func progress(_ text: String, _ percent: Int) { emit("progress",["message":text,"percent":percent]) }
- private func send(_ p: [UInt8], _ status: [UInt8], socket: UDPSocket, route: IPv4Route, device: WiFiDevice, resuming: Bool = false) throws { try Exchange.run(socket: socket, target: target(device,route:route), payload: p, id: device.id, accepted: status, smartOnly: resuming, guardCheck: { try self.guardRoute(route,resuming:resuming) }) }
+ private func send(_ p: [UInt8], _ status: [UInt8], socket: UDPSocket, route: IPv4Route, device: WiFiDevice, resuming: Bool = false) throws { try Exchange.run(socket: socket, target: target(device,route:route), payload: p, id: device.id, accepted: status, smartOnly: resuming || device.kind == "smart", guardCheck: { try self.guardRoute(route,resuming:resuming) }) }
  func discover(_ direct: String, automatic: Bool) {
+  // CI UI checks are offline and must never contact a real controller.
+  if ProcessInfo.processInfo.arguments.contains("--smoke-test") { emit(automatic ? "autoDevices" : "devices",[[String:String]]()); emit("searching",false); return }
   job(quiet: automatic) {
    var found = [WiFiDevice](); var sent = 0, received = 0, rejected = 0; var note = "Lume iOS 0.1.0 · descoberta unicast\n"
    defer { self.emit(automatic ? "autoDevices" : "devices", found.map { ["id":$0.id,"ip":$0.ip,"protocol":$0.kind] }); if !automatic { self.report(note+"\nConsultas enviadas: \(sent)\nDatagramas recebidos: \(received)\nNão reconhecidos: \(rejected)\nControladoras: \(found.count)\nSomente descoberta; nenhuma configuração ou programação enviada.") } }
    do {
     let route = try self.route(), socket = try UDPSocket(address: route.address, interface: route.interface); defer { socket.close() }
-    let cached = UserDefaults.standard.string(forKey:"lastDeviceIP") ?? "", preferred = UserDefaults.standard.string(forKey:"device") ?? ""; let targets = try route.targets(direct:direct,cached:cached)
+    let cached = UserDefaults.standard.string(forKey:"lastDeviceIP") ?? "", preferred = UserDefaults.standard.string(forKey:"device") ?? ""; let base = try route.targets(direct:direct,cached:cached); let targets = direct.isEmpty ? base : base+base+base
     note += "Wi-Fi IPv4: \(IPv4Route.text(route.address))/\(route.prefix)\nConsultas diretas limitadas: \(targets.count) · UDP 5000\n"; let start = ProcessInfo.processInfo.systemUptime; var next = start, index = 0
     while ProcessInfo.processInfo.systemUptime-start < (direct.isEmpty ? 14 : 4) {
      try self.guardRoute(route); let now = ProcessInfo.processInfo.systemUptime
@@ -43,6 +45,7 @@ final class ControllerEngine {
      if let response = try socket.receive() { received += 1; if route.peer(response.ip), let (id,kind) = ControllerProtocol.discovered(response.bytes) { if let old = found.firstIndex(where: { $0.id.caseInsensitiveCompare(id) == .orderedSame }) { found[old] = WiFiDevice(id:id,ip:IPv4Route.text(response.ip),kind:kind) } else { found.append(WiFiDevice(id:id,ip:IPv4Route.text(response.ip),kind:kind)) }; if automatic && id.caseInsensitiveCompare(preferred) == .orderedSame { break } } else { rejected += 1 } }
      if index == targets.count && now > next+0.8 { break }; if !automatic { self.progress("Buscando no Wi-Fi · \(found.count) encontrada(s)",min(99,Int((now-start)*100/14))) }
     }
+    if let known = found.first(where: { $0.id.caseInsensitiveCompare(preferred) == .orderedSame }) ?? (found.count == 1 ? found.first : nil) { UserDefaults.standard.set(known.ip,forKey:"lastDeviceIP") }
     if !automatic { self.emit(found.isEmpty ? "error" : "success",found.isEmpty ? "Nenhuma resposta recebida. Permita Rede Local nos Ajustes do Lume; tente o IP conhecido ou mantenha o Wi-Fi conectado." : "Busca concluída.") }
    } catch { note += "Falha: \(error.localizedDescription)"; throw error }
   }
@@ -63,17 +66,11 @@ final class ControllerEngine {
  }
  func upload(_ device: WiFiDevice, text: String, replace: Bool, selected: Int, slot: Int) {
   job {
-   guard self.store.recovery().isEmpty else { throw LumeFailure("Retome o programa antes de iniciar outra prévia.") }; let library = try ProfileLibrary.decode(Data(text.utf8)); guard replace ? library.Profiles.count <= 16 : ((0..<library.Profiles.count).contains(selected) && (0...15).contains(slot)) else { throw LumeFailure("Perfil ou posição inválida.") }; let profiles = replace ? library.Profiles : [library.Profiles[selected]], aliases = ControllerProtocol.aliases(profiles.map { $0.Name }); try self.store.backup(library.encoded())
-   var complete = 0, erased = false, phase = "iniciar o envio"; let smart = device.kind == "smart"
+   guard self.store.recovery().isEmpty else { throw LumeFailure("Retome o programa antes de iniciar outra prévia.") }; let library = try ProfileLibrary.decode(Data(text.utf8)); guard replace ? library.Profiles.count <= 16 : ((0..<library.Profiles.count).contains(selected) && (0...15).contains(slot)) else { throw LumeFailure("Perfil ou posição inválida.") }; let profiles = replace ? library.Profiles : [library.Profiles[selected]]; try self.store.backup(library.encoded())
    do { let route = try self.route(), socket = try UDPSocket(address:route.address,interface:route.interface); defer { socket.close() }
-    func transmit(_ p: [UInt8], _ ack: UInt8, retry: Bool = false) throws { for attempt in 0..<(retry && smart ? 3 : 1) { do { try self.send(p,[ack],socket:socket,route:route,device:device); return } catch let e as AckTimeout { if !retry || !smart || e.validReply || attempt == 2 { throw e }; try self.guardRoute(route); Thread.sleep(forTimeInterval:0.15) } } }
-    if replace { phase = "limpar perfis antigos"; try transmit([5,0xfe],0x82); erased = true; if smart { for _ in 0..<14 { try self.guardRoute(route); Thread.sleep(forTimeInterval:0.15) } } }
-    for i in profiles.indices { phase = "iniciar perfil \(i+1)"; try transmit(ControllerProtocol.header(slot:replace ? i : slot,alias:aliases[i],smart:smart),0x80,retry:true)
-     for row in 0..<48 { phase = "gravar perfil \(i+1), horário \(row+1)"; try transmit(ControllerProtocol.point(row,profiles[i].Values[row]),0x81,retry:true); self.progress("Perfil \(i+1) · horário \(row+1)/48",(i*48+row+1)*95/(profiles.count*48)); if smart { try self.guardRoute(route); Thread.sleep(forTimeInterval:0.15) } }
-     if smart { phase = "encerrar perfil \(i+1)"; try transmit([3,8],0x83) }; complete += 1
-    }
-    if smart { phase = "finalizar o conjunto"; try transmit([4,10],0x91) }; self.progress("Finalizando a transferência…",100); self.emit("success","\(complete) perfil(is) confirmado(s). Confira no aparelho o perfil ativo."); self.emit("uploadComplete",true)
-   } catch { let warning = erased ? "A memória pode ter sido apagada ou estar incompleta." : "A gravação/finalização pode estar incompleta."; let message = "Falha ao \(phase). \(complete)/\(profiles.count) perfis tiveram os horários recebidos. \(warning) Reconecte e reenvie. \(error.localizedDescription)"; self.report("Lume iOS 0.1.0 · envio de perfis\n"+message); throw LumeFailure(message) }
+    try ProfileTransfer.run(profiles:profiles,replace:replace,slot:slot,smart:device.kind == "smart",exchange:{ try self.send($0,[$1],socket:socket,route:route,device:device) },check:{ try self.guardRoute(route) },pause:{ Thread.sleep(forTimeInterval:0.15) },progress:{ self.progress($0,$1) })
+    self.emit("success","\(profiles.count) perfil(is) confirmado(s). Confira no aparelho o perfil ativo."); self.emit("uploadComplete",true)
+   } catch { self.report("Lume iOS 0.1.0 · envio de perfis\n"+error.localizedDescription); throw error }
   }
  }
  func updatePreview(token: String, minute: Int, values: [Int]) throws { guard (0...1439).contains(minute) else { throw LumeFailure("Horário inválido") }; _ = try ControllerProtocol.levels(values); lock.lock(); defer { lock.unlock() }; guard liveToken == token, !stopLive else { throw LumeFailure("Prévia não está ativa.") }; sample = (minute,values,ProcessInfo.processInfo.systemUptime) }

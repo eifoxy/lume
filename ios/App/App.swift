@@ -29,6 +29,24 @@ final class LumeViewController: UIViewController, WKUIDelegate, WKNavigationDele
   web.loadFileURL(webRoot.appendingPathComponent("index.html"),allowingReadAccessTo:webRoot)
  }
  private func emit(_ type: String, _ data: Any) { guard let encoded = try? JSONSerialization.data(withJSONObject:[type,data]), let string = String(data:encoded,encoding:.utf8) else { return }; DispatchQueue.main.async { self.web?.evaluateJavaScript("window.nativeEvent&&window.nativeEvent(...\(string))",completionHandler:nil) } }
+ func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+  guard ProcessInfo.processInfo.arguments.contains("--smoke-test") else { return }
+  let script = """
+  (()=>{const before=JSON.stringify(library);const checks=[];
+   for(const [code,title]of [['en','A day of light.'],['es','Un día de luz.'],['pt-BR','Um dia de luz.']]){LumeI18n.set(code);if(document.querySelector('#curves h1').textContent!==title)throw Error('Language '+code);checks.push(code);}
+   if(before!==JSON.stringify(library)||library.Profiles[0].Values.length!==48)throw Error('Library changed');
+   if(!document.querySelector('#aquarium').children.length)throw Error('Reef empty');
+   if(!document.querySelector('#chart').children.length)throw Error('Curve empty');
+   if(Lume.previewRecovery()!=='')throw Error('Unexpected recovery marker');
+   if(!document.body.textContent.includes('iOS 0.1.0'))throw Error('Wrong platform assets');
+   return {ok:true,languages:checks,profiles:library.Profiles.length,rows:48,bridge:typeof Lume.upload,network:'disabled for smoke test'};
+  })()
+  """
+  webView.evaluateJavaScript(script) { value,error in
+   let result: [String:Any] = error.map { ["ok":false,"error":$0.localizedDescription] } ?? (value as? [String:Any] ?? ["ok":false,"error":"No UI result"])
+   if let data = try? JSONSerialization.data(withJSONObject:result,options:.prettyPrinted), let documents = FileManager.default.urls(for:.documentDirectory,in:.userDomainMask).first { try? data.write(to:documents.appendingPathComponent("ios-smoke.json"),options:.atomic) }
+  }
+ }
  func webView(_ webView: WKWebView, decidePolicyFor action: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy)->Void) { guard let url = action.request.url, url.isFileURL, url.standardizedFileURL.path.hasPrefix(webRoot.standardizedFileURL.path+"/") else { decisionHandler(.cancel); return }; decisionHandler(.allow) }
  func webView(_ webView: WKWebView, runJavaScriptTextInputPanelWithPrompt prompt: String, defaultText: String?, initiatedByFrame frame: WKFrameInfo, completionHandler: @escaping (String?)->Void) {
   guard prompt == "__LUME_NATIVE__", frame.isMainFrame, let url = frame.request.url, url.isFileURL, url.standardizedFileURL.path == webRoot.appendingPathComponent("index.html").standardizedFileURL.path, let text = defaultText, text.utf8.count <= 2_100_000 else { completionHandler(nil); return }
