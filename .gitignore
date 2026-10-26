@@ -35,4 +35,9 @@ ui-test-failure.txt
 wifi-scan-results.txt
 *.apk
 *.idsig
+**/.build/
+**/DerivedData/
+**/xcuserdata/
+*.xcuserstate
+*.ipa
 *.pdb

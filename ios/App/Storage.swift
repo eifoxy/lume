@@ -1,0 +1,12 @@
+import Foundation
+final class LibraryStore {
+ let root: URL
+ private let lock = NSLock()
+ init() throws { root = try FileManager.default.url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: true).appendingPathComponent("Lume", isDirectory: true); try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true) }
+ func save(_ text: String) throws { lock.lock(); defer { lock.unlock() }; let data = try ProfileLibrary.decode(Data(text.utf8)).encoded(); let file = root.appendingPathComponent("library.json"); if let previous = try? Data(contentsOf: file) { try previous.write(to: root.appendingPathComponent("library.json.bak"), options: .atomic) }; try data.write(to: file, options: .atomic) }
+ func load() throws -> String { lock.lock(); defer { lock.unlock() }; let file = root.appendingPathComponent("library.json"); let data: Data; if FileManager.default.fileExists(atPath: file.path) { data = try Data(contentsOf: file) } else { guard let sample = Bundle.main.url(forResource: "library", withExtension: "json", subdirectory: "Web") else { throw LumeFailure("Biblioteca inválida.") }; data = try Data(contentsOf: sample) }; return String(decoding: try ProfileLibrary.decode(data).encoded(), as: UTF8.self) }
+ func backup(_ data: Data) throws { let directory = root.appendingPathComponent("backups", isDirectory: true); try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true); try data.write(to: directory.appendingPathComponent(UUID().uuidString+".json"), options: .atomic) }
+ func recovery() -> String { lock.lock(); defer { lock.unlock() }; return (try? String(contentsOf: root.appendingPathComponent("preview-recovery.json"), encoding: .utf8)) ?? "" }
+ func arm(_ device: WiFiDevice) throws { lock.lock(); defer { lock.unlock() }; try JSONEncoder().encode(device).write(to: root.appendingPathComponent("preview-recovery.json"), options: .atomic) }
+ func clear(_ id: String) throws { lock.lock(); defer { lock.unlock() }; let file = root.appendingPathComponent("preview-recovery.json"); if FileManager.default.fileExists(atPath: file.path) { let d = try JSONDecoder().decode(WiFiDevice.self, from: Data(contentsOf: file)); guard d.id.caseInsensitiveCompare(id) == .orderedSame else { throw LumeFailure("Retome o programa antes de iniciar outra prévia.") }; try FileManager.default.removeItem(at: file) } }
+}

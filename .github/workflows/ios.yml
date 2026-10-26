@@ -1,0 +1,48 @@
+name: iOS development preview
+on:
+  push:
+    branches: [main]
+    paths: ['ios/**', 'android/app/src/main/assets/**', 'localization/**', 'scripts/*ios*', '.github/workflows/ios.yml']
+  pull_request:
+    paths: ['ios/**', 'android/app/src/main/assets/**', 'localization/**', 'scripts/*ios*', '.github/workflows/ios.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: ios-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  build:
+    runs-on: macos-15
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Verify offline assets and Xcode project
+        run: |
+          node scripts/sync-ios-assets.cjs --check
+          node scripts/generate-ios-project.cjs --check
+          node ios/Tests/bridge-test.cjs
+      - name: Test protocol, validation and real loopback UDP
+        run: swift test --package-path ios
+      - name: Build simulator
+        run: xcodebuild -project ios/Lume.xcodeproj -scheme Lume -configuration Release -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' -derivedDataPath artifacts/ios-simulator CODE_SIGNING_ALLOWED=NO build
+      - name: Build unsigned iPhone app
+        run: xcodebuild -project ios/Lume.xcodeproj -scheme Lume -configuration Release -sdk iphoneos -destination 'generic/platform=iOS' -derivedDataPath artifacts/ios-device CODE_SIGNING_ALLOWED=NO build
+      - name: Package unsigned development artifacts
+        run: |
+          mkdir -p artifacts/ios-preview/Payload
+          cp -R artifacts/ios-device/Build/Products/Release-iphoneos/Lume.app artifacts/ios-preview/Payload/
+          cd artifacts/ios-preview
+          zip -qry Lume-iOS-0.1.0-UNSIGNED.ipa Payload
+          rm -r Payload
+          ditto -c -k --sequesterRsrc --keepParent ../ios-simulator/Build/Products/Release-iphonesimulator/Lume.app Lume-iOS-0.1.0-Simulator.zip
+          printf '%s\n' 'UNSIGNED DEVELOPMENT PREVIEW. The IPA cannot be installed as downloaded. Requires Apple signing and a compatible iOS 17+ device. Not hardware validated. No TestFlight or App Store distribution.' > READ-ME-FIRST.txt
+          shasum -a 256 *.ipa *.zip > SHA256SUMS.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Lume-iOS-0.1.0-unsigned-preview
+          path: artifacts/ios-preview/
+          retention-days: 30

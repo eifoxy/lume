@@ -1,0 +1,38 @@
+// !$*UTF8*$!
+{ archiveVersion = 1; classes = {}; objectVersion = 56; objects = {
+9778B31ABEB7F69A0B150E7F = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "App/App.swift"; sourceTree = "<group>"; };
+56123C128332D1D5ED1389D5 = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "App/Engine.swift"; sourceTree = "<group>"; };
+43B99DA425DE663101D5A3D5 = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "App/Storage.swift"; sourceTree = "<group>"; };
+9E5BA7481658C5AC6A95EE99 = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Core/Protocol.swift"; sourceTree = "<group>"; };
+42C90679BE884CD3614BF6D4 = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Core/UDP.swift"; sourceTree = "<group>"; };
+F4D13FAAB1F53141AF0F1634 = { isa = PBXBuildFile; fileRef = 9778B31ABEB7F69A0B150E7F; };
+6844E38A986138B80852B769 = { isa = PBXBuildFile; fileRef = 56123C128332D1D5ED1389D5; };
+5B2D2662A989803BC38A30BD = { isa = PBXBuildFile; fileRef = 43B99DA425DE663101D5A3D5; };
+8BD5649CA950A097745E0DB7 = { isa = PBXBuildFile; fileRef = 9E5BA7481658C5AC6A95EE99; };
+F4304CF73019A4D9D64A1C8A = { isa = PBXBuildFile; fileRef = 42C90679BE884CD3614BF6D4; };
+2975104784A401E3880E2215 = { isa = PBXFileReference; lastKnownFileType = folder; path = Web; sourceTree = "<group>"; };
+A4CC6BC01A927E2A78FD3BEC = { isa = PBXFileReference; lastKnownFileType = text.xml; path = Resources/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+04CE686A8565DA3CFB363899 = { isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Resources/Assets.xcassets; sourceTree = "<group>"; };
+2A67F1A4675AB88705C1A2BB = { isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "Resources/pt-BR.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+DBD3A49D0D906B4ED9216B73 = { isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "en"; path = "Resources/en.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+C0BC1E08F9743B2D50D5F160 = { isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "es"; path = "Resources/es.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+62BC7CACC929F0E9AB9787B7 = { isa = PBXVariantGroup; children = (2A67F1A4675AB88705C1A2BB,DBD3A49D0D906B4ED9216B73,C0BC1E08F9743B2D50D5F160); name = InfoPlist.strings; sourceTree = "<group>"; };
+60CC61DA341658374F16739E = { isa = PBXBuildFile; fileRef = 2975104784A401E3880E2215; };
+69220DB9708F757BDBE728C0 = { isa = PBXBuildFile; fileRef = A4CC6BC01A927E2A78FD3BEC; };
+97FC76EFC7291A6CBBCFF141 = { isa = PBXBuildFile; fileRef = 04CE686A8565DA3CFB363899; };
+6D0B761CDA810545E8DBF39F = { isa = PBXBuildFile; fileRef = 62BC7CACC929F0E9AB9787B7; };
+A172CEDCAE47474B615C54D5 = { isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Lume.app; sourceTree = BUILT_PRODUCTS_DIR; };
+0A3E27B8CA818264D75C8D81 = { isa = PBXGroup; children = (A172CEDCAE47474B615C54D5); name = Products; sourceTree = "<group>"; };
+AD936FCBED631FA67E05C3EA = { isa = PBXGroup; children = (9778B31ABEB7F69A0B150E7F,56123C128332D1D5ED1389D5,43B99DA425DE663101D5A3D5,9E5BA7481658C5AC6A95EE99,42C90679BE884CD3614BF6D4,2975104784A401E3880E2215,A4CC6BC01A927E2A78FD3BEC,04CE686A8565DA3CFB363899,62BC7CACC929F0E9AB9787B7,0A3E27B8CA818264D75C8D81); sourceTree = "<group>"; };
+25A6634263C1B1F6FC4697A0 = { isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (F4D13FAAB1F53141AF0F1634,6844E38A986138B80852B769,5B2D2662A989803BC38A30BD,8BD5649CA950A097745E0DB7,F4304CF73019A4D9D64A1C8A); runOnlyForDeploymentPostprocessing = 0; };
+6EEB55F76600D4AD08BE72AD = { isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (60CC61DA341658374F16739E,69220DB9708F757BDBE728C0,97FC76EFC7291A6CBBCFF141,6D0B761CDA810545E8DBF39F); runOnlyForDeploymentPostprocessing = 0; };
+07F7AB476BC3A83FAD639D34 = { isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
+73EBF6644258C120893E685D = { isa = XCBuildConfiguration; buildSettings = { CLANG_ENABLE_MODULES = YES; SWIFT_VERSION = 5.0; IPHONEOS_DEPLOYMENT_TARGET = 17.0; SDKROOT = iphoneos; SWIFT_OPTIMIZATION_LEVEL = "-Onone"; DEBUG_INFORMATION_FORMAT = dwarf; }; name = Debug; };
+0B0C687DF8B6B8DC790B519C = { isa = XCBuildConfiguration; buildSettings = { CLANG_ENABLE_MODULES = YES; SWIFT_VERSION = 5.0; IPHONEOS_DEPLOYMENT_TARGET = 17.0; SDKROOT = iphoneos; SWIFT_OPTIMIZATION_LEVEL = "-O"; DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym"; }; name = Release; };
+187B327489003FCA55B00C62 = { isa = XCConfigurationList; buildConfigurations = (73EBF6644258C120893E685D,0B0C687DF8B6B8DC790B519C); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+6C7EFF6369083C8E1F2B1994 = { isa = XCBuildConfiguration; buildSettings = { PRODUCT_NAME = Lume; PRODUCT_BUNDLE_IDENTIFIER = br.com.lume.aquario.ios; INFOPLIST_FILE = Resources/Info.plist; GENERATE_INFOPLIST_FILE = NO; CODE_SIGN_STYLE = Automatic; DEVELOPMENT_TEAM = ""; TARGETED_DEVICE_FAMILY = "1,2"; ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon; SWIFT_EMIT_LOC_STRINGS = NO; ENABLE_USER_SCRIPT_SANDBOXING = YES; LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks"; SWIFT_OPTIMIZATION_LEVEL = "-Onone"; DEBUG_INFORMATION_FORMAT = dwarf; }; name = Debug; };
+DD75E2CB1C510A828AC72D96 = { isa = XCBuildConfiguration; buildSettings = { PRODUCT_NAME = Lume; PRODUCT_BUNDLE_IDENTIFIER = br.com.lume.aquario.ios; INFOPLIST_FILE = Resources/Info.plist; GENERATE_INFOPLIST_FILE = NO; CODE_SIGN_STYLE = Automatic; DEVELOPMENT_TEAM = ""; TARGETED_DEVICE_FAMILY = "1,2"; ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon; SWIFT_EMIT_LOC_STRINGS = NO; ENABLE_USER_SCRIPT_SANDBOXING = YES; LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks"; SWIFT_OPTIMIZATION_LEVEL = "-O"; DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym"; }; name = Release; };
+DA6C49DB5A7137BA75102BE3 = { isa = XCConfigurationList; buildConfigurations = (6C7EFF6369083C8E1F2B1994,DD75E2CB1C510A828AC72D96); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+34A04005BCAF206EEC990BD9 = { isa = PBXNativeTarget; buildConfigurationList = DA6C49DB5A7137BA75102BE3; buildPhases = (25A6634263C1B1F6FC4697A0,07F7AB476BC3A83FAD639D34,6EEB55F76600D4AD08BE72AD); buildRules = (); dependencies = (); name = Lume; productName = Lume; productReference = A172CEDCAE47474B615C54D5; productType = "com.apple.product-type.application"; };
+244210E48437B6556980A702 = { isa = PBXProject; attributes = { LastUpgradeCheck = 1600; }; buildConfigurationList = 187B327489003FCA55B00C62; compatibilityVersion = "Xcode 14.0"; developmentRegion = "pt-BR"; hasScannedForEncodings = 0; knownRegions = ("pt-BR",en,es,Base); mainGroup = AD936FCBED631FA67E05C3EA; productRefGroup = 0A3E27B8CA818264D75C8D81; projectDirPath = ""; projectRoot = ""; targets = (34A04005BCAF206EEC990BD9); };
+}; rootObject = 244210E48437B6556980A702; }
