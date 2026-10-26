@@ -25,6 +25,7 @@ jobs:
           node scripts/sync-ios-assets.cjs --check
           node scripts/generate-ios-project.cjs --check
           node ios/Tests/bridge-test.cjs
+          node ios/Tests/i18n-test.cjs
       - name: Test protocol, validation and real loopback UDP
         run: swift test --package-path ios
       - name: Build simulator

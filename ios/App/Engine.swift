@@ -21,7 +21,7 @@ final class ControllerEngine {
  func isLive() -> Bool { lock.lock(); defer { lock.unlock() }; return !liveToken.isEmpty }
  private func check(resuming: Bool = false) throws { lock.lock(); defer { lock.unlock() }; if abort || (!resuming && (cancelled || !foreground)) { throw LumeFailure("Operação interrompida. Se estava gravando, a memória pode estar incompleta.") } }
  private func route() throws -> IPv4Route { lock.lock(); let names = wifiNames; lock.unlock(); guard let route = IPv4Route.interfaces(named: names).first else { throw LumeFailure("Conecte o celular ao Wi-Fi do aparelho ou da sua casa. Se a rede estiver sem internet, escolha permanecer conectado.") }; return route }
- private func guardRoute(_ route: IPv4Route, resuming: Bool = false) throws { try check(resuming: resuming); guard try self.route().address == route.address else { throw LumeFailure("O Wi-Fi mudou ou desconectou durante a operação.") } }
+ private func guardRoute(_ route: IPv4Route, resuming: Bool = false) throws { try check(resuming: resuming); let current = try self.route(); guard current.address == route.address, current.prefix == route.prefix, current.interface == route.interface else { throw LumeFailure("O Wi-Fi mudou ou desconectou durante a operação.") } }
  private func target(_ device: WiFiDevice, route: IPv4Route) throws -> UInt32 { _ = try ControllerProtocol.identity(device.id); guard let ip = IPv4Route.parse(device.ip), route.peer(ip) else { throw LumeFailure("Selecione um dispositivo da mesma rede Wi-Fi.") }; return ip }
  private func acquire() -> Bool { lock.lock(); defer { lock.unlock() }; guard !busy, foreground else { return false }; busy = true; cancelled = false; abort = false; return true }
  private func release() { lock.lock(); busy = false; lock.unlock() }
@@ -41,9 +41,9 @@ final class ControllerEngine {
     note += "Wi-Fi IPv4: \(IPv4Route.text(route.address))/\(route.prefix)\nConsultas diretas limitadas: \(targets.count) · UDP 5000\n"; let start = ProcessInfo.processInfo.systemUptime; var next = start, index = 0
     while ProcessInfo.processInfo.systemUptime-start < (direct.isEmpty ? 14 : 4) {
      try self.guardRoute(route); let now = ProcessInfo.processInfo.systemUptime
-     if index < targets.count && now >= next { try socket.send(ControllerProtocol.discovery(),to:targets[index]); sent += 1; index += 1; next = now+0.04 }
+     if index < targets.count && now >= next { try socket.send(ControllerProtocol.discovery(),to:targets[index]); sent += 1; index += 1; next = now+(direct.isEmpty ? 0.04 : 0.75) }
      if let response = try socket.receive() { received += 1; if route.peer(response.ip), let (id,kind) = ControllerProtocol.discovered(response.bytes) { if let old = found.firstIndex(where: { $0.id.caseInsensitiveCompare(id) == .orderedSame }) { found[old] = WiFiDevice(id:id,ip:IPv4Route.text(response.ip),kind:kind) } else { found.append(WiFiDevice(id:id,ip:IPv4Route.text(response.ip),kind:kind)) }; if automatic && id.caseInsensitiveCompare(preferred) == .orderedSame { break } } else { rejected += 1 } }
-     if index == targets.count && now > next+0.8 { break }; if !automatic { self.progress("Buscando no Wi-Fi · \(found.count) encontrada(s)",min(99,Int((now-start)*100/14))) }
+     if direct.isEmpty && index == targets.count && now > next+0.8 { break }; if !automatic { self.progress("Buscando no Wi-Fi · \(found.count) encontrada(s)",min(99,Int((now-start)*100/14))) }
     }
     if let known = found.first(where: { $0.id.caseInsensitiveCompare(preferred) == .orderedSame }) ?? (found.count == 1 ? found.first : nil) { UserDefaults.standard.set(known.ip,forKey:"lastDeviceIP") }
     if !automatic { self.emit(found.isEmpty ? "error" : "success",found.isEmpty ? "Nenhuma resposta recebida. Permita Rede Local nos Ajustes do Lume; tente o IP conhecido ou mantenha o Wi-Fi conectado." : "Busca concluída.") }

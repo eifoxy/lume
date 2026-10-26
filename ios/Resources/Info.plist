@@ -5,4 +5,5 @@
  <key>LSRequiresIPhoneOS</key><true/><key>UILaunchScreen</key><dict/><key>UISupportedInterfaceOrientations</key><array><string>UIInterfaceOrientationPortrait</string><string>UIInterfaceOrientationLandscapeLeft</string><string>UIInterfaceOrientationLandscapeRight</string></array><key>UIUserInterfaceStyle</key><string>Dark</string>
  <key>NSLocalNetworkUsageDescription</key><string>O Lume usa a rede Wi-Fi local para encontrar sua controladora de aquário, configurar horários e testar a luminária. Os dados não são enviados à nuvem.</string>
  <key>LSSupportsOpeningDocumentsInPlace</key><true/>
+ <key>UISupportedInterfaceOrientations~ipad</key><array><string>UIInterfaceOrientationPortrait</string><string>UIInterfaceOrientationPortraitUpsideDown</string><string>UIInterfaceOrientationLandscapeLeft</string><string>UIInterfaceOrientationLandscapeRight</string></array>
 </dict></plist>
