@@ -4,7 +4,7 @@
 
 ## Elegir idioma
 
-Las versiones Android 1.1.0 y Windows 0.6.0 incluyen portugués brasileño, inglés y español. La opción inicial es **Automático (dispositivo)**: usa la preferencia de idioma del teléfono o Windows, con inglés como alternativa para idiomas no soportados. Las variantes de español, como es-MX y es-ES, usan español; las variantes de portugués usan PT-BR.
+Las versiones Android 1.1.0 y Windows 0.7.0 incluyen portugués brasileño, inglés y español. La opción inicial es **Automático (dispositivo)**: usa la preferencia de idioma del teléfono o Windows, con inglés como alternativa para idiomas no soportados. Las variantes de español, como es-MX y es-ES, usan español; las variantes de portugués usan PT-BR.
 
 El selector **Idioma** aparece al entrar, sobre el contenido en Android y en la barra lateral en Windows. Puedes cambiarlo sin reiniciar. Se guarda de forma separada de los perfiles. Durante búsquedas, envíos o diálogos, espera a que terminen antes de cambiarlo. Los nombres personales de perfiles y canales permanecen iguales.
 
@@ -12,8 +12,8 @@ El selector **Idioma** aparece al entrar, sobre el contenido en Android y en la 
 
 Requiere Android 8 o superior, WebView actualizado y controladora con Wi-Fi compatible. No requiere cable, cuenta, nube ni depuración USB.
 
-1. Abre la [versión Android](https://github.com/eifoxy/lume/releases/tag/android-v1.2.0).
-2. Descarga `Lume-Android-1.2.0.apk` en **Assets**.
+1. Abre la [versión Android](https://github.com/eifoxy/lume/releases/tag/android-v1.3.0).
+2. Descarga `Lume-Android-1.3.0.apk` en **Assets**.
 3. Abre el archivo. Si Android lo solicita, permite instalar aplicaciones a ese navegador o gestor de archivos.
 4. Instala y abre Lume. Si ya lo usabas, instala encima, **sin desinstalar**, para conservar los perfiles.
 5. Elige **Español** en el selector si tu dispositivo usa otro idioma.
@@ -26,12 +26,12 @@ Importa JSON/LMF en **Perfiles** y exporta JSON mediante el selector de document
 
 ## Windows
 
-Requiere Windows 10/11 x64 para el paquete completo. Descarga la [versión Windows](https://github.com/eifoxy/lume/releases/tag/windows-v0.6.0):
+Requiere Windows 10/11 x64 para el paquete completo. Descarga la [versión Windows](https://github.com/eifoxy/lume/releases/tag/windows-v0.7.0):
 
 | Archivo | Requisito |
 |---|---|
-| `Lume-Windows-0.6.0-win-x64.zip` | Incluye .NET. |
-| `Lume-Windows-0.6.0-portable.zip` | Requiere .NET Desktop Runtime 8. |
+| `Lume-Windows-0.7.0-win-x64.zip` | Incluye .NET. |
+| `Lume-Windows-0.7.0-portable.zip` | Requiere .NET Desktop Runtime 8. |
 
 Extrae todo en una carpeta donde puedas guardar archivos y abre `Lume.exe`. No lo ejecutes dentro del ZIP. No requiere administrador ni cambiar el controlador HID de Windows. En el paquete ligero, conserva DLL y JSON junto al ejecutable. El ejecutable no tiene certificado comercial.
 
@@ -45,4 +45,4 @@ Las versiones incluyen archivos `SHA256SUMS.txt`. Los tests locales y la firma d
 
 ## Vista previa en vivo
 
-Android 1.2.0 añade Vincular luminaria en Arrecife para Smart Timer por Wi-Fi. Mover el horario o reproducir el día envía intensidades reales tras confirmación. [Instrucciones y límites](VISTA-EN-VIVO.md).
+Android 1.3.0 añade Vincular luminaria en Arrecife para Smart Timer por Wi-Fi. Mover el horario o reproducir el día envía intensidades reales tras confirmación. [Instrucciones y límites](VISTA-EN-VIVO.md).

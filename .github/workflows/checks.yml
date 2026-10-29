@@ -18,12 +18,19 @@ jobs:
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.0.x'
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
       - name: Compilar distribuições
         shell: pwsh
         run: ./scripts/build-windows.ps1
       - name: Verificar modelo, protocolos, UDP e interface
         shell: pwsh
         run: ./scripts/test-windows.ps1 -AppDirectory ./artifacts/windows-x64
+      - name: Ler imagem QR do Windows com o leitor Android
+        shell: pwsh
+        run: ./scripts/test-qr-image.ps1 -Jdk $env:JAVA_HOME -AppDirectory ./artifacts/windows-x64
       - uses: actions/upload-artifact@v4
         with:
           name: lume-windows

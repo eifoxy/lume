@@ -21,14 +21,16 @@ Las aplicaciones incluyen **portugués, inglés y español**. Al abrir por prime
 
 | Aplicación | Descarga | Instalación |
 |---|---|---|
-| Windows x64 · 0.6.0 | [ZIP completo con .NET](https://github.com/eifoxy/lume/releases/download/windows-v0.6.0/Lume-Windows-0.6.0-win-x64.zip) | Extrae todo y abre `Lume.exe`. |
-| Windows · 0.6.0 | [ZIP ligero](https://github.com/eifoxy/lume/releases/download/windows-v0.6.0/Lume-Windows-0.6.0-portable.zip) | Requiere .NET Desktop Runtime 8. Extrae todo y abre `Lume.exe`. |
-| Android 8+ · 1.2.0 | [APK](https://github.com/eifoxy/lume/releases/download/android-v1.2.0/Lume-Android-1.2.0.apk) | Descarga en el teléfono y abre el archivo. |
-| iPhone/iPad · iOS 15.4+ · 0.1.1 | [Versión de desarrollo](https://github.com/eifoxy/lume/actions/workflows/ios.yml) | Sin firma, no se instala al descargar. [Guía iOS](docs/es/INSTALACION-IOS.md). |
+| Windows x64 · 0.7.0 | [ZIP completo con .NET](https://github.com/eifoxy/lume/releases/download/windows-v0.7.0/Lume-Windows-0.7.0-win-x64.zip) | Extrae todo y abre `Lume.exe`. |
+| Windows · 0.7.0 | [ZIP ligero](https://github.com/eifoxy/lume/releases/download/windows-v0.7.0/Lume-Windows-0.7.0-portable.zip) | Requiere .NET Desktop Runtime 8. Extrae todo y abre `Lume.exe`. |
+| Android 8+ · 1.3.0 | [APK](https://github.com/eifoxy/lume/releases/download/android-v1.3.0/Lume-Android-1.3.0.apk) | Descarga en el teléfono y abre el archivo. |
+| iPhone/iPad · iOS 15.4+ · 0.2.0 | [Versión de desarrollo](https://github.com/eifoxy/lume/actions/workflows/ios.yml) | Sin firma, no se instala al descargar. [Guía iOS](docs/es/INSTALACION-IOS.md). |
 
 En Android, actualiza **sobre la versión anterior, sin desinstalar**, para conservar los perfiles. En Windows, exporta una copia de la biblioteca antes de actualizar. [Instalación detallada](docs/es/INSTALACION.md) · [Versiones y sumas SHA-256](https://github.com/eifoxy/lume/releases).
 
 **iOS en desarrollo:** editor, tres idiomas y funciones Wi-Fi portados, incluida la vista previa Smart Timer en la luminaria. Búsqueda mediante consultas directas en la red local e IP conocida. Faltan pruebas con iPhone/controladora reales y firma Apple para instalar. No hay TestFlight/App Store. [Instalación y límites](docs/es/INSTALACION-IOS.md).
+
+Pasa un perfil o toda la biblioteca del PC al móvil mediante **Enviar al móvil por QR** y **Perfiles > Leer QR del PC**, sin internet. [Guía QR](docs/es/QR.md).
 
 ## Vista previa en la luminaria
 
@@ -62,7 +64,7 @@ En Arrecife, usa **Vincular luminaria** para que una Smart Timer siga el horario
 | Importar proyectos LCM | Sí | No |
 | Exportar LMF / JSON | Sí | JSON |
 
-Windows 0.6.0 conserva el transporte de Windows 0.5.0; añadir idiomas no incorpora la adaptación Smart Timer `88 00` de Android.
+Windows 0.7.0 conserva el transporte de Windows 0.5.0; añadir idiomas no incorpora la adaptación Smart Timer `88 00` de Android.
 
 ## Primer uso por Wi-Fi
 

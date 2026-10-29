@@ -6,13 +6,13 @@
 
 ## Situação desta versão
 
-**0.1.1, prévia de desenvolvimento para iOS/iPadOS 15.4 ou posterior.** O projeto inclui o editor e a comunicação Wi-Fi. A compilação e os testes automatizados são executados num Mac do GitHub Actions. Ainda não houve teste num iPhone real com a controladora. Não há lançamento na App Store ou no TestFlight.
+**0.2.0, prévia de desenvolvimento para iOS/iPadOS 15.4 ou posterior.** O projeto inclui o editor e a comunicação Wi-Fi. A compilação e os testes automatizados são executados num Mac do GitHub Actions. Ainda não houve teste num iPhone real com a controladora. Não há lançamento na App Store ou no TestFlight.
 
 O arquivo `UNSIGNED.ipa` é um artefato de desenvolvimento **sem assinatura Apple**. Ele não instala ao abrir no iPhone. O ZIP Simulator é para o simulador do Xcode em um Mac, não para um telefone. [Compilações e artefatos](https://github.com/eifoxy/lume/actions/workflows/ios.yml).
 
 ### iPhone 7 e outros modelos antigos
 
-A versão 0.1.1 reduz o mínimo para **iOS 15.4**. Isso inclui iPhone 7/7 Plus e modelos como 6s e SE de primeira geração, desde que estejam atualizados para uma versão compatível do iOS 15. iOS 15.0 a 15.3 e aparelhos limitados ao iOS 12 não são atendidos. O mínimo 15.4 mantém o suporte nativo aos diálogos do editor; a tradução foi adaptada para não depender de recursos de JavaScript do iOS 16.4. [Diálogos no Safari 15.4](https://developer.apple.com/documentation/safari-release-notes/safari-15_4-release-notes).
+A versão 0.2.0 mantém o mínimo para **iOS 15.4**. Isso inclui iPhone 7/7 Plus e modelos como 6s e SE de primeira geração, desde que estejam atualizados para uma versão compatível do iOS 15. iOS 15.0 a 15.3 e aparelhos limitados ao iOS 12 não são atendidos. O mínimo 15.4 mantém o suporte nativo aos diálogos do editor; a tradução foi adaptada para não depender de recursos de JavaScript do iOS 16.4. [Diálogos no Safari 15.4](https://developer.apple.com/documentation/safari-release-notes/safari-15_4-release-notes).
 
 As funções Wi-Fi e os três idiomas permanecem implementados. A compilação verifica o mínimo 15.4, e testes comparam as traduções sem os recursos mais recentes. O simulador disponível no GitHub usa um sistema mais novo; a tela pequena é verificada separadamente. Isso **não equivale a um teste num iPhone 7 ou num runtime iOS 15**. Desempenho do recife e comunicação no aparelho antigo ainda precisam desse teste. A exigência de assinatura Apple continua a mesma.
 
@@ -78,3 +78,5 @@ xcodebuild -project ios/Lume.xcodeproj -scheme Lume -configuration Release \
 ```
 
 O fluxo `ios.yml` também compila para dispositivo, sem assinatura, e empacota o IPA e o aplicativo do simulador com SHA-256. Testes de pacotes, validação, transações e UDP local não substituem a aprovação da permissão Rede Local nem um teste com a controladora real.
+
+Para trazer perfis do PC sem internet, use **Perfis > Ler QR do PC**. [Tutorial QR](QR.md).

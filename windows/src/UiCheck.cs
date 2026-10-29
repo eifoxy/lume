@@ -36,6 +36,8 @@ public partial class MainWindow
   chooser.SelectAllForTest(false);Assert(!chooser.CanConfirm,"Bulk erase needs explicit acknowledgment in the dialog");
   chooser.SelectAllForTest(true);Assert(chooser.CanConfirm&&chooser.Plan?.Items.Count==5&&chooser.Plan.ClearExisting,"All-profile selection must create a full replacement plan");
   root=new Grid{Background=Background};root.Children.Add(chooser);Content=root;Layout(580,800);Snapshot("previa-envio.png");Content=localContent;
+  var qrWindow=new QrShareWindow(library);var qrContent=(UIElement)qrWindow.Content;qrWindow.Content=null;
+  root=new Grid{Background=Background};root.Children.Add(qrContent);Content=root;Layout(580,800);Snapshot("previa-qr.png");Assert(root.ActualWidth==580,"QR sharing window renders at a readable size");Content=localContent;
   var wifiDemo=new WifiDevice("A1B2C3D4E5F6",System.Net.IPAddress.Parse("192.168.1.42"),"Wi-Fi");using var wifiChooser=new WifiChooser(true);wifiChooser.DemoDevice(wifiDemo);
   root=new Grid{Background=Background};root.Children.Add(wifiChooser);Content=root;Layout(650,940);Snapshot("previa-wifi.png");Content=localContent;
   wifiDevice=wifiDemo;device=null;EnableUsb();Assert(SyncButton.IsEnabled&&UploadButton.IsEnabled&&!ManualButton.IsEnabled,"Wi-Fi selection routes supported actions and disables unsupported live control");wifiDevice=null;EnableUsb();Assert(!UploadButton.IsEnabled&&!SyncButton.IsEnabled,"Disconnected actions remain disabled");

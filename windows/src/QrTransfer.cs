@@ -18,6 +18,6 @@ public static class QrTransfer
  {
   var bytes=Encode(library);int count=(bytes.Length+ChunkSize-1)/ChunkSize;var id=transferId??Guid.NewGuid().ToString("N")[..16];
   if(id.Length!=16||id.Any(c=>!Uri.IsHexDigit(c)))throw new InvalidDataException("Invalid transfer ID");
-  return Enumerable.Range(0,count).Select(i=>$"LUMEQR1:{id.ToLowerInvariant()}:{i+1}:{count}:{Crc(bytes):x8}:"+Convert.ToBase64String(bytes.Skip(i*ChunkSize).Take(ChunkSize).ToArray()).TrimEnd('=').Replace('+','-').Replace('/','_')).ToArray();
+  string checksum=Crc(bytes).ToString("x8");return Enumerable.Range(0,count).Select(i=>$"LUMEQR1:{id.ToLowerInvariant()}:{i+1}:{count}:{checksum}:"+Convert.ToBase64String(bytes.Skip(i*ChunkSize).Take(ChunkSize).ToArray()).TrimEnd('=').Replace('+','-').Replace('/','_')).ToArray();
  }
 }

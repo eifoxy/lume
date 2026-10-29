@@ -11,8 +11,8 @@ No cable, computer, account, or cloud service is required. Android has no USB tr
 
 ## Install the APK
 
-1. Open the [Android release](https://github.com/eifoxy/lume/releases/tag/android-v1.2.0) on your phone.
-2. Download **`Lume-Android-1.2.0.apk`** under **Assets**. For updates, install over the previous version **without uninstalling** to keep your profiles.
+1. Open the [Android release](https://github.com/eifoxy/lume/releases/tag/android-v1.3.0) on your phone.
+2. Download **`Lume-Android-1.3.0.apk`** under **Assets**. For updates, install over the previous version **without uninstalling** to keep your profiles.
 3. Open the downloaded file in your file manager or download notification.
 4. If prompted, allow **that browser or file manager** to install apps. The setting name varies by manufacturer.
 5. Tap **Install** and open **Lume**.
@@ -54,4 +54,4 @@ Build, signature verification, and local tests passed. The user confirmed discov
 
 ## Live light preview
 
-Android 1.2.0 adds opt-in Wi-Fi preview for Smart Timer. In Reef, choose Link light fixture and confirm. Moving the timeline or playing the day sends real intensities without rewriting profiles. End preview to resume the schedule; reconnect the same device if restoration is unconfirmed. [Instructions and limits](LIVE-PREVIEW.md).
+Android 1.3.0 adds opt-in Wi-Fi preview for Smart Timer. In Reef, choose Link light fixture and confirm. Moving the timeline or playing the day sends real intensities without rewriting profiles. End preview to resume the schedule; reconnect the same device if restoration is unconfirmed. [Instructions and limits](LIVE-PREVIEW.md).

@@ -18,8 +18,10 @@ final class QrCamera implements SurfaceHolder.Callback {
  private final Activity activity;private final FrameLayout root,overlay,viewport;private final SurfaceView view;private final TextView progress;
  private final Consumer<String> read,error;private final Runnable cancel;private final ExecutorService decoder=Executors.newSingleThreadExecutor();
  private volatile Camera camera;private volatile boolean closed;private int width,height;private long last;private String previous="";
+ private final android.os.Handler timeout=new android.os.Handler(android.os.Looper.getMainLooper());
  QrCamera(Activity activity,FrameLayout root,String title,String instruction,String cancelText,Consumer<String> read,Consumer<String> error,Runnable cancel){
   this.activity=activity;this.root=root;this.read=read;this.error=error;this.cancel=cancel;
+  timeout.postDelayed(()->{if(!closed)cancel.run();},600000);
   overlay=new FrameLayout(activity);overlay.setBackgroundColor(Color.BLACK);LinearLayout column=new LinearLayout(activity);column.setOrientation(LinearLayout.VERTICAL);overlay.addView(column,new FrameLayout.LayoutParams(-1,-1));
   TextView heading=new TextView(activity);heading.setText(title);heading.setTextSize(22);heading.setTextColor(Color.WHITE);heading.setPadding(24,24,24,12);column.addView(heading);
   progress=new TextView(activity);progress.setText(instruction);progress.setTextSize(16);progress.setTextColor(Color.WHITE);progress.setPadding(24,8,24,16);column.addView(progress);
@@ -49,5 +51,5 @@ final class QrCamera implements SurfaceHolder.Callback {
  @Override public void surfaceChanged(SurfaceHolder holder,int format,int w,int h){}
  @Override public void surfaceDestroyed(SurfaceHolder holder){release();}
  private void release(){Camera c=camera;camera=null;if(c!=null){try{c.setPreviewCallbackWithBuffer(null);c.stopPreview();}catch(RuntimeException ignored){}c.release();}}
- void close(){if(closed)return;closed=true;release();decoder.shutdownNow();root.removeView(overlay);}
+ void close(){if(closed)return;closed=true;timeout.removeCallbacksAndMessages(null);release();decoder.shutdownNow();root.removeView(overlay);}
 }

@@ -6,7 +6,7 @@ window.LumeQr=(()=>{
   if(bytes.length>131072||bytes.length<9||String.fromCharCode(...bytes.slice(0,5))!=='LUME\x01')fail('QR do Lume inválido.');
   let at=5;const word=()=>{if(at+2>bytes.length)fail('QR do Lume incompleto.');const v=bytes[at]|bytes[at+1]<<8;at+=2;return v;};
   const count=word(),selected=word();if(count<1||count>100||selected>=count)fail('QR do Lume inválido.');
-  const text=max=>{const length=word();if(length<1||length>max*3||at+length>bytes.length)fail('QR do Lume inválido.');let result;try{result=new TextDecoder('utf-8',{fatal:true}).decode(bytes.slice(at,at+length));}catch{fail('Texto inválido no QR.');}at+=length;if(!result.trim()||result.length>max)fail('Texto inválido no QR.');return result;};
+  const text=max=>{const length=word();if(length<1||length>max*3||at+length>bytes.length)fail('QR do Lume inválido.');let result;try{result=new TextDecoder('utf-8',{fatal:true,ignoreBOM:true}).decode(bytes.slice(at,at+length));}catch{fail('Texto inválido no QR.');}at+=length;if(!result.trim()||result.length>max)fail('Texto inválido no QR.');return result;};
   const Profiles=[];for(let i=0;i<count;i++){const Name=text(80),Channels=Array.from({length:5},()=>text(40)),Values=[];for(let row=0;row<48;row++){if(at+5>bytes.length)fail('QR do Lume incompleto.');const values=Array.from(bytes.slice(at,at+5));if(values.some(v=>v>100))fail('Intensidade inválida no QR.');at+=5;Values.push(values);}Profiles.push({Name,Channels,Values});}
   if(at!==bytes.length)fail('Dados extras no QR.');return{Version:1,Selected:selected,Profiles};
  }

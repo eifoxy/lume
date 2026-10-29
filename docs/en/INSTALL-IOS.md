@@ -4,13 +4,13 @@
 
 [← Lume](../../README.en.md)
 
-**0.1.1 is an unsigned development preview for iOS/iPadOS 15.4+.** The offline editor and native Wi-Fi implementation are included. GitHub Actions uses a Mac to compile and run automated tests. Real iPhone/controller validation is still pending. There is no App Store or TestFlight release.
+**0.2.0 is an unsigned development preview for iOS/iPadOS 15.4+.** The offline editor and native Wi-Fi implementation are included. GitHub Actions uses a Mac to compile and run automated tests. Real iPhone/controller validation is still pending. There is no App Store or TestFlight release.
 
 The `UNSIGNED.ipa` **cannot be installed as downloaded**. It needs Apple signing. The Simulator ZIP is for Xcode on a Mac, not a phone. [Builds and artifacts](https://github.com/eifoxy/lume/actions/workflows/ios.yml). Without access to a Mac or Apple signing, use Windows/Android for now. The project does not create accounts, enroll you in a paid program, or buy services.
 
 ## Older iPhones
 
-Version 0.1.1 lowers the deployment target to **iOS 15.4**, covering updated iPhone 7/7 Plus, 6s and first-generation SE devices. iOS 15.0 through 15.3 and devices limited to iOS 12 are unsupported. iOS 15.4 provides the editor's native dialog support; translation no longer requires the RegExp lookbehind introduced in iOS 16.4. Wi-Fi functions and all three languages remain implemented. [Apple Safari 15.4 notes](https://developer.apple.com/documentation/safari-release-notes/safari-15_4-release-notes).
+Version 0.2.0 retains the deployment target to **iOS 15.4**, covering updated iPhone 7/7 Plus, 6s and first-generation SE devices. iOS 15.0 through 15.3 and devices limited to iOS 12 are unsupported. iOS 15.4 provides the editor's native dialog support; translation no longer requires the RegExp lookbehind introduced in iOS 16.4. Wi-Fi functions and all three languages remain implemented. [Apple Safari 15.4 notes](https://developer.apple.com/documentation/safari-release-notes/safari-15_4-release-notes).
 
 Compilation checks the 15.4 deployment target, with regression tests for older JavaScript capabilities and small-screen layout checks. The available GitHub simulator runs a newer OS. **No iPhone 7, A10 hardware or iOS 15 runtime test has been performed.** Reef performance and controller communication on an older phone still need physical validation. Apple signing is still required.
 
@@ -54,3 +54,5 @@ Stopping or leaving the foreground attempts to resume the schedule. The recovery
 No Lume account, telemetry, ads or control server. The editor works offline; commands stay on the local network. Libraries, preferences and recovery state remain in app storage, subject to system backup policies. Diagnostics contain local IPs and counters, without SSID/password, and are shared only by user action. Export JSON before uninstalling.
 
 On a Mac, run `node scripts/sync-ios-assets.cjs --check`, `node scripts/generate-ios-project.cjs --check`, `node ios/Tests/bridge-test.cjs`, and `swift test --package-path ios`. Open the project to build, or use the [workflow](../../.github/workflows/ios.yml), which also builds an unsigned device app and packages SHA-256 checksums. Network mocks and loopback tests do not replace real permission and controller testing.
+
+Import PC profiles offline through **Profiles > Scan PC QR**. [QR guide](QR.md).

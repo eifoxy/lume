@@ -1,6 +1,6 @@
 # Compatibility and validation
 
-**iOS 0.1.1:** iPhone/iPad development preview for iOS 15.4+. GitHub Actions builds the simulator and unsigned device app. Shared editor, Smart Timer and legacy Pled Wi-Fi are implemented. Discovery uses bounded unicast, without broadcast. Real iPhone/controller validation is pending. No installable distribution or TestFlight. [iOS guide and limits](INSTALL-IOS.md).
+**iOS 0.2.0:** iPhone/iPad development preview for iOS 15.4+. GitHub Actions builds the simulator and unsigned device app. Shared editor, Smart Timer and legacy Pled Wi-Fi are implemented. Discovery uses bounded unicast, without broadcast. Real iPhone/controller validation is pending. No installable distribution or TestFlight. [iOS guide and limits](INSTALL-IOS.md).
 
 [Home](../../README.en.md) · **English** · [Português (Brasil)](../COMPATIBILIDADE.md)
 
@@ -38,7 +38,7 @@
 
 ## Local checks
 
-- **Languages, Android 1.1.0 and Windows 0.6.0:** 496 shared messages in PT-BR, English, and Spanish. Catalog tests cover every entry in each language; interface checks cover automatic/manual selection, persistence, unsupported system languages, and preservation of library data and profile bytes. Android was also reviewed in a browser; Windows was rendered offscreen in all three languages. These builds still need a phone/controller retest. Windows 0.6.0 inherits 0.5.0 transports and still lacks Android's Smart Timer adaptation.
+- **Languages, Android 1.1.0 and Windows 0.7.0:** 496 shared messages in PT-BR, English, and Spanish. Catalog tests cover every entry in each language; interface checks cover automatic/manual selection, persistence, unsupported system languages, and preservation of library data and profile bytes. Android was also reviewed in a browser; Windows was rendered offscreen in all three languages. These builds still need a phone/controller retest. Windows 0.7.0 inherits 0.5.0 transports and still lacks Android's Smart Timer adaptation.
 - **Windows:** 77 functional checks for models, files, packets, transfers, errors, and UDP; 24 offscreen UI checks.
 - **Android 1.0.6:** 55 general Java checks, 34 Smart Timer checks, 16 editor checks, and 29 automatic discovery checks. Real loopback UDP covers clock, fictitious credentials, complete profiles, and lost acknowledgments at the sixth point and first header after erasure. Simulated events/timers cover startup/return, changed IP, lost/recovered devices, multiple controllers, persistent choice, and operation/dialog exclusion.
 - **APK:** javac/D8/aapt2 build, alignment, and v2/v3 signatures verified.
@@ -64,6 +64,6 @@ Five channels, 48 half-hour points, integer intensities 0-100; 100 local profile
 
 No full memory readback, physical rollback, firmware updates, Bluetooth discovery, Android USB, or cloud telemetry. A failure after erasure can leave device memory empty or partial. Automatic upload recovery is bounded to the same indexed Smart point or initial header before points begin, only for timeout without a valid reply, up to three total attempts. Erasure is never automatically repeated.
 
-## Wi-Fi preview, Android 1.2.0
+## Wi-Fi preview, Android 1.3.0
 
 Implemented only for Smart Timer, using vendor APK `06 01`/`06 02` commands. Intensities have no individual ACK; `03 08` resume requires Smart `83` and matching identity. Fixtures, latest-value mailbox, cancellation, heartbeat expiry, restoration failures, and real loopback UDP passed. UI was tested in all three languages with a simulated native bridge. Physical light behavior remains pending a hardware test. Windows does not receive this feature. [Usage and limits](LIVE-PREVIEW.md).

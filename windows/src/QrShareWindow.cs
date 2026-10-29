@@ -10,7 +10,7 @@ namespace Lume;
 public sealed class QrShareWindow:Window
 {
  readonly Library source;string[] frames=[];int index;
- readonly Image image=new(){Stretch=Stretch.Uniform,Height=410};
+ readonly Image image=new(){Stretch=Stretch.Uniform,MaxHeight=410};
  readonly TextBlock counter=new(){HorizontalAlignment=HorizontalAlignment.Center,Margin=new Thickness(0,12,0,12)};
  readonly CheckBox all=new(){Content=I18n.T("Todos os perfis"),Margin=new Thickness(0,10,0,8)};
  readonly CheckBox play=new(){Content=I18n.T("Alternar QR codes automaticamente"),Margin=new Thickness(0,8,0,8)};
@@ -19,14 +19,15 @@ public sealed class QrShareWindow:Window
  {
   source=new Library{Profiles=library.Profiles.Select(p=>p.Clone()).ToList(),Selected=library.Selected};
   RenderOptions.SetBitmapScalingMode(image,BitmapScalingMode.NearestNeighbor);
-  Title=I18n.T("Enviar ao celular por QR");Width=580;Height=790;MaxHeight=SystemParameters.WorkArea.Height;MinWidth=400;WindowStartupLocation=WindowStartupLocation.CenterOwner;Background=new SolidColorBrush(Color.FromRgb(17,29,32));Foreground=Brushes.White;
-  var panel=new StackPanel{Margin=new Thickness(24)};
-  panel.Children.Add(new TextBlock{Text=Title,FontSize=23,FontWeight=FontWeights.SemiBold});
-  panel.Children.Add(new TextBlock{Text=I18n.T("No celular, abra Perfis > Ler QR do PC. Aponte para a tela e aguarde todas as partes. Não precisa de internet nem da mesma rede."),TextWrapping=TextWrapping.Wrap,Margin=new Thickness(0,10,0,4)});
-  panel.Children.Add(all);panel.Children.Add(new Border{Background=Brushes.White,Padding=new Thickness(8),Child=image});panel.Children.Add(counter);
-  var row=new StackPanel{Orientation=Orientation.Horizontal,HorizontalAlignment=HorizontalAlignment.Center};var previous=new Button{Content=I18n.T("Anterior")};var next=new Button{Content=I18n.T("Próximo")};previous.Click+=(_,_)=>Show(index-1);next.Click+=(_,_)=>Show(index+1);row.Children.Add(previous);row.Children.Add(next);panel.Children.Add(row);panel.Children.Add(play);
-  panel.Children.Add(new TextBlock{Text=I18n.T("A importação pede confirmação e preserva os perfis do celular. Nenhum comando é enviado à luminária. Feche esta janela ao terminar."),TextWrapping=TextWrapping.Wrap,FontSize=11,Margin=new Thickness(0,8,0,8)});
-  var close=new Button{Content=I18n.T("Concluir"),IsCancel=true};close.Click+=(_,_)=>Close();panel.Children.Add(close);Content=new ScrollViewer{Content=panel,VerticalScrollBarVisibility=ScrollBarVisibility.Auto};
+  Title=I18n.T("Enviar ao celular por QR");Width=580;Height=880;MinHeight=650;MaxHeight=SystemParameters.WorkArea.Height;MinWidth=400;WindowStartupLocation=WindowStartupLocation.CenterOwner;Background=new SolidColorBrush(Color.FromRgb(17,29,32));Foreground=Brushes.White;
+  var panel=new Grid{Margin=new Thickness(24)};
+  void Add(UIElement element,bool flexible=false){int row=panel.RowDefinitions.Count;panel.RowDefinitions.Add(new RowDefinition{Height=flexible?new GridLength(1,GridUnitType.Star):GridLength.Auto});Grid.SetRow(element,row);panel.Children.Add(element);}
+  Add(new TextBlock{Text=Title,FontSize=23,FontWeight=FontWeights.SemiBold});
+  Add(new TextBlock{Text=I18n.T("No celular, abra Perfis > Ler QR do PC. Aponte para a tela e aguarde todas as partes. Não precisa de internet nem da mesma rede."),TextWrapping=TextWrapping.Wrap,Margin=new Thickness(0,10,0,4)});
+  Add(all);Add(new Border{Background=Brushes.White,Padding=new Thickness(8),Child=image},true);Add(counter);
+  var row=new StackPanel{Orientation=Orientation.Horizontal,HorizontalAlignment=HorizontalAlignment.Center};var previous=new Button{Content=I18n.T("Anterior")};var next=new Button{Content=I18n.T("Próximo")};previous.Click+=(_,_)=>Show(index-1);next.Click+=(_,_)=>Show(index+1);row.Children.Add(previous);row.Children.Add(next);Add(row);Add(play);
+  Add(new TextBlock{Text=I18n.T("A importação pede confirmação e preserva os perfis do celular. Nenhum comando é enviado à luminária. Feche esta janela ao terminar."),TextWrapping=TextWrapping.Wrap,FontSize=11,Margin=new Thickness(0,8,0,8)});
+  var close=new Button{Content=I18n.T("Concluir"),IsCancel=true};close.Click+=(_,_)=>Close();Add(close);Content=panel;
   all.Checked+=(_,_)=>Reset();all.Unchecked+=(_,_)=>Reset();play.Checked+=(_,_)=>timer.Start();play.Unchecked+=(_,_)=>timer.Stop();timer.Tick+=(_,_)=>Show(index+1);Closed+=(_,_)=>timer.Stop();Reset();
  }
  void Reset(){timer.Stop();play.IsChecked=false;var library=all.IsChecked==true?source:new Library{Profiles=[source.Profiles[source.Selected].Clone()],Selected=0};frames=QrTransfer.Frames(library);Show(0);}

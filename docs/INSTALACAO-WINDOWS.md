@@ -14,12 +14,12 @@ O seletor na barra lateral permite Português (Brasil), English, Español ou Aut
 - Uma pasta na qual seu usuário possa salvar arquivos.
 - Controladora compatível por USB HID ou com módulo Wi-Fi compatível para conexão sem fio.
 
-Abra a [página de versões](https://github.com/eifoxy/lume/releases/tag/windows-v0.6.0). Existem dois pacotes:
+Abra a [página de versões](https://github.com/eifoxy/lume/releases/tag/windows-v0.7.0). Existem dois pacotes:
 
 | Arquivo | Qual escolher |
 |---|---|
-| `Lume-Windows-0.6.0-win-x64.zip` | Inclui o .NET. É a opção mais simples para Windows x64. |
-| `Lume-Windows-0.6.0-portable.zip` | Download menor. Requer o **.NET Desktop Runtime 8 para Windows**, da [Microsoft](https://dotnet.microsoft.com/en-us/download/dotnet/8.0). O runtime básico ou ASP.NET sozinho não substitui o Desktop Runtime. |
+| `Lume-Windows-0.7.0-win-x64.zip` | Inclui o .NET. É a opção mais simples para Windows x64. |
+| `Lume-Windows-0.7.0-portable.zip` | Download menor. Requer o **.NET Desktop Runtime 8 para Windows**, da [Microsoft](https://dotnet.microsoft.com/en-us/download/dotnet/8.0). O runtime básico ou ASP.NET sozinho não substitui o Desktop Runtime. |
 
 1. Baixe o ZIP escolhido.
 2. Clique com o botão direito e escolha **Extrair tudo**.
@@ -30,7 +30,7 @@ Abra a [página de versões](https://github.com/eifoxy/lume/releases/tag/windows
 O aplicativo é portátil: não há instalador nem necessidade de privilégios de administrador. A distribuição atual não possui certificado comercial de assinatura de executável. Baixe pela página oficial deste repositório e compare o SHA-256 com `SHA256SUMS.txt` se quiser conferir o arquivo:
 
 ```powershell
-Get-FileHash .\Lume-Windows-0.6.0-win-x64.zip -Algorithm SHA256
+Get-FileHash .\Lume-Windows-0.7.0-win-x64.zip -Algorithm SHA256
 ```
 
 ## Conectar por USB
