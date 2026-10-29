@@ -21,7 +21,7 @@ final class QrCamera implements SurfaceHolder.Callback {
  private final android.os.Handler timeout=new android.os.Handler(android.os.Looper.getMainLooper());
  QrCamera(Activity activity,FrameLayout root,String title,String instruction,String cancelText,Consumer<String> read,Consumer<String> error,Runnable cancel){
   this.activity=activity;this.root=root;this.read=read;this.error=error;this.cancel=cancel;
-  timeout.postDelayed(()->{if(!closed)cancel.run();},600000);
+  timeout.postDelayed(()->{if(!closed)cancel.run();},900000);
   overlay=new FrameLayout(activity);overlay.setBackgroundColor(Color.BLACK);LinearLayout column=new LinearLayout(activity);column.setOrientation(LinearLayout.VERTICAL);overlay.addView(column,new FrameLayout.LayoutParams(-1,-1));
   TextView heading=new TextView(activity);heading.setText(title);heading.setTextSize(22);heading.setTextColor(Color.WHITE);heading.setPadding(24,24,24,12);column.addView(heading);
   progress=new TextView(activity);progress.setText(instruction);progress.setTextSize(16);progress.setTextColor(Color.WHITE);progress.setPadding(24,8,24,16);column.addView(progress);

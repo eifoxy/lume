@@ -10,7 +10,7 @@ Requiere **Windows 0.7.0** y **Android 1.3.0** o **iOS 0.2.0**. No necesita cuen
 4. Si hay varias partes, pulsa **Siguiente** en el PC o activa **Alternar códigos QR automáticamente**. Se repiten cada dos segundos. El móvil cuenta las partes y admite lecturas repetidas o fuera de orden.
 5. Al completar y verificar la transferencia, la cámara se cierra y Lume pide confirmación. **Cancelar conserva tu biblioteca.** Confirmar añade perfiles sin sustituir los existentes, hasta el límite de 100 perfiles del móvil.
 
-Si cuesta leer, acerca el móvil, evita reflejos y amplía la ventana del PC. Mantén la cámara apuntando hasta completar el contador. La lectura caduca a los diez minutos. Cancela antes de cambiar entre el perfil actual y toda la biblioteca: no se mezclan envíos distintos.
+Si cuesta leer, acerca el móvil, evita reflejos y amplía la ventana del PC. Mantén la cámara apuntando hasta completar el contador. La lectura caduca a los quince minutos. Cancela antes de cambiar entre el perfil actual y toda la biblioteca: no se mezclan envíos distintos.
 
 Las imágenes se procesan localmente, sin guardar fotos ni subirlas a un servidor. Salir del app cierra la cámara. Si denegaste el permiso, actívalo en los ajustes o utiliza la importación JSON/LMF.
 

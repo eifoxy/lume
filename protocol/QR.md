@@ -12,7 +12,7 @@ LUMEQR1:<transfer-id>:<part>:<count>:<crc32>:<base64url>
 - Part/count: decimal, 1-based, at most 384 parts.
 - CRC: eight hexadecimal digits, IEEE CRC-32 of the complete binary library. Initial state `FFFFFFFF`, reflected polynomial `EDB88320`, final XOR `FFFFFFFF`. Test vector `123456789` produces `cbf43926`.
 - Payload: unpadded base64url of at most 360 bytes; every non-final chunk is exactly 360 bytes. Maximum frame text length: 600 characters.
-- Receiver: accepts reorder and identical repeats, rejects conflicting duplicates or a different ID/count/checksum, caps the assembled library at 131072 bytes, expires a scan session after ten minutes, verifies CRC before decoding.
+- Receiver: accepts reorder and identical repeats, rejects conflicting duplicates or a different ID/count/checksum, caps the assembled library at 131072 bytes, expires a scan session after fifteen minutes, verifies CRC before decoding.
 
 Binary integers are little endian. Library layout:
 

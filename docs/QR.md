@@ -10,7 +10,7 @@ Requer **Windows 0.7.0** e **Android 1.3.0** ou **iOS 0.2.0**. A transferência 
 4. Se houver várias partes, use **Próximo** no PC ou marque **Alternar QR codes automaticamente**. A sequência repete a cada dois segundos por código. O celular mostra quantas partes já recebeu; partes repetidas ou fora de ordem são aceitas.
 5. Quando todas as partes forem recebidas e verificadas, a câmera fecha e o celular pede confirmação para adicionar os perfis. **Cancelar preserva a biblioteca atual.** Confirmar adiciona os novos perfis sem substituir os existentes, respeitando o limite de 100 perfis no celular.
 
-Se a câmera não conseguir ler, aproxime o telefone, evite reflexos e aumente a janela do PC. Para transferências longas, prefira o modo automático e mantenha o telefone apontado até o contador completar. A leitura encerra depois de dez minutos; nesse caso, comece uma nova leitura. Um envio não pode ser misturado com outro: cancele antes de trocar entre perfil atual e biblioteca inteira.
+Se a câmera não conseguir ler, aproxime o telefone, evite reflexos e aumente a janela do PC. Para transferências longas, prefira o modo automático e mantenha o telefone apontado até o contador completar. A leitura encerra depois de quinze minutos; nesse caso, comece uma nova leitura. Um envio não pode ser misturado com outro: cancele antes de trocar entre perfil atual e biblioteca inteira.
 
 As imagens da câmera são usadas apenas para reconhecer o QR, sem salvar fotos ou enviar imagens a um servidor. Sair do aplicativo encerra a câmera. Se a permissão foi negada, habilite a câmera nas configurações do aplicativo ou continue usando a importação JSON/LMF.
 

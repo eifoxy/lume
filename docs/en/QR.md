@@ -10,7 +10,7 @@ Requires **Windows 0.7.0** and **Android 1.3.0** or **iOS 0.2.0**. No account, i
 4. For multipart transfers, use **Next** on the PC or **Cycle QR codes automatically**. Codes repeat at two-second intervals. The phone counts received parts and accepts repeats or out-of-order scans.
 5. After all parts pass verification, the camera closes and Lume asks before adding profiles. **Cancel preserves your library.** Confirmation appends profiles, keeping existing ones, within the phone's 100-profile limit.
 
-If scanning is difficult, move closer, avoid screen reflections and enlarge the PC window. Keep the phone pointed at the screen until the counter completes. Scanning expires after ten minutes. Cancel before switching between the selected profile and all profiles, because different transfers cannot be mixed.
+If scanning is difficult, move closer, avoid screen reflections and enlarge the PC window. Keep the phone pointed at the screen until the counter completes. Scanning expires after fifteen minutes. Cancel before switching between the selected profile and all profiles, because different transfers cannot be mixed.
 
 Camera images are processed locally without saving photos or uploading images. Leaving the app closes the camera. If permission is denied, enable it in app settings or use JSON/LMF import instead.
 

@@ -15,7 +15,7 @@ final class QrScanner: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
  private func isStopped() -> Bool { lock.lock(); defer { lock.unlock() }; return stopped }
  override func viewDidLoad() {
   super.viewDidLoad(); view.backgroundColor = .black
-  DispatchQueue.main.asyncAfter(deadline:.now()+600) { [weak self] in guard let self = self, !self.isStopped() else { return }; self.finish(notify:true) }
+  DispatchQueue.main.asyncAfter(deadline:.now()+900) { [weak self] in guard let self = self, !self.isStopped() else { return }; self.finish(notify:true) }
   let title = UILabel(); title.text = labels[0]; title.textColor = .white; title.font = .boldSystemFont(ofSize:22)
   progress.text = labels[1]; progress.textColor = .white; progress.numberOfLines = 0
   let button = UIButton(type:.system); button.setTitle(labels[2],for:.normal); button.addTarget(self,action:#selector(cancel),for:.touchUpInside)

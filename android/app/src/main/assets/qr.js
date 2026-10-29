@@ -13,7 +13,7 @@ window.LumeQr=(()=>{
  class Receiver{
   constructor(){this.started=Date.now();this.parts=new Map();this.id='';this.total=0;this.checksum='';}
   add(frame){
-   if(Date.now()-this.started>600000)fail('A leitura expirou. Comece novamente.');
+   if(Date.now()-this.started>900000)fail('A leitura expirou. Comece novamente.');
    if(typeof frame!=='string'||frame.length>600)fail('QR do Lume inválido.');
    const match=/^LUMEQR1:([a-fA-F0-9]{16}):([1-9][0-9]{0,2}):([1-9][0-9]{0,2}):([a-fA-F0-9]{8}):([A-Za-z0-9_-]+)$/.exec(frame);if(!match)fail('Este QR não é uma transferência do Lume.');
    const [,id,part,total,sum,payload]=match,index=Number(part),count=Number(total);if(count>384||index>count)fail('QR do Lume inválido.');

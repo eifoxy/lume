@@ -6,7 +6,7 @@ window.LumeQrUI=(()=>{
   if(busy||searching||liveLocked()||$('modal').open){toast(tr('Aguarde a operação atual.'),true);return;}
   if(!native||!native.scanQr){toast(tr('Instale a versão atual do Lume para ler QR codes.'),true);return;}
   if(!flush())return;stopAuto();receiver=new LumeQr.Receiver();
-  timer=setTimeout(()=>{end();toast(tr('A leitura expirou. Comece novamente.'),true);},600000);
+  timer=setTimeout(()=>{end();toast(tr('A leitura expirou. Comece novamente.'),true);},900000);
   try{native.scanQr(tr('Ler QR do PC'),tr('Aponte para o QR no Lume do computador. Aguarde todas as partes.'),tr('Cancelar'));}catch(e){end();toast(e.message,true);}
  };
  const original=window.nativeEvent;

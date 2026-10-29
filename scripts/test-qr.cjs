@@ -10,7 +10,7 @@ reject(()=>receiver.add(fixture.frames[1].replace('0123456789abcdef','ffffffffff
 reject(()=>receiver.add(fixture.frames[0].slice(0,-1)+'A'),/conflitantes|incompleto/);
 reject(()=>new api.Receiver().add('https://example.com'),/não é/);reject(()=>new api.Receiver().add('x'.repeat(601)),/inválido/);
 reject(()=>new api.Receiver().add(fixture.frames[0].replace(/:1:[0-9]+:/,':1:999:')),/inválido/);
-receiver=new api.Receiver();receiver.started-=600001;reject(()=>receiver.add(fixture.frames[0]),/expirou/);
+receiver=new api.Receiver();receiver.started-=900001;reject(()=>receiver.add(fixture.frames[0]),/expirou/);
 receiver=new api.Receiver();reject(()=>{for(const frame of fixture.frames)receiver.add(frame.replace(/:([0-9a-f]{8}):/,':00000000:'));},/verificação/);
 const bytes=Buffer.concat(fixture.frames.map(f=>Buffer.from(f.split(':')[5],'base64url')));
 reject(()=>api.decode(new Uint8Array(bytes.subarray(0,bytes.length-1))),/incompleto|inválido/);
