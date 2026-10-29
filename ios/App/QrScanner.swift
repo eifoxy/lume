@@ -6,6 +6,7 @@ final class QrScanner: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
  private let worker = DispatchQueue(label:"Lume.camera")
  private let lock = NSLock()
  private var stopped = false, last = ""
+ private var previousIdleTimer: Bool?
  private let progress = UILabel()
  private var preview: AVCaptureVideoPreviewLayer!
  var onRead: (String)->Void = {_ in}
@@ -34,8 +35,9 @@ final class QrScanner: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
  }
  override func viewDidLayoutSubviews() { super.viewDidLayoutSubviews(); preview.frame = view.bounds; if let connection = preview.connection, connection.isVideoOrientationSupported, let orientation = view.window?.windowScene?.interfaceOrientation { switch orientation { case .landscapeLeft: connection.videoOrientation = .landscapeLeft; case .landscapeRight: connection.videoOrientation = .landscapeRight; case .portraitUpsideDown: connection.videoOrientation = .portraitUpsideDown; default: connection.videoOrientation = .portrait } } }
  func update(_ text: String) { progress.text = text }
+ override func viewDidAppear(_ animated: Bool) { super.viewDidAppear(animated); if !isStopped(), previousIdleTimer == nil { previousIdleTimer = UIApplication.shared.isIdleTimerDisabled; UIApplication.shared.isIdleTimerDisabled = true } }
  @objc private func cancel() { finish(notify:true) }
- func finish(notify: Bool) { lock.lock(); if stopped { lock.unlock(); return }; stopped = true; lock.unlock(); worker.async { self.session.stopRunning() }; dismiss(animated:true) { if notify { self.onCancel() } } }
+ func finish(notify: Bool) { lock.lock(); if stopped { lock.unlock(); return }; stopped = true; lock.unlock(); if let previous = previousIdleTimer { UIApplication.shared.isIdleTimerDisabled = previous; previousIdleTimer = nil }; worker.async { self.session.stopRunning() }; dismiss(animated:true) { if notify { self.onCancel() } } }
  override func viewDidDisappear(_ animated: Bool) { super.viewDidDisappear(animated); if !isStopped() { finish(notify:true) } }
  func metadataOutput(_ output: AVCaptureMetadataOutput,didOutput objects: [AVMetadataObject],from connection: AVCaptureConnection) {
   guard !isStopped() else { return }; for object in objects { if let code = object as? AVMetadataMachineReadableCodeObject, let text = code.stringValue, text.hasPrefix("LUMEQR1:"), text.utf8.count <= 600, text != last { last = text; onRead(text); break } }

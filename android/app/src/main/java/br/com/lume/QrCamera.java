@@ -25,7 +25,7 @@ final class QrCamera implements SurfaceHolder.Callback {
   overlay=new FrameLayout(activity);overlay.setBackgroundColor(Color.BLACK);LinearLayout column=new LinearLayout(activity);column.setOrientation(LinearLayout.VERTICAL);overlay.addView(column,new FrameLayout.LayoutParams(-1,-1));
   TextView heading=new TextView(activity);heading.setText(title);heading.setTextSize(22);heading.setTextColor(Color.WHITE);heading.setPadding(24,24,24,12);column.addView(heading);
   progress=new TextView(activity);progress.setText(instruction);progress.setTextSize(16);progress.setTextColor(Color.WHITE);progress.setPadding(24,8,24,16);column.addView(progress);
-  viewport=new FrameLayout(activity);viewport.setClipChildren(true);column.addView(viewport,new LinearLayout.LayoutParams(-1,0,1));view=new SurfaceView(activity);viewport.addView(view,new FrameLayout.LayoutParams(-1,-1));view.getHolder().addCallback(this);
+  viewport=new FrameLayout(activity);viewport.setClipChildren(true);column.addView(viewport,new LinearLayout.LayoutParams(-1,0,1));view=new SurfaceView(activity);view.setKeepScreenOn(true);viewport.addView(view,new FrameLayout.LayoutParams(-1,-1));view.getHolder().addCallback(this);
   Button button=new Button(activity);button.setText(cancelText);button.setOnClickListener(v->cancel.run());column.addView(button,new LinearLayout.LayoutParams(-1,-2));root.addView(overlay,new FrameLayout.LayoutParams(-1,-1));
  }
  void progress(String text){if(!closed)progress.setText(text);}
