@@ -19,11 +19,13 @@ Las aplicaciones incluyen **portugués, inglés y español**. Al abrir por prime
 
 ## Descargar e instalar
 
+**Actualización: Android 1.4.0 y Windows 0.8.0.** Abre **Curvas > Reorganizar canales** para intercambiar ambas curvas sin perder ninguna o copiar con confirmación. Perfil actual o toda la biblioteca, con Deshacer. [Guía](docs/es/USO.md#reorganizar-canales). Estas versiones siguen siendo vistas previas en desarrollo.
+
 | Aplicación | Descarga | Instalación |
 |---|---|---|
-| Windows x64 · 0.7.0 | [ZIP completo con .NET](https://github.com/eifoxy/lume/releases/download/windows-v0.7.0/Lume-Windows-0.7.0-win-x64.zip) | Extrae todo y abre `Lume.exe`. |
-| Windows · 0.7.0 | [ZIP ligero](https://github.com/eifoxy/lume/releases/download/windows-v0.7.0/Lume-Windows-0.7.0-portable.zip) | Requiere .NET Desktop Runtime 8. Extrae todo y abre `Lume.exe`. |
-| Android 8+ · 1.3.0 | [APK](https://github.com/eifoxy/lume/releases/download/android-v1.3.0/Lume-Android-1.3.0.apk) | Descarga en el teléfono y abre el archivo. |
+| Windows x64 · 0.8.0 | [ZIP completo con .NET](https://github.com/eifoxy/lume/releases/download/windows-v0.8.0/Lume-Windows-0.8.0-win-x64.zip) | Extrae todo y abre `Lume.exe`. |
+| Windows · 0.8.0 | [ZIP ligero](https://github.com/eifoxy/lume/releases/download/windows-v0.8.0/Lume-Windows-0.8.0-portable.zip) | Requiere .NET Desktop Runtime 8. Extrae todo y abre `Lume.exe`. |
+| Android 8+ · 1.4.0 | [APK](https://github.com/eifoxy/lume/releases/download/android-v1.4.0/Lume-Android-1.4.0.apk) | Descarga en el teléfono y abre el archivo. |
 | iPhone/iPad · iOS 15.4+ · 0.2.0 | [Versión de desarrollo](https://github.com/eifoxy/lume/actions/workflows/ios.yml) | Sin firma, no se instala al descargar. [Guía iOS](docs/es/INSTALACION-IOS.md). |
 
 En Android, actualiza **sobre la versión anterior, sin desinstalar**, para conservar los perfiles. En Windows, exporta una copia de la biblioteca antes de actualizar. [Instalación detallada](docs/es/INSTALACION.md) · [Versiones y sumas SHA-256](https://github.com/eifoxy/lume/releases).

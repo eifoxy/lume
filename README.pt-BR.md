@@ -17,11 +17,13 @@ Editor de iluminação para controladoras de aquário compatíveis com TC420 e c
 
 ## Baixar e instalar
 
+**Atualização: Android 1.4.0 e Windows 0.8.0.** Em **Curvas > Reorganizar canais**, troque duas curvas sem perder nenhuma ou copie um canal com confirmação. Aplique ao perfil atual ou à biblioteca inteira, com Desfazer. [Como usar](docs/USO.md#reorganizar-canais). As versões continuam identificadas como prévias em desenvolvimento.
+
 | Aplicativo | Download | Como instalar |
 |---|---|---|
-| Windows x64 · 0.7.0 | [ZIP completo, com .NET incluído](https://github.com/eifoxy/lume/releases/download/windows-v0.7.0/Lume-Windows-0.7.0-win-x64.zip) | Extraia tudo e abra `Lume.exe`. |
-| Windows · 0.7.0 | [ZIP leve, requer .NET Desktop Runtime 8](https://github.com/eifoxy/lume/releases/download/windows-v0.7.0/Lume-Windows-0.7.0-portable.zip) | Instale o runtime, extraia tudo e abra `Lume.exe`. |
-| Android 8+ · 1.3.0 | [APK](https://github.com/eifoxy/lume/releases/download/android-v1.3.0/Lume-Android-1.3.0.apk) | Baixe no telefone e abra pelo gerenciador de arquivos. |
+| Windows x64 · 0.8.0 | [ZIP completo, com .NET incluído](https://github.com/eifoxy/lume/releases/download/windows-v0.8.0/Lume-Windows-0.8.0-win-x64.zip) | Extraia tudo e abra `Lume.exe`. |
+| Windows · 0.8.0 | [ZIP leve, requer .NET Desktop Runtime 8](https://github.com/eifoxy/lume/releases/download/windows-v0.8.0/Lume-Windows-0.8.0-portable.zip) | Instale o runtime, extraia tudo e abra `Lume.exe`. |
+| Android 8+ · 1.4.0 | [APK](https://github.com/eifoxy/lume/releases/download/android-v1.4.0/Lume-Android-1.4.0.apk) | Baixe no telefone e abra pelo gerenciador de arquivos. |
 | iPhone/iPad · iOS 15.4+ · 0.2.0 | [Prévia de desenvolvimento](https://github.com/eifoxy/lume/actions/workflows/ios.yml) | Sem assinatura, não instalável ao baixar. [Guia iOS](docs/INSTALACAO-IOS.md). |
 
 [Todas as versões e checksums](https://github.com/eifoxy/lume/releases) · [Tutorial Windows](docs/INSTALACAO-WINDOWS.md) · [Tutorial Android](docs/INSTALACAO-ANDROID.md) · [Configurar Wi-Fi](docs/WIFI.md)

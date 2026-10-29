@@ -12,8 +12,8 @@ El selector **Idioma** aparece al entrar, sobre el contenido en Android y en la 
 
 Requiere Android 8 o superior, WebView actualizado y controladora con Wi-Fi compatible. No requiere cable, cuenta, nube ni depuración USB.
 
-1. Abre la [versión Android](https://github.com/eifoxy/lume/releases/tag/android-v1.3.0).
-2. Descarga `Lume-Android-1.3.0.apk` en **Assets**.
+1. Abre la [versión Android](https://github.com/eifoxy/lume/releases/tag/android-v1.4.0).
+2. Descarga `Lume-Android-1.4.0.apk` en **Assets**.
 3. Abre el archivo. Si Android lo solicita, permite instalar aplicaciones a ese navegador o gestor de archivos.
 4. Instala y abre Lume. Si ya lo usabas, instala encima, **sin desinstalar**, para conservar los perfiles.
 5. Elige **Español** en el selector si tu dispositivo usa otro idioma.
@@ -26,12 +26,12 @@ Importa JSON/LMF en **Perfiles** y exporta JSON mediante el selector de document
 
 ## Windows
 
-Requiere Windows 10/11 x64 para el paquete completo. Descarga la [versión Windows](https://github.com/eifoxy/lume/releases/tag/windows-v0.7.0):
+Requiere Windows 10/11 x64 para el paquete completo. Descarga la [versión Windows](https://github.com/eifoxy/lume/releases/tag/windows-v0.8.0):
 
 | Archivo | Requisito |
 |---|---|
-| `Lume-Windows-0.7.0-win-x64.zip` | Incluye .NET. |
-| `Lume-Windows-0.7.0-portable.zip` | Requiere .NET Desktop Runtime 8. |
+| `Lume-Windows-0.8.0-win-x64.zip` | Incluye .NET. |
+| `Lume-Windows-0.8.0-portable.zip` | Requiere .NET Desktop Runtime 8. |
 
 Extrae todo en una carpeta donde puedas guardar archivos y abre `Lume.exe`. No lo ejecutes dentro del ZIP. No requiere administrador ni cambiar el controlador HID de Windows. En el paquete ligero, conserva DLL y JSON junto al ejecutable. El ejecutable no tiene certificado comercial.
 

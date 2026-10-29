@@ -17,11 +17,13 @@ An aquarium lighting editor for compatible TC420 controllers and Pled V2.2 Wi-Fi
 
 ## Download and install
 
+**Update: Android 1.4.0 and Windows 0.8.0.** Open **Curves > Rearrange channels** to swap both curves without losing either, or copy with replacement confirmation. Current profile or entire library, with Undo. [Guide](docs/en/USAGE.md#rearrange-channels). These releases remain development previews.
+
 | App | Download | Installation |
 |---|---|---|
-| Windows x64 · 0.7.0 | [Full ZIP, .NET included](https://github.com/eifoxy/lume/releases/download/windows-v0.7.0/Lume-Windows-0.7.0-win-x64.zip) | Extract everything and open `Lume.exe`. |
-| Windows · 0.7.0 | [Small ZIP, requires .NET Desktop Runtime 8](https://github.com/eifoxy/lume/releases/download/windows-v0.7.0/Lume-Windows-0.7.0-portable.zip) | Install the runtime, extract everything, and open `Lume.exe`. |
-| Android 8+ · 1.3.0 | [APK](https://github.com/eifoxy/lume/releases/download/android-v1.3.0/Lume-Android-1.3.0.apk) | Download on your phone and open it in the file manager. |
+| Windows x64 · 0.8.0 | [Full ZIP, .NET included](https://github.com/eifoxy/lume/releases/download/windows-v0.8.0/Lume-Windows-0.8.0-win-x64.zip) | Extract everything and open `Lume.exe`. |
+| Windows · 0.8.0 | [Small ZIP, requires .NET Desktop Runtime 8](https://github.com/eifoxy/lume/releases/download/windows-v0.8.0/Lume-Windows-0.8.0-portable.zip) | Install the runtime, extract everything, and open `Lume.exe`. |
+| Android 8+ · 1.4.0 | [APK](https://github.com/eifoxy/lume/releases/download/android-v1.4.0/Lume-Android-1.4.0.apk) | Download on your phone and open it in the file manager. |
 | iPhone/iPad · iOS 15.4+ · 0.2.0 | [Development preview](https://github.com/eifoxy/lume/actions/workflows/ios.yml) | Unsigned, cannot be installed as downloaded. [iOS guide](docs/en/INSTALL-IOS.md). |
 
 [All releases and checksums](https://github.com/eifoxy/lume/releases) · [Windows guide](docs/en/INSTALL-WINDOWS.md) · [Android guide](docs/en/INSTALL-ANDROID.md) · [Wi-Fi setup](docs/en/WIFI.md)
