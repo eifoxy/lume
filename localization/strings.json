@@ -2808,5 +2808,70 @@
     "pt": "Próximo",
     "en": "Next",
     "es": "Siguiente"
+  },
+  {
+    "pt": "Reorganizar canais",
+    "en": "Rearrange channels",
+    "es": "Reorganizar canales"
+  },
+  {
+    "pt": "Troque as curvas entre canais sem perder nenhuma programação. Os nomes acompanham os 48 horários.",
+    "en": "Swap channel curves without losing either schedule. Names move with all 48 time points.",
+    "es": "Intercambia las curvas sin perder ninguna programación. Los nombres acompañan los 48 horarios."
+  },
+  {
+    "pt": "Canal de origem",
+    "en": "Source channel",
+    "es": "Canal de origen"
+  },
+  {
+    "pt": "Canal de destino",
+    "en": "Destination channel",
+    "es": "Canal de destino"
+  },
+  {
+    "pt": "Trocar canais (preserva as duas curvas)",
+    "en": "Swap channels (keeps both curves)",
+    "es": "Intercambiar canales (conserva ambas curvas)"
+  },
+  {
+    "pt": "Copiar canal (substitui o destino)",
+    "en": "Copy channel (replaces destination)",
+    "es": "Copiar canal (reemplaza el destino)"
+  },
+  {
+    "pt": "Aplicar a todos os perfis da biblioteca",
+    "en": "Apply to all library profiles",
+    "es": "Aplicar a todos los perfiles de la biblioteca"
+  },
+  {
+    "pt": "Confirmo substituir o nome e a curva do canal de destino.",
+    "en": "I confirm replacing the destination channel name and curve.",
+    "es": "Confirmo reemplazar el nombre y la curva del canal de destino."
+  },
+  {
+    "pt": "A alteração é local e pode ser desfeita. Envie a programação para atualizar a controladora.",
+    "en": "This local change can be undone. Send the schedule to update the controller.",
+    "es": "El cambio es local y se puede deshacer. Envía la programación para actualizar la controladora."
+  },
+  {
+    "pt": "Encerre a prévia ao vivo e aguarde a operação atual.",
+    "en": "End live preview and wait for the current operation.",
+    "es": "Finaliza la vista previa en vivo y espera a que termine la operación actual."
+  },
+  {
+    "pt": "Escolha dois canais diferentes.",
+    "en": "Choose two different channels.",
+    "es": "Elige dos canales distintos."
+  },
+  {
+    "pt": "Confirme a substituição do canal de destino.",
+    "en": "Confirm replacing the destination channel.",
+    "es": "Confirma el reemplazo del canal de destino."
+  },
+  {
+    "pt": "perfil(is)",
+    "en": "profile(s)",
+    "es": "perfil(es)"
   }
 ]

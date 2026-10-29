@@ -22,6 +22,12 @@ public static class SelfTest
    Check(Protocol.Name(p).Length==7,"Device name length");
    var classic=Protocol.ClassicFrame(2);Check(classic.Length==65&&classic[1]==0x55&&classic[2]==0xaa&&classic[3]==2&&classic[5]==0&&classic[62]==1&&classic[63]==13&&classic[64]==10,"Classic frame fixture");
    var classicClock=Protocol.ClassicFrame(0x11,Protocol.Clock(new DateTime(2026,10,18,18,30,45))[4..]);Check(classicClock[5]==7&&classicClock[6]==7&&classicClock[7]==234&&classicClock[12]==45,"Classic clock payload");
+   var channels=new Profile{Channels=["Azul","Cooler","C","D","E"],Values=Enumerable.Range(0,48).Select(r=>new[]{r,100-r,7,8,9}).ToArray()};
+   var beforeChannels=channels.Clone();channels.TransferChannel(0,1,false);
+   Check(channels.Channels[0]=="Cooler"&&channels.Channels[1]=="Azul"&&channels.Values.Select((r,i)=>r.SequenceEqual(new[]{100-i,i,7,8,9})).All(x=>x),"Swap names and all 48 complete channel curves");
+   channels.TransferChannel(0,1,false);Check(channels.Channels.SequenceEqual(beforeChannels.Channels)&&channels.Values.Zip(beforeChannels.Values).All(x=>x.First.SequenceEqual(x.Second)),"Reverse swap restores exact profile");
+   channels.TransferChannel(0,1,true);Check(channels.Channels[0]=="Azul"&&channels.Channels[1]=="Azul"&&channels.Values.Select((r,i)=>r.SequenceEqual(new[]{i,i,7,8,9})).All(x=>x),"Copy retains source and untouched channels");
+   foreach(var pair in new[]{(0,0),(-1,1),(0,5)})Reject(()=>channels.TransferChannel(pair.Item1,pair.Item2,false),"Reject invalid channel transfer");
    count+=TransferTests.Run();
    count+=WifiTests.Run();
    count+=LanguageTests.Run();

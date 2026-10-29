@@ -12,7 +12,7 @@ namespace Lume;
 public partial class MainWindow : Window
 {
  Library library=new(); Profile P=>library.Profiles[library.Selected];
- readonly Stack<Profile> history=new(); readonly DispatcherTimer saveTimer=new(){Interval=TimeSpan.FromMilliseconds(650)},simTimer=new(){Interval=TimeSpan.FromMilliseconds(40)};
+ readonly Stack<Library> history=new(); readonly DispatcherTimer saveTimer=new(){Interval=TimeSpan.FromMilliseconds(650)},simTimer=new(){Interval=TimeSpan.FromMilliseconds(40)};
  readonly string[] colors=["#66B8FF","#E0E9DB","#B29AFF","#E8BF73","#74D7B7"];
  readonly TextBlock[] percents=new TextBlock[5];readonly Slider[] sliders=new Slider[5];
  readonly TextBlock[] ledLabels=new TextBlock[5];
@@ -32,7 +32,7 @@ public partial class MainWindow : Window
  void ShareQr(object sender,RoutedEventArgs e){if(busy){Note(I18n.T("Aguarde a operação atual."));return;}if(!Table.CommitEdit(DataGridEditingUnit.Cell,true)||!Table.CommitEdit(DataGridEditingUnit.Row,true))return;try{new QrShareWindow(library){Owner=this}.ShowDialog();}catch(Exception ex){Note(I18n.T("Falha ao gerar QR: ")+ex.Message);}}
  bool Save(){try {Store.Save(library,Store.FilePath);dirty=false;Note(I18n.T("Salvo neste computador \u00B7 ")+DateTime.Now.ToString("HH:mm:ss"));return true;}catch(Exception ex){App.Log(ex);Note(I18n.T("Falha ao salvar: ")+ex.Message);return false;}}
  void Changed(){dirty=true;saveTimer.Stop();saveTimer.Start();UpdatePreview();}
- void Remember(){history.Push(P.Clone());if(history.Count>40){var all=history.Take(40).Reverse().ToArray();history.Clear();foreach(var p in all)history.Push(p);}}
+ void Remember(){history.Push(new Library{Selected=library.Selected,Profiles=library.Profiles.Select(p=>p.Clone()).ToList()});if(history.Count>40){var all=history.Take(40).Reverse().ToArray();history.Clear();foreach(var p in all)history.Push(p);}}
  void RefreshProfiles(){refreshing=true;Profiles.ItemsSource=null;Profiles.ItemsSource=library.Profiles.Select(x=>x.Name).ToList();Profiles.SelectedIndex=library.Selected;refreshing=false;}
  void SelectProfile(object sender,SelectionChangedEventArgs e){if(refreshing||Profiles.SelectedIndex<0)return;Table.CommitEdit();library.Selected=Profiles.SelectedIndex;history.Clear();Render();Changed();}
  void Render()
@@ -99,7 +99,7 @@ public partial class MainWindow : Window
  void ChartUp(object sender,MouseButtonEventArgs e){drawing=false;Chart.ReleaseMouseCapture();RefreshTable();}
  void ChartLost(object sender,MouseEventArgs e){drawing=false;RefreshTable();}
  void Paint(Point pt){double h=Chart.ActualHeight-54;if(Chart.ActualWidth<=70||h<=0)return;int t=Math.Clamp((int)Math.Round(SlotAt(pt)),0,47),v=Math.Clamp((int)Math.Round((1-(pt.Y-18)/h)*100),0,100);if(lastSlot>=0&&t!=lastSlot){int prev=P.Values[lastSlot][channel];for(int i=Math.Min(t,lastSlot);i<=Math.Max(t,lastSlot);i++)P.Values[i][channel]=(int)Math.Round(prev+(v-prev)*(i-lastSlot)/(double)(t-lastSlot));}P.Values[t][channel]=v;lastSlot=t;Changed();}
- void Undo(object sender,RoutedEventArgs e){if(history.Count==0){Note(I18n.T("Nenhuma altera\u00E7\u00E3o para desfazer neste perfil."));return;}library.Profiles[library.Selected]=history.Pop();RefreshProfiles();Render();Changed();}
+ void Undo(object sender,RoutedEventArgs e){if(busy)return;if(history.Count==0){Note(I18n.T("Nenhuma altera\u00E7\u00E3o para desfazer neste perfil."));return;}library=history.Pop();RefreshProfiles();Render();Changed();}
  void CellEdited(object sender,DataGridCellEditEndingEventArgs e)
  {
   if(e.EditAction!=DataGridEditAction.Commit||e.EditingElement is not TextBox text)return;int c=e.Column.DisplayIndex-1;
@@ -135,6 +135,27 @@ public partial class MainWindow : Window
  bool CommitTable(){if(!Table.CommitEdit(DataGridEditingUnit.Cell,true)||!Table.CommitEdit(DataGridEditingUnit.Row,true)){Note(I18n.T("Corrija o valor da c\u00E9lula antes de continuar (0 a 100%)."));return false;}return true;}
  void Backup(object sender,RoutedEventArgs e){if(!CommitTable())return;var save=new SaveFileDialog{Filter="Backup Lume|*.json",FileName="Lume-"+DateTime.Now.ToString("yyyy-MM-dd-HHmmss")+".json"};if(save.ShowDialog(this)==true)try{Store.Save(library,save.FileName);Note(I18n.T("Backup de todos os perfis salvo."));}catch(Exception ex){MessageBox.Show(this,ex.Message,I18n.T("Falha no backup"));}}
  static string SafeName(string n)=>string.Concat(n.Select(c=>System.IO.Path.GetInvalidFileNameChars().Contains(c)?'_':c));
+ void ReorderChannels(object sender,RoutedEventArgs e)
+ {
+  if(busy||!CommitTable())return;
+  var d=Dialog(I18n.T("Reorganizar canais"));d.Width=510;d.MaxHeight=SystemParameters.WorkArea.Height;
+  var s=new StackPanel{Margin=new Thickness(24)};
+  void Text(string value){s.Children.Add(new TextBlock{Text=I18n.T(value),TextWrapping=TextWrapping.Wrap,Margin=new Thickness(0,10,0,8)});}
+  Text("Troque as curvas entre canais sem perder nenhuma programação. Os nomes acompanham os 48 horários.");
+  ComboBox Choice(string label,int selected){Text(label);var c=new ComboBox{ItemsSource=P.Channels.Select((n,i)=>$"CH{i+1} · {n}").ToArray(),SelectedIndex=selected};s.Children.Add(c);return c;}
+  var from=Choice("Canal de origem",channel);var to=Choice("Canal de destino",(channel+1)%5);
+  Text("O que deseja fazer?");var mode=new ComboBox{ItemsSource=new[]{I18n.T("Trocar canais (preserva as duas curvas)"),I18n.T("Copiar canal (substitui o destino)")},SelectedIndex=0};s.Children.Add(mode);
+  var all=new CheckBox{Content=I18n.T("Aplicar a todos os perfis da biblioteca"),Margin=new Thickness(0,16,0,8)};s.Children.Add(all);
+  var review=new TextBlock{Margin=new Thickness(0,8,0,8)};s.Children.Add(review);
+  var ack=new CheckBox{Content=new TextBlock{Text=I18n.T("Confirmo substituir o nome e a curva do canal de destino."),TextWrapping=TextWrapping.Wrap},Visibility=Visibility.Collapsed};s.Children.Add(ack);
+  Text("A alteração é local e pode ser desfeita. Envie a programação para atualizar a controladora.");
+  var ok=new Button{Content=I18n.T("Confirmar"),Margin=new Thickness(0,12,0,0)};s.Children.Add(ok);
+  void Review(){bool copy=mode.SelectedIndex==1;ack.Visibility=copy?Visibility.Visible:Visibility.Collapsed;review.Text=$"CH{from.SelectedIndex+1} {(copy?"→":"↔")} CH{to.SelectedIndex+1} · {(all.IsChecked==true?library.Profiles.Count:1)} {I18n.T("perfil(is)")}";ok.IsEnabled=from.SelectedIndex!=to.SelectedIndex&&(!copy||ack.IsChecked==true);}
+  void SelectionChanged(){ack.IsChecked=false;Review();}
+  from.SelectionChanged+=(_,_)=>SelectionChanged();to.SelectionChanged+=(_,_)=>SelectionChanged();mode.SelectionChanged+=(_,_)=>SelectionChanged();all.Checked+=(_,_)=>SelectionChanged();all.Unchecked+=(_,_)=>SelectionChanged();ack.Checked+=(_,_)=>Review();ack.Unchecked+=(_,_)=>Review();
+  ok.Click+=(_,_)=>{if(busy)return;library.Validate();Remember();foreach(var p in all.IsChecked==true?library.Profiles:new List<Profile>{P})p.TransferChannel(from.SelectedIndex,to.SelectedIndex,mode.SelectedIndex==1);channel=to.SelectedIndex;Render();Changed();d.DialogResult=true;};
+  Review();d.Content=new ScrollViewer{Content=s,VerticalScrollBarVisibility=ScrollBarVisibility.Auto};d.ShowDialog();
+ }
  void Wizard(object sender,RoutedEventArgs e)
  {
   var d=Dialog(I18n.T("Criar ciclo suave"));d.Width=500;var s=new StackPanel{Margin=new Thickness(24)};

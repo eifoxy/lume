@@ -74,3 +74,7 @@ A ativação real, o relógio e a gravação ainda aguardam confirmação no har
 ## Recife na luminária
 
 A prévia local continua sem efeitos no aparelho. No Android 1.2.0, Vincular luminária ativa explicitamente a prévia Wi-Fi Smart Timer: mover o horário ou reproduzir o dia envia as mesmas cinco intensidades à luminária. Isso não regrava perfis nem altera o relógio do aparelho. Ao pausar o dia, a luz permanece no instante atual até encerrar a prévia. [Operação, retomada e limites](PREVIA-AO-VIVO.md).
+
+## Reorganizar canais
+
+Em Curvas, abra **Reorganizar canais**. Se a fiação mudou, escolha origem e destino e use **Trocar canais**: os nomes e os 48 horários trocam de posição sem perder as curvas. **Copiar canal** mantém a origem e exige confirmação para substituir o destino. Você pode aplicar ao perfil aberto ou a toda a biblioteca. Use **Desfazer** para reverter. A alteração é local; envie a programação para atualizar a controladora. Encerre a prévia ao vivo antes de reorganizar.

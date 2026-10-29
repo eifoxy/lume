@@ -8,6 +8,12 @@ public class Profile
  public string[] Channels {get;set;} = [I18n.T("Canal 1"), I18n.T("Canal 2"), I18n.T("Canal 3"), I18n.T("Canal 4"), I18n.T("Canal 5")];
  public int[][] Values {get;set;} = Enumerable.Range(0,48).Select(_=>new int[5]).ToArray();
  public Profile Clone()=>JsonSerializer.Deserialize<Profile>(JsonSerializer.Serialize(this))!;
+ public void TransferChannel(int from,int to,bool copy)
+ {
+  if(from<0||from>4||to<0||to>4||from==to)throw new InvalidDataException(I18n.T("Escolha dois canais diferentes."));
+  Validate();var name=Channels[to];Channels[to]=Channels[from];if(!copy)Channels[from]=name;
+  foreach(var row in Values){var value=row[to];row[to]=row[from];if(!copy)row[from]=value;}
+ }
  public void Validate()
  {
   if(string.IsNullOrWhiteSpace(Name)||Name.Length>80) throw new InvalidDataException(I18n.T("O perfil precisa de um nome de at\u00E9 80 caracteres."));

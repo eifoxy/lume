@@ -58,3 +58,7 @@ See [compatibility and hardware evidence](COMPATIBILITY.md) for the limits of ea
 ## Reef on the real light
 
 Local preview remains hardware-free. In Android 1.2.0, Link light fixture explicitly enables Smart Timer Wi-Fi preview: timeline scrubbing and day playback send the same five intensities to the light. It does not rewrite profiles or change the device clock. Pausing playback holds the current moment until you end live preview. [Operation, recovery, and limits](LIVE-PREVIEW.md).
+
+## Rearrange channels
+
+In Curves, open **Rearrange channels**. Choose source and destination and use **Swap channels** to exchange names and all 48 time points without losing either curve. **Copy channel** preserves the source and requires confirmation before replacing the destination. Apply to the current profile or all library profiles. **Undo** restores the previous state. This is a local edit; send the schedule to update the controller. End live preview first.

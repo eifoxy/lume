@@ -6,3 +6,7 @@
 
 .live-floating{position:fixed;bottom:92px;left:16px;right:16px;z-index:35;background:#91e3c7;color:#10372d;border-color:#91e3c7;font-size:13px;box-shadow:0 4px 20px #0007}.live-floating[hidden]{display:none}body.live-active main{padding-bottom:175px}
 body.live-active #toast{bottom:160px}.live-floating{z-index:45}
+
+.chartfooter{flex-wrap:wrap}.chartfooter>span{flex-basis:100%}
+
+.channel-check{display:flex;gap:10px;align-items:flex-start;margin-top:16px}.channel-check input{flex:none;margin:5px 0 0}#channelCopyAck[hidden]{display:none}

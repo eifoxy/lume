@@ -38,3 +38,7 @@ Un fallo puede dejar la memoria vacía o parcial. Copia el diagnóstico, vuelve 
 ## Arrecife en la luz real
 
 La vista previa local sigue sin efectos físicos. En Android 1.2.0, Vincular luminaria activa explícitamente la vista previa Smart Timer por Wi-Fi. El horario y la reproducción envían las cinco intensidades sin regrabar perfiles ni cambiar el reloj del aparato. Pausar el día mantiene el instante actual hasta finalizar la vista previa. [Uso, recuperación y límites](VISTA-EN-VIVO.md).
+
+## Reorganizar canales
+
+En Curvas, abre **Reorganizar canales**. Si cambió el cableado, elige origen y destino y usa **Intercambiar canales** para intercambiar nombres y los 48 horarios sin perder ninguna curva. **Copiar canal** conserva el origen y requiere confirmación antes de reemplazar el destino. Puedes aplicarlo al perfil actual o a toda la biblioteca. **Deshacer** restaura el estado anterior. Es un cambio local; envía la programación para actualizar la controladora. Finaliza primero la vista previa en vivo.

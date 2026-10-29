@@ -19,12 +19,37 @@ function toast(message,error=false){$('toast').textContent=message;$('toast').cl
 function validate(root){if(!root||!Array.isArray(root.Profiles)||root.Profiles.length<1||root.Profiles.length>100)throw Error(tr('Biblioteca inválida.'));for(const p of root.Profiles){if(typeof p.Name!=='string'||!p.Name.trim()||p.Name.length>80||!Array.isArray(p.Channels)||p.Channels.length!==5||p.Channels.some(n=>typeof n!=='string'||!n.trim()||n.length>40)||!Array.isArray(p.Values)||p.Values.length!==48||p.Values.some(r=>!Array.isArray(r)||r.length!==5||r.some(v=>!Number.isInteger(v)||v<0||v>100)))throw Error(tr('Perfil inválido: use 48 horários com cinco valores de 0 a 100.'));}root.Selected=Math.max(0,Math.min(root.Profiles.length-1,Number.isInteger(root.Selected)?root.Selected:0));root.Version=1;return root;}
 function fresh(name=tr('Meu aquário')){return{Name:name,Channels:[tr('Azul'),tr('Branco'),tr('Violeta'),tr('Canal 4'),tr('Canal 5')],Values:Array.from({length:48},()=>[0,0,0,0,0])};}
 function profile(){return library.Profiles[library.Selected];}
+function applyChannelTransfer(from,to,copy,all){
+ if(busy||liveLocked())throw Error(tr('Encerre a prévia ao vivo e aguarde a operação atual.'));
+ if(!Number.isInteger(from)||!Number.isInteger(to)||from<0||to<0||from>4||to>4||from===to)throw Error(tr('Escolha dois canais diferentes.'));
+ checkpoint();
+ for(const p of all?library.Profiles:[profile()]){
+  const name=p.Channels[to];p.Channels[to]=p.Channels[from];if(!copy)p.Channels[from]=name;
+  for(const row of p.Values){const value=row[to];row[to]=row[from];if(!copy)row[from]=value;}
+ }
+ selectedChannel=to;changed();
+}
+function channelTransfer(){
+ if(busy||liveLocked()){toast(tr('Encerre a prévia ao vivo e aguarde a operação atual.'),true);return;}
+ const option=(n,c)=>`<option value="${c}">CH${c+1} · ${esc(n)}</option>`;
+ const field=(id,label)=>`<label for="${id}">${tr(label)}</label><select id="${id}">${profile().Channels.map(option).join('')}</select>`;
+ openModal(tr('Reorganizar canais'),`<p>${tr('Troque as curvas entre canais sem perder nenhuma programação. Os nomes acompanham os 48 horários.')}</p>${field('channelFrom','Canal de origem')}${field('channelTo','Canal de destino')}<label for="channelMode">${tr('O que deseja fazer?')}</label><select id="channelMode"><option value="swap">${tr('Trocar canais (preserva as duas curvas)')}</option><option value="copy">${tr('Copiar canal (substitui o destino)')}</option></select><label class="channel-check"><input id="channelAll" type="checkbox"> ${tr('Aplicar a todos os perfis da biblioteca')}</label><p id="channelReview" class="note"></p><label id="channelCopyAck" class="channel-check" hidden><input id="channelCopyCheck" type="checkbox"> ${tr('Confirmo substituir o nome e a curva do canal de destino.')}</label><p class="note">${tr('A alteração é local e pode ser desfeita. Envie a programação para atualizar a controladora.')}</p>`,()=>{
+  const copy=$('channelMode').value==='copy';
+  if(copy&&!$('channelCopyCheck').checked)throw Error(tr('Confirme a substituição do canal de destino.'));
+  applyChannelTransfer(+$('channelFrom').value,+$('channelTo').value,copy,$('channelAll').checked);
+ });
+ $('channelFrom').value=selectedChannel;$('channelTo').value=(selectedChannel+1)%5;
+ const review=()=>{const from=+$('channelFrom').value,to=+$('channelTo').value,copy=$('channelMode').value==='copy';$('channelReview').textContent=`CH${from+1} ${copy?'→':'↔'} CH${to+1} · ${$('channelAll').checked?library.Profiles.length:1} ${tr('perfil(is)')}`;$('channelCopyAck').hidden=!copy;$('channelCopyCheck').checked=false;$('modalConfirm').disabled=from===to;};
+ for(const id of ['channelFrom','channelTo','channelMode','channelAll'])$(id).onchange=review;
+ review();
+}
+$('reorderChannels').onclick=channelTransfer;
 function flush(){clearTimeout(saveTimer);if(!dirty)return true;if(storageBroken){toast(tr('A biblioteca original está preservada. Exporte sua edição para guardá-la.'),true);return false;}try{validate(library);const text=JSON.stringify(library);if(native){const error=native.saveLibrary(text);if(error)throw Error(error);}else localStorage.setItem('lume-preview',text);dirty=false;$('saved').textContent=tr('Salvo no celular');return true;}catch(e){$('saved').textContent=tr('Não foi salvo');toast(e.message,true);return false;}}
 function save(){dirty=true;$('saved').textContent=tr('Salvando…');clearTimeout(saveTimer);saveTimer=setTimeout(flush,350);}
 function checkpoint(){history.push(JSON.stringify(library));if(history.length>35)history.shift();$('undo').disabled=false;}
 function changed(full=true){save();if(full)render();else{drawChart();renderPreview();}}
 function showPage(id){if(busy)return;if(liveLocked()&&id!=='reef'&&id!=='curves'){toast(tr('Encerre a prévia ao vivo antes desta operação.'),true);return;}document.querySelectorAll('.page').forEach(p=>p.classList.toggle('active',p.id===id));document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===id));window.scrollTo(0,0);if(id==='profiles')renderProfiles();if(id==='reef')renderPreview();}
-function openModal(title,body,action,label=tr('Confirmar')){modalAction=action;$('modalTitle').textContent=title;$('modalBody').innerHTML=body;$('modalConfirm').textContent=label;$('modal').showModal();}
+function openModal(title,body,action,label=tr('Confirmar')){modalAction=action;$('modalTitle').textContent=title;$('modalBody').innerHTML=body;$('modalConfirm').textContent=label;$('modalConfirm').disabled=false;$('modal').showModal();}
 function closeModal(){$('modal').close();modalAction=null;}
 $('modalForm').onsubmit=e=>{e.preventDefault();if(modalAction)try{if(modalAction()!==false)closeModal();}catch(error){toast(error.message,true);}};$('closeModal').onclick=$('dismissModal').onclick=closeModal;
 window.back=()=>{if($('modal').open)closeModal();else if(busy)toast(tr('Aguarde o envio ou use Interromper.'));else showPage('curves');};

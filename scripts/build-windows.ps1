@@ -15,5 +15,5 @@ foreach($folder in @('windows-portable','windows-x64')){
  Copy-Item (Join-Path $PSScriptRoot '../LICENSE') "$output/$folder/LICENSE.txt"
  $items=Get-ChildItem "$output/$folder" -File | Where-Object { $_.Extension -in @('.exe','.dll') -or $_.Name -in @('Lume.deps.json','Lume.runtimeconfig.json','LEIA-ME.md','LICENSE.txt','THIRD-PARTY-NOTICES.md') }
  $suffix=if($folder -eq 'windows-x64'){'win-x64'}else{'portable'}
- Compress-Archive -LiteralPath $items.FullName -DestinationPath "$output/Lume-Windows-0.7.0-$suffix.zip" -Force
+ Compress-Archive -LiteralPath $items.FullName -DestinationPath "$output/Lume-Windows-0.8.0-$suffix.zip" -Force
 }

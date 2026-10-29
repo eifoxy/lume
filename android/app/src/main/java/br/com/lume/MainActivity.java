@@ -93,7 +93,7 @@ public final class MainActivity extends Activity {
      boolean needsRestore=!pendingPreview().isEmpty();livePreview=null;previewToken="";busy=false;
      String text=needsRestore?"Não foi possível confirmar a retomada. A luminária pode continuar em modo manual. Reconecte e use Retomar programa.":result!=null&&result.restored?"Prévia encerrada. Retomada do programa confirmada.":"Prévia não iniciada.";
      if(failure!=null)text+=" "+failure;
-     lastDiagnostic="Lume Android 1.3.0 · prévia ao vivo\nDestino: "+d.optString("ip")+"\nInícios enviados: "+(result==null?0:result.headersSent)+"\nQuadros de intensidade enviados: "+(result==null?0:result.framesSent)+"\nÚltimo minuto enviado: "+(result==null?-1:result.lastMinute)+"\nRetomada confirmada: "+(result!=null&&result.restored)+"\nRecuperação pendente: "+needsRestore+"\nO aparelho não confirma cada intensidade.\n"+text;event("diagnostic",lastDiagnostic);
+     lastDiagnostic="Lume Android 1.4.0 · prévia ao vivo\nDestino: "+d.optString("ip")+"\nInícios enviados: "+(result==null?0:result.headersSent)+"\nQuadros de intensidade enviados: "+(result==null?0:result.framesSent)+"\nÚltimo minuto enviado: "+(result==null?-1:result.lastMinute)+"\nRetomada confirmada: "+(result!=null&&result.restored)+"\nRecuperação pendente: "+needsRestore+"\nO aparelho não confirma cada intensidade.\n"+text;event("diagnostic",lastDiagnostic);
      previewEvent(needsRestore?"failed":"idle",token,text,needsRestore);
      runOnUiThread(()->getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON));
     }
@@ -121,7 +121,7 @@ public final class MainActivity extends Activity {
   @JavascriptInterface public void discover(String direct){discoverNow(direct,false);}
   @JavascriptInterface public void discoverAutomatic(){discoverNow("",true);}
   private void discoverNow(String direct,boolean automatic){job(()->{
-   StringBuilder report=new StringBuilder("Lume Android 1.3.0 · API "+Build.VERSION.SDK_INT+" · "+Build.MANUFACTURER+" "+Build.MODEL+"\n");
+   StringBuilder report=new StringBuilder("Lume Android 1.4.0 · API "+Build.VERSION.SDK_INT+" · "+Build.MANUFACTURER+" "+Build.MODEL+"\n");
    WifiManager.MulticastLock lock=null;int received=0,rejected=0,sent=0;Map<String,JSONObject> found=new LinkedHashMap<>();
    try{
     WifiManager wm=(WifiManager)getApplicationContext().getSystemService(WIFI_SERVICE);lock=wm.createMulticastLock("lume-discovery");lock.acquire();
@@ -157,7 +157,7 @@ public final class MainActivity extends Activity {
    List<String> names=new ArrayList<>();for(JSONObject p:profiles)names.add(p.getString("Name"));List<String> aliases=Protocol.aliases(names);List<Upload.Item> items=new ArrayList<>();
    for(int i=0;i<profiles.size();i++){JSONArray rows=profiles.get(i).getJSONArray("Values");int[][] values=new int[48][5];for(int r=0;r<48;r++)for(int c=0;c<5;c++)values[r][c]=rows.getJSONArray(r).getInt(c);items.add(new Upload.Item(firstSlot+i,aliases.get(i),values));}
    backup(root.toString());
-   try(Route route=new Route()){InetAddress ip=InetAddress.getByName(d.getString("ip"));Upload.run(items,replace,smart,(payload,ack)->route.send(payload,id,ip,ack),()->route.checkRoute(),(percent,phase)->progress(phase,percent),()->{check();Thread.sleep(150);});}catch(Exception e){lastDiagnostic="Lume Android 1.3.0 · envio de perfis\n"+message(e);event("diagnostic",lastDiagnostic);throw e;}
+   try(Route route=new Route()){InetAddress ip=InetAddress.getByName(d.getString("ip"));Upload.run(items,replace,smart,(payload,ack)->route.send(payload,id,ip,ack),()->route.checkRoute(),(percent,phase)->progress(phase,percent),()->{check();Thread.sleep(150);});}catch(Exception e){lastDiagnostic="Lume Android 1.4.0 · envio de perfis\n"+message(e);event("diagnostic",lastDiagnostic);throw e;}
    event("success",profiles.size()+" perfil(is) confirmado(s). Confira no aparelho o perfil ativo.");event("uploadComplete",true);
   });}
   @JavascriptInterface public void exportLibrary(String json){try{String validated=validate(new JSONObject(json)).toString(2);runOnUiThread(()->{pendingExport=validated;Intent i=new Intent(Intent.ACTION_CREATE_DOCUMENT).setType("application/json").addCategory(Intent.CATEGORY_OPENABLE).putExtra(Intent.EXTRA_TITLE,"Lume-perfis.json");startActivityForResult(i,10);});}catch(Exception e){event("error",message(e));}}
