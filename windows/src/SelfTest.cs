@@ -25,6 +25,7 @@ public static class SelfTest
    count+=TransferTests.Run();
    count+=WifiTests.Run();
    count+=LanguageTests.Run();
+   count+=QrTests.Run();
    File.WriteAllText(Path.Combine(AppContext.BaseDirectory,"test-results.txt"),$"{count} checks passed. {DateTime.Now:O}\nHardware was not exercised. USB transfers tested in memory; Wi-Fi command, provisioning, and ACK handling tested on local UDP sockets.\n");
   }finally {Directory.Delete(temp,true);}
  }

@@ -11,8 +11,9 @@ foreach($folder in @('windows-portable','windows-x64')){
  $guide=[IO.File]::ReadAllText((Join-Path $PSScriptRoot '../docs/INSTALACAO-WINDOWS.md'))
  $guide=$guide.Replace('(../README.md)','(https://github.com/eifoxy/lume)').Replace('(WIFI.md','(https://github.com/eifoxy/lume/blob/main/docs/WIFI.md').Replace('(USO.md','(https://github.com/eifoxy/lume/blob/main/docs/USO.md').Replace('(COMPATIBILIDADE.md','(https://github.com/eifoxy/lume/blob/main/docs/COMPATIBILIDADE.md').Replace('(images/previa-wifi.png)','(https://raw.githubusercontent.com/eifoxy/lume/main/docs/images/previa-wifi.png)')
  [IO.File]::WriteAllText("$output/$folder/LEIA-ME.md",$guide)
+ Copy-Item (Join-Path $PSScriptRoot '../THIRD-PARTY-NOTICES.md') "$output/$folder/THIRD-PARTY-NOTICES.md"
  Copy-Item (Join-Path $PSScriptRoot '../LICENSE') "$output/$folder/LICENSE.txt"
- $items=Get-ChildItem "$output/$folder" -File | Where-Object { $_.Extension -in @('.exe','.dll') -or $_.Name -in @('Lume.deps.json','Lume.runtimeconfig.json','LEIA-ME.md','LICENSE.txt') }
+ $items=Get-ChildItem "$output/$folder" -File | Where-Object { $_.Extension -in @('.exe','.dll') -or $_.Name -in @('Lume.deps.json','Lume.runtimeconfig.json','LEIA-ME.md','LICENSE.txt','THIRD-PARTY-NOTICES.md') }
  $suffix=if($folder -eq 'windows-x64'){'win-x64'}else{'portable'}
- Compress-Archive -LiteralPath $items.FullName -DestinationPath "$output/Lume-Windows-0.6.0-$suffix.zip" -Force
+ Compress-Archive -LiteralPath $items.FullName -DestinationPath "$output/Lume-Windows-0.7.0-$suffix.zip" -Force
 }

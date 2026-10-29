@@ -12,13 +12,14 @@ final class ControllerEngine {
  private var busy = false, cancelled = false, foreground = true, abort = false
  private var liveToken = "", stopLive = false
  private var sample = (minute: 0, values: [0,0,0,0,0], updated: 0.0)
- private(set) var diagnostic = "Lume iOS 0.1.1. Faça uma busca para verificar a comunicação Wi-Fi."
+ private(set) var diagnostic = "Lume iOS 0.2.0. Faça uma busca para verificar a comunicação Wi-Fi."
  init(store: LibraryStore) { self.store = store; monitor.pathUpdateHandler = { [weak self] path in guard let self = self else { return }; self.lock.lock(); self.wifiNames = Set(path.availableInterfaces.filter { $0.type == .wifi }.map { $0.name }); self.lock.unlock() }; monitor.start(queue: DispatchQueue(label: "Lume.path")) }
  deinit { monitor.cancel() }
  func setForeground(_ value: Bool) { lock.lock(); foreground = value; if !value { if liveToken.isEmpty { cancelled = true } else { stopLive = true } }; lock.unlock(); emit("foreground", value) }
  func expireBackgroundTask() { lock.lock(); abort = true; stopLive = true; lock.unlock() }
  func cancel() { lock.lock(); if liveToken.isEmpty { cancelled = true } else { stopLive = true }; lock.unlock() }
  func isLive() -> Bool { lock.lock(); defer { lock.unlock() }; return !liveToken.isEmpty }
+ func isWorking() -> Bool { lock.lock(); defer { lock.unlock() }; return busy || !foreground }
  private func check(resuming: Bool = false) throws { lock.lock(); defer { lock.unlock() }; if abort || (!resuming && (cancelled || !foreground)) { throw LumeFailure("Operação interrompida. Se estava gravando, a memória pode estar incompleta.") } }
  private func route() throws -> IPv4Route { lock.lock(); let names = wifiNames; lock.unlock(); guard let route = IPv4Route.interfaces(named: names).first else { throw LumeFailure("Conecte o celular ao Wi-Fi do aparelho ou da sua casa. Se a rede estiver sem internet, escolha permanecer conectado.") }; return route }
  private func guardRoute(_ route: IPv4Route, resuming: Bool = false) throws { try check(resuming: resuming); let current = try self.route(); guard current.address == route.address, current.prefix == route.prefix, current.interface == route.interface else { throw LumeFailure("O Wi-Fi mudou ou desconectou durante a operação.") } }
@@ -33,7 +34,7 @@ final class ControllerEngine {
   // CI UI checks are offline and must never contact a real controller.
   if ProcessInfo.processInfo.arguments.contains("--smoke-test") { emit(automatic ? "autoDevices" : "devices",[[String:String]]()); emit("searching",false); return }
   job(quiet: automatic) {
-   var found = [WiFiDevice](); var sent = 0, received = 0, rejected = 0; var note = "Lume iOS 0.1.1 · descoberta unicast\n"
+   var found = [WiFiDevice](); var sent = 0, received = 0, rejected = 0; var note = "Lume iOS 0.2.0 · descoberta unicast\n"
    defer { self.emit(automatic ? "autoDevices" : "devices", found.map { ["id":$0.id,"ip":$0.ip,"protocol":$0.kind] }); if !automatic { self.report(note+"\nConsultas enviadas: \(sent)\nDatagramas recebidos: \(received)\nNão reconhecidos: \(rejected)\nControladoras: \(found.count)\nSomente descoberta; nenhuma configuração ou programação enviada.") } }
    do {
     let route = try self.route(), socket = try UDPSocket(address: route.address, interface: route.interface); defer { socket.close() }
@@ -70,7 +71,7 @@ final class ControllerEngine {
    do { let route = try self.route(), socket = try UDPSocket(address:route.address,interface:route.interface); defer { socket.close() }
     try ProfileTransfer.run(profiles:profiles,replace:replace,slot:slot,smart:device.kind == "smart",exchange:{ try self.send($0,[$1],socket:socket,route:route,device:device) },check:{ try self.guardRoute(route) },pause:{ Thread.sleep(forTimeInterval:0.15) },progress:{ self.progress($0,$1) })
     self.emit("success","\(profiles.count) perfil(is) confirmado(s). Confira no aparelho o perfil ativo."); self.emit("uploadComplete",true)
-   } catch { self.report("Lume iOS 0.1.1 · envio de perfis\n"+error.localizedDescription); throw error }
+   } catch { self.report("Lume iOS 0.2.0 · envio de perfis\n"+error.localizedDescription); throw error }
   }
  }
  func updatePreview(token: String, minute: Int, values: [Int]) throws { guard (0...1439).contains(minute) else { throw LumeFailure("Horário inválido") }; _ = try ControllerProtocol.levels(values); lock.lock(); defer { lock.unlock() }; guard liveToken == token, !stopLive else { throw LumeFailure("Prévia não está ativa.") }; sample = (minute,values,ProcessInfo.processInfo.systemUptime) }
@@ -90,7 +91,7 @@ final class ControllerEngine {
     if attempted { self.liveState("stopping",token:token,message:"Retomando programação no aparelho…",pending:true); do { try self.send([3,8],[0x83],socket:socket,route:route,device:device,resuming:true); restored = true; try self.store.clear(device.id) } catch { failure = error.localizedDescription } }
    } catch { failure = error.localizedDescription }
    let pending = !self.store.recovery().isEmpty; self.lock.lock(); self.liveToken = ""; self.busy = false; self.lock.unlock(); let text = pending ? "Não foi possível confirmar a retomada. A luminária pode continuar em modo manual. Reconecte e use Retomar programa." : restored ? "Prévia encerrada. Retomada do programa confirmada." : "Prévia não iniciada."
-   self.report("Lume iOS 0.1.1 · prévia ao vivo\nDestino: \(device.ip)\nQuadros de intensidade enviados: \(frames)\nRetomada confirmada: \(restored)\n\(failure)"); self.liveState(pending ? "failed" : "idle",token:token,message:text+(failure.isEmpty ? "" : " "+failure),pending:pending); self.finishedPreview()
+   self.report("Lume iOS 0.2.0 · prévia ao vivo\nDestino: \(device.ip)\nQuadros de intensidade enviados: \(frames)\nRetomada confirmada: \(restored)\n\(failure)"); self.liveState(pending ? "failed" : "idle",token:token,message:text+(failure.isEmpty ? "" : " "+failure),pending:pending); self.finishedPreview()
   }; return "OK:"+token
  }
 }

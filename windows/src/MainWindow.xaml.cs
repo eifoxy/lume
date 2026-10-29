@@ -29,6 +29,7 @@ public partial class MainWindow : Window
  }
  static Brush Brush(string hex)=>(SolidColorBrush)new BrushConverter().ConvertFromString(hex)!;
  void Note(string text)=>Status.Text=text;
+ void ShareQr(object sender,RoutedEventArgs e){if(busy){Note(I18n.T("Aguarde a operação atual."));return;}if(!Table.CommitEdit(DataGridEditingUnit.Cell,true)||!Table.CommitEdit(DataGridEditingUnit.Row,true))return;try{new QrShareWindow(library){Owner=this}.ShowDialog();}catch(Exception ex){Note(I18n.T("Falha ao gerar QR: ")+ex.Message);}}
  bool Save(){try {Store.Save(library,Store.FilePath);dirty=false;Note(I18n.T("Salvo neste computador \u00B7 ")+DateTime.Now.ToString("HH:mm:ss"));return true;}catch(Exception ex){App.Log(ex);Note(I18n.T("Falha ao salvar: ")+ex.Message);return false;}}
  void Changed(){dirty=true;saveTimer.Stop();saveTimer.Start();UpdatePreview();}
  void Remember(){history.Push(P.Clone());if(history.Count>40){var all=history.Take(40).Reverse().ToArray();history.Clear();foreach(var p in all)history.Push(p);}}

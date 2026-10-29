@@ -1,7 +1,7 @@
 // Deterministic Xcode project, without a third-party project generator.
 const fs=require('fs'),path=require('path'),crypto=require('crypto');
 const root=path.resolve(__dirname,'../ios'),id=s=>crypto.createHash('sha256').update(s).digest('hex').slice(0,24).toUpperCase(),q=JSON.stringify;
-const source=['App/App.swift','App/Engine.swift','App/Storage.swift','Core/Protocol.swift','Core/UDP.swift','Core/Transfer.swift'];
+const source=['App/App.swift','App/Engine.swift','App/Storage.swift','App/QrScanner.swift','Core/Protocol.swift','Core/UDP.swift','Core/Transfer.swift'];
 const objects=[];function object(key,value){objects.push(`${id(key)} = { ${value} };`);return id(key);}
 const refs=source.map(file=>object(file,`isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ${q(file)}; sourceTree = "<group>";`));
 const builds=source.map((file,i)=>object('build:'+file,`isa = PBXBuildFile; fileRef = ${refs[i]};`));

@@ -4,6 +4,8 @@ $output=[IO.Path]::GetFullPath($OutputDirectory)
 New-Item -ItemType Directory -Force $output | Out-Null
 $root=[IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
 node "$root/scripts/sync-localization.cjs" --check
+Push-Location $root
+try { node scripts/test-qr.cjs; if($LASTEXITCODE -ne 0){throw 'Falha no protocolo QR.'} } finally { Pop-Location }
 if($LASTEXITCODE -ne 0){throw 'Catálogo de idiomas fora de sincronia.'}
 & "$Jdk/bin/javac.exe" -encoding UTF-8 --release 8 -d $output "$root/android/app/src/main/java/br/com/lume/Protocol.java" "$root/android/app/src/main/java/br/com/lume/PacketIO.java" "$root/android/app/src/main/java/br/com/lume/Discovery.java" "$root/android/app/src/main/java/br/com/lume/Upload.java" "$root/android/app/src/main/java/br/com/lume/Preview.java" "$root/android/tests/ProtocolTest.java" "$root/android/tests/SmartTimerTest.java" "$root/android/tests/PreviewTest.java"
 if($LASTEXITCODE -ne 0){throw 'Falha ao compilar testes Java.'}

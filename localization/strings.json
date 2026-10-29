@@ -2475,9 +2475,9 @@
     "es": "Buscando…"
   },
   {
-    "pt": "Edição local · v0.6",
-    "en": "Local editing · v0.6",
-    "es": "Edición local · v0.6"
+    "pt": "Edição local · v0.7",
+    "en": "Local editing · v0.7",
+    "es": "Edición local · v0.7"
   },
   {
     "pt": "LUZ REAL · WI-FI",
@@ -2658,5 +2658,155 @@
     "pt": "A cena é ilustrativa. Com a luminária vinculada, a prévia envia intensidades reais; sem vínculo, é apenas local. Não prevê a resposta biológica dos corais.",
     "en": "The scene is illustrative. When the light is linked, preview sends real intensities; otherwise it is local only. It does not predict coral biology.",
     "es": "La escena es ilustrativa. Con la luminaria vinculada, la vista previa envía intensidades reales; sin vínculo, es solo local. No predice la respuesta biológica de los corales."
+  },
+  {
+    "pt": "Enviar ao celular por QR",
+    "en": "Send to phone via QR",
+    "es": "Enviar al móvil por QR"
+  },
+  {
+    "pt": "Todos os perfis",
+    "en": "All profiles",
+    "es": "Todos los perfiles"
+  },
+  {
+    "pt": "Alternar QR codes automaticamente",
+    "en": "Cycle QR codes automatically",
+    "es": "Alternar códigos QR automáticamente"
+  },
+  {
+    "pt": "No celular, abra Perfis > Ler QR do PC. Aponte para a tela e aguarde todas as partes. Não precisa de internet nem da mesma rede.",
+    "en": "On your phone, open Profiles > Scan PC QR. Point at the screen and wait for all parts. No internet or shared network is needed.",
+    "es": "En el móvil, abre Perfiles > Leer QR del PC. Apunta a la pantalla y espera todas las partes. No necesita internet ni la misma red."
+  },
+  {
+    "pt": "A importação pede confirmação e preserva os perfis do celular. Nenhum comando é enviado à luminária. Feche esta janela ao terminar.",
+    "en": "Import requires confirmation and keeps existing phone profiles. No commands are sent to the light. Close this window when finished.",
+    "es": "La importación pide confirmación y conserva los perfiles del móvil. No envía comandos a la luminaria. Cierra esta ventana al terminar."
+  },
+  {
+    "pt": "Biblioteca grande demais para QR.",
+    "en": "Library too large for QR.",
+    "es": "Biblioteca demasiado grande para QR."
+  },
+  {
+    "pt": "Falha ao gerar QR: ",
+    "en": "Could not generate QR: ",
+    "es": "No se pudo generar el QR: "
+  },
+  {
+    "pt": "Ler QR do PC",
+    "en": "Scan PC QR",
+    "es": "Leer QR del PC"
+  },
+  {
+    "pt": "Aponte para o QR no Lume do computador. Aguarde todas as partes.",
+    "en": "Point at the QR in Lume on your computer. Wait for all parts.",
+    "es": "Apunta al QR en Lume del ordenador. Espera todas las partes."
+  },
+  {
+    "pt": "Instale a versão atual do Lume para ler QR codes.",
+    "en": "Install the current Lume version to scan QR codes.",
+    "es": "Instala la versión actual de Lume para leer códigos QR."
+  },
+  {
+    "pt": "QR do Lume inválido.",
+    "en": "Invalid Lume QR.",
+    "es": "QR de Lume no válido."
+  },
+  {
+    "pt": "QR do Lume incompleto.",
+    "en": "Incomplete Lume QR.",
+    "es": "QR de Lume incompleto."
+  },
+  {
+    "pt": "Texto inválido no QR.",
+    "en": "Invalid text in QR.",
+    "es": "Texto no válido en el QR."
+  },
+  {
+    "pt": "Intensidade inválida no QR.",
+    "en": "Invalid intensity in QR.",
+    "es": "Intensidad no válida en el QR."
+  },
+  {
+    "pt": "Dados extras no QR.",
+    "en": "Extra data in QR.",
+    "es": "Datos adicionales en el QR."
+  },
+  {
+    "pt": "A leitura expirou. Comece novamente.",
+    "en": "Scanning expired. Start again.",
+    "es": "La lectura caducó. Empieza de nuevo."
+  },
+  {
+    "pt": "Este QR não é uma transferência do Lume.",
+    "en": "This QR is not a Lume transfer.",
+    "es": "Este QR no es una transferencia de Lume."
+  },
+  {
+    "pt": "Outro envio foi detectado. Termine este ou cancele para recomeçar.",
+    "en": "Another transfer was detected. Finish this one or cancel to start again.",
+    "es": "Se detectó otra transferencia. Termina esta o cancela para empezar de nuevo."
+  },
+  {
+    "pt": "Partes conflitantes no QR.",
+    "en": "Conflicting QR parts.",
+    "es": "Partes del QR contradictorias."
+  },
+  {
+    "pt": "A verificação do QR falhou. Comece novamente.",
+    "en": "QR integrity check failed. Start again.",
+    "es": "Falló la verificación del QR. Empieza de nuevo."
+  },
+  {
+    "pt": "Partes recebidas: ",
+    "en": "Parts received: ",
+    "es": "Partes recibidas: "
+  },
+  {
+    "pt": ". Mantenha a câmera apontada para a tela.",
+    "en": ". Keep the camera pointed at the screen.",
+    "es": ". Mantén la cámara apuntando a la pantalla."
+  },
+  {
+    "pt": "Permita a câmera para ler o QR do PC.",
+    "en": "Allow camera access to scan the PC QR.",
+    "es": "Permite la cámara para leer el QR del PC."
+  },
+  {
+    "pt": "Câmera traseira indisponível.",
+    "en": "Rear camera unavailable.",
+    "es": "Cámara trasera no disponible."
+  },
+  {
+    "pt": "Não foi possível abrir a câmera. Confira a permissão e tente novamente.",
+    "en": "Could not open the camera. Check permission and try again.",
+    "es": "No se pudo abrir la cámara. Revisa el permiso e inténtalo de nuevo."
+  },
+  {
+    "pt": "Não foi possível ler o QR. Tente novamente.",
+    "en": "Could not read the QR. Try again.",
+    "es": "No se pudo leer el QR. Inténtalo de nuevo."
+  },
+  {
+    "pt": "Parte ",
+    "en": "Part ",
+    "es": "Parte "
+  },
+  {
+    "pt": "Concluir",
+    "en": "Done",
+    "es": "Finalizar"
+  },
+  {
+    "pt": "Anterior",
+    "en": "Previous",
+    "es": "Anterior"
+  },
+  {
+    "pt": "Próximo",
+    "en": "Next",
+    "es": "Siguiente"
   }
 ]

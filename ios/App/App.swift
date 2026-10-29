@@ -1,13 +1,14 @@
 import UIKit
 import WebKit
 import UniformTypeIdentifiers
+import AVFoundation
 
 @main final class AppDelegate: UIResponder, UIApplicationDelegate {
  var window: UIWindow?
  var controller: LumeViewController?
  private var backgroundTask: UIBackgroundTaskIdentifier = .invalid
  func application(_ application: UIApplication, didFinishLaunchingWithOptions options: [UIApplication.LaunchOptionsKey:Any]? = nil) -> Bool { let vc = LumeViewController(); controller = vc; let window = UIWindow(frame:UIScreen.main.bounds); window.rootViewController = vc; window.makeKeyAndVisible(); self.window = window; vc.previewFinished = { [weak self] in self?.endBackgroundTask() }; return true }
- func applicationWillResignActive(_ application: UIApplication) { if controller?.engine?.isLive() == true { backgroundTask = application.beginBackgroundTask(withName:"LumePreviewResume") { [weak self] in self?.controller?.engine?.expireBackgroundTask(); self?.endBackgroundTask() } }; controller?.engine?.setForeground(false) }
+ func applicationWillResignActive(_ application: UIApplication) { controller?.cancelQr(); if controller?.engine?.isLive() == true { backgroundTask = application.beginBackgroundTask(withName:"LumePreviewResume") { [weak self] in self?.controller?.engine?.expireBackgroundTask(); self?.endBackgroundTask() } }; controller?.engine?.setForeground(false) }
  func applicationDidBecomeActive(_ application: UIApplication) { controller?.engine?.setForeground(true) }
  private func endBackgroundTask() { DispatchQueue.main.async { if self.backgroundTask != .invalid { UIApplication.shared.endBackgroundTask(self.backgroundTask); self.backgroundTask = .invalid } } }
 }
@@ -18,6 +19,14 @@ final class LumeViewController: UIViewController, WKUIDelegate, WKNavigationDele
  private(set) var engine: ControllerEngine?
  var previewFinished: () -> Void = {}
  private var exportedURL: URL?
+ private var scanner: QrScanner?
+ func cancelQr() { if let camera = scanner { scanner = nil; camera.finish(notify:true) } }
+ private func scanQr(_ labels: [String]) {
+  guard scanner == nil, presentedViewController == nil, engine?.isWorking() == false else { emit("qrCancelled",true); return }
+  func open(_ granted: Bool) { DispatchQueue.main.async { guard granted, UIApplication.shared.applicationState == .active else { self.emit("qrCancelled",true); if !granted { self.emit("error","Permita a câmera para ler o QR do PC.") }; return }; let camera = QrScanner(); camera.labels = labels; camera.modalPresentationStyle = .fullScreen; camera.onRead = { [weak self] text in self?.emit("qr",text) }; camera.onError = { [weak self] text in self?.emit("error",text) }; camera.onCancel = { [weak self] in self?.scanner = nil; self?.emit("qrCancelled",true) }; self.scanner = camera; self.present(camera,animated:true) } }
+  if ProcessInfo.processInfo.arguments.contains("--smoke-test") { emit("qrCancelled",true); return }
+  if AVCaptureDevice.authorizationStatus(for:.video) == .notDetermined { AVCaptureDevice.requestAccess(for:.video,completionHandler:open) } else { open(AVCaptureDevice.authorizationStatus(for:.video) == .authorized) }
+ }
  private var webRoot: URL!
  override var preferredStatusBarStyle: UIStatusBarStyle { .lightContent }
  override func viewDidLoad() {
@@ -38,7 +47,7 @@ final class LumeViewController: UIViewController, WKUIDelegate, WKNavigationDele
    if(!document.querySelector('#aquarium').children.length)throw Error('Reef empty');
    if(!document.querySelector('#chart').children.length)throw Error('Curve empty');
    if(Lume.previewRecovery()!=='')throw Error('Unexpected recovery marker');
-   if(!document.body.textContent.includes('iOS 0.1.1'))throw Error('Wrong platform assets');
+   if(!document.body.textContent.includes('iOS 0.2.0'))throw Error('Wrong platform assets');
    return {ok:true,languages:checks,profiles:library.Profiles.length,rows:48,bridge:typeof Lume.upload,network:'disabled for smoke test'};
   })()
   """
@@ -62,6 +71,9 @@ final class LumeViewController: UIViewController, WKUIDelegate, WKNavigationDele
   func device() throws -> WiFiDevice { try JSONDecoder().decode(WiFiDevice.self,from:Data(text(0).utf8)) }
   guard let store = store,let engine = engine else { throw LumeFailure("Não foi possível criar o backup local.") }
   switch method {
+  case "scanQr": scanQr(try [text(0),text(1),text(2)]); return NSNull()
+  case "qrProgress": scanner?.update(try text(0)); return NSNull()
+  case "stopQr": if let camera = scanner { scanner = nil; camera.finish(notify:false) }; return NSNull()
   case "loadLibrary": do { return try store.load() } catch { let value = ["error":"Biblioteca não carregada. O arquivo original foi preservado: "+error.localizedDescription]; return String(decoding:try JSONSerialization.data(withJSONObject:value),as:UTF8.self) }
   case "saveLibrary": do { try store.save(text(0)); return "" } catch { return error.localizedDescription }
   case "languagePreference": return UserDefaults.standard.string(forKey:"language") ?? "auto"

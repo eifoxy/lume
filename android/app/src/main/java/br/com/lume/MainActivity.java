@@ -18,6 +18,10 @@ import java.util.concurrent.*;
 
 public final class MainActivity extends Activity {
  private WebView web;
+ private QrCamera qrCamera;private String[] qrLabels;
+ private void stopQrCamera(boolean notify){if(qrCamera!=null){qrCamera.close();qrCamera=null;}qrLabels=null;if(notify)event("qrCancelled",true);}
+ private void openQrCamera(){if(qrLabels==null)return;android.widget.FrameLayout root=(android.widget.FrameLayout)web.getParent();qrCamera=new QrCamera(this,root,qrLabels[0],qrLabels[1],qrLabels[2],text->event("qr",text),text->event("error",text),()->stopQrCamera(true));}
+ @Override public void onRequestPermissionsResult(int request,String[] permissions,int[] results){super.onRequestPermissionsResult(request,permissions,results);if(request==31){if(results.length>0&&results[0]==android.content.pm.PackageManager.PERMISSION_GRANTED)openQrCamera();else{stopQrCamera(true);event("error","Permita a câmera para ler o QR do PC.");}}}
  private final ExecutorService worker=Executors.newSingleThreadExecutor();
  private volatile boolean busy,cancelled,destroyed;
  private volatile DatagramSocket activeSocket;
@@ -89,7 +93,7 @@ public final class MainActivity extends Activity {
      boolean needsRestore=!pendingPreview().isEmpty();livePreview=null;previewToken="";busy=false;
      String text=needsRestore?"Não foi possível confirmar a retomada. A luminária pode continuar em modo manual. Reconecte e use Retomar programa.":result!=null&&result.restored?"Prévia encerrada. Retomada do programa confirmada.":"Prévia não iniciada.";
      if(failure!=null)text+=" "+failure;
-     lastDiagnostic="Lume Android 1.2.0 · prévia ao vivo\nDestino: "+d.optString("ip")+"\nInícios enviados: "+(result==null?0:result.headersSent)+"\nQuadros de intensidade enviados: "+(result==null?0:result.framesSent)+"\nÚltimo minuto enviado: "+(result==null?-1:result.lastMinute)+"\nRetomada confirmada: "+(result!=null&&result.restored)+"\nRecuperação pendente: "+needsRestore+"\nO aparelho não confirma cada intensidade.\n"+text;event("diagnostic",lastDiagnostic);
+     lastDiagnostic="Lume Android 1.3.0 · prévia ao vivo\nDestino: "+d.optString("ip")+"\nInícios enviados: "+(result==null?0:result.headersSent)+"\nQuadros de intensidade enviados: "+(result==null?0:result.framesSent)+"\nÚltimo minuto enviado: "+(result==null?-1:result.lastMinute)+"\nRetomada confirmada: "+(result!=null&&result.restored)+"\nRecuperação pendente: "+needsRestore+"\nO aparelho não confirma cada intensidade.\n"+text;event("diagnostic",lastDiagnostic);
      previewEvent(needsRestore?"failed":"idle",token,text,needsRestore);
      runOnUiThread(()->getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON));
     }
@@ -97,6 +101,9 @@ public final class MainActivity extends Activity {
   }catch(Exception e){return message(e);}
  }
  public final class Bridge{
+  @JavascriptInterface public void scanQr(String title,String instruction,String cancelText){runOnUiThread(()->{if(busy||livePreview!=null||qrCamera!=null){event("qrCancelled",true);return;}qrLabels=new String[]{title,instruction,cancelText};if(checkSelfPermission(android.Manifest.permission.CAMERA)!=android.content.pm.PackageManager.PERMISSION_GRANTED)requestPermissions(new String[]{android.Manifest.permission.CAMERA},31);else openQrCamera();});}
+  @JavascriptInterface public void qrProgress(String text){runOnUiThread(()->{if(qrCamera!=null)qrCamera.progress(text);});}
+  @JavascriptInterface public void stopQr(){runOnUiThread(()->stopQrCamera(false));}
   @JavascriptInterface public String previewRecovery(){return pendingPreview();}
   @JavascriptInterface public String startPreview(String deviceJson,String alias,int minute,int a,int b,int c,int d,int e){return beginPreview(deviceJson,alias,minute,new int[]{a,b,c,d,e});}
   @JavascriptInterface public String previewLevels(String token,int minute,int a,int b,int c,int d,int e){Preview session=livePreview;if(session==null||!previewToken.equals(token)||session.stopping())return "Prévia não está ativa.";try{session.update(minute,new int[]{a,b,c,d,e},SystemClock.elapsedRealtime());return "";}catch(Exception failure){session.stop();return message(failure);}}
@@ -114,7 +121,7 @@ public final class MainActivity extends Activity {
   @JavascriptInterface public void discover(String direct){discoverNow(direct,false);}
   @JavascriptInterface public void discoverAutomatic(){discoverNow("",true);}
   private void discoverNow(String direct,boolean automatic){job(()->{
-   StringBuilder report=new StringBuilder("Lume Android 1.2.0 · API "+Build.VERSION.SDK_INT+" · "+Build.MANUFACTURER+" "+Build.MODEL+"\n");
+   StringBuilder report=new StringBuilder("Lume Android 1.3.0 · API "+Build.VERSION.SDK_INT+" · "+Build.MANUFACTURER+" "+Build.MODEL+"\n");
    WifiManager.MulticastLock lock=null;int received=0,rejected=0,sent=0;Map<String,JSONObject> found=new LinkedHashMap<>();
    try{
     WifiManager wm=(WifiManager)getApplicationContext().getSystemService(WIFI_SERVICE);lock=wm.createMulticastLock("lume-discovery");lock.acquire();
@@ -150,7 +157,7 @@ public final class MainActivity extends Activity {
    List<String> names=new ArrayList<>();for(JSONObject p:profiles)names.add(p.getString("Name"));List<String> aliases=Protocol.aliases(names);List<Upload.Item> items=new ArrayList<>();
    for(int i=0;i<profiles.size();i++){JSONArray rows=profiles.get(i).getJSONArray("Values");int[][] values=new int[48][5];for(int r=0;r<48;r++)for(int c=0;c<5;c++)values[r][c]=rows.getJSONArray(r).getInt(c);items.add(new Upload.Item(firstSlot+i,aliases.get(i),values));}
    backup(root.toString());
-   try(Route route=new Route()){InetAddress ip=InetAddress.getByName(d.getString("ip"));Upload.run(items,replace,smart,(payload,ack)->route.send(payload,id,ip,ack),()->route.checkRoute(),(percent,phase)->progress(phase,percent),()->{check();Thread.sleep(150);});}catch(Exception e){lastDiagnostic="Lume Android 1.2.0 · envio de perfis\n"+message(e);event("diagnostic",lastDiagnostic);throw e;}
+   try(Route route=new Route()){InetAddress ip=InetAddress.getByName(d.getString("ip"));Upload.run(items,replace,smart,(payload,ack)->route.send(payload,id,ip,ack),()->route.checkRoute(),(percent,phase)->progress(phase,percent),()->{check();Thread.sleep(150);});}catch(Exception e){lastDiagnostic="Lume Android 1.3.0 · envio de perfis\n"+message(e);event("diagnostic",lastDiagnostic);throw e;}
    event("success",profiles.size()+" perfil(is) confirmado(s). Confira no aparelho o perfil ativo.");event("uploadComplete",true);
   });}
   @JavascriptInterface public void exportLibrary(String json){try{String validated=validate(new JSONObject(json)).toString(2);runOnUiThread(()->{pendingExport=validated;Intent i=new Intent(Intent.ACTION_CREATE_DOCUMENT).setType("application/json").addCategory(Intent.CATEGORY_OPENABLE).putExtra(Intent.EXTRA_TITLE,"Lume-perfis.json");startActivityForResult(i,10);});}catch(Exception e){event("error",message(e));}}
@@ -158,8 +165,8 @@ public final class MainActivity extends Activity {
  }
  @Override protected void onActivityResult(int request,int result,Intent data){super.onActivityResult(request,result,data);if(result!=RESULT_OK||data==null){pendingExport=null;return;}Uri uri=data.getData();if(uri==null)return;if(request==10){String content=pendingExport;pendingExport=null;if(content!=null)worker.execute(()->{try(OutputStream out=getContentResolver().openOutputStream(uri,"wt")){if(out==null)throw new IOException("Arquivo indisponível");out.write(content.getBytes(StandardCharsets.UTF_8));event("success","Biblioteca exportada.");}catch(Exception e){event("error",message(e));}});}else if(request==11)worker.execute(()->{try{byte[] b=readLimited(getContentResolver().openInputStream(uri),2000000);JSONObject imported;if(b.length==960){JSONArray rows=new JSONArray();for(int r=0;r<48;r++){JSONArray row=new JSONArray();for(int c=0;c<5;c++){int n=(r*5+c)*4;if(b[n+1]!=0||b[n+2]!=0||b[n+3]!=0)throw new IOException("Arquivo LMF inválido.");int raw=b[n]&255,value=((raw&15)<<4)|(raw>>4);if(value>100)throw new IOException("Intensidade inválida no LMF.");row.put(value);}rows.put(row);}JSONObject p=new JSONObject().put("Name","Perfil importado").put("Channels",new JSONArray(Arrays.asList("Canal 1","Canal 2","Canal 3","Canal 4","Canal 5"))).put("Values",rows);imported=new JSONObject().put("Profiles",new JSONArray().put(p)).put("Selected",0);}else imported=new JSONObject(new String(b,StandardCharsets.UTF_8));event("import",validate(imported));}catch(Exception e){event("error","Não foi possível importar. "+message(e));}});}
  @Override protected void onResume(){super.onResume();foreground=true;if(web!=null)event("foreground",true);}
- @Override protected void onPause(){foreground=false;Preview session=livePreview;if(session!=null)session.stop();if(web!=null)event("foreground",false);super.onPause();}
+ @Override protected void onPause(){foreground=false;if(qrCamera!=null)stopQrCamera(true);Preview session=livePreview;if(session!=null)session.stop();if(web!=null)event("foreground",false);super.onPause();}
  @Override protected void onStop(){super.onStop();Preview session=livePreview;if(session!=null){session.stop();return;}if(busy){cancelled=true;DatagramSocket s=activeSocket;if(s!=null)s.close();}}
  @Override protected void onDestroy(){destroyed=true;Preview session=livePreview;if(session!=null){session.stop();worker.shutdown();}else{cancelled=true;if(activeSocket!=null)activeSocket.close();worker.shutdownNow();}web.removeJavascriptInterface("Lume");web.destroy();super.onDestroy();}
- @Override public void onBackPressed(){web.evaluateJavascript("window.back()",null);}
+ @Override public void onBackPressed(){if(qrCamera!=null){stopQrCamera(true);return;}web.evaluateJavascript("window.back()",null);}
 }

@@ -1,1 +1,2 @@
 "NSLocalNetworkUsageDescription" = "Lume usa la red Wi-Fi local para encontrar tu controladora de acuario, configurar horarios y probar la luminaria. Los datos no se envían a la nube.";
+"NSCameraUsageDescription" = "Lume usa la cámara solo para leer perfiles en códigos QR del ordenador. No se guardan ni envían imágenes.";

@@ -13,13 +13,16 @@ $Platform=(Resolve-Path -LiteralPath $Platform).Path
 $BuildDirectory=[IO.Path]::GetFullPath($BuildDirectory)
 New-Item -ItemType Directory -Force $BuildDirectory,(Join-Path $BuildDirectory 'classes'),(Join-Path $BuildDirectory 'dex') | Out-Null
 $sources=(Get-ChildItem (Join-Path $PSScriptRoot 'app/src/main/java/br/com/lume/*.java')).FullName
-Run "$Jdk/bin/javac.exe" (@('-encoding','UTF-8','--release','8','-cp',"$Platform/android.jar",'-d',"$BuildDirectory/classes")+$sources)
+$zxing=Join-Path $BuildDirectory 'zxing-core-3.5.3.jar'
+if(!(Test-Path -LiteralPath $zxing)){Invoke-WebRequest -Uri 'https://repo.maven.apache.org/maven2/com/google/zxing/core/3.5.3/core-3.5.3.jar' -OutFile $zxing}
+if((Get-FileHash -LiteralPath $zxing -Algorithm SHA256).Hash -ne '8D8064C1636FDAEF7189DD9055C7D59950A8940A12F2293956446EC3C109FD82'){throw 'Biblioteca QR inválida.'}
+Run "$Jdk/bin/javac.exe" (@('-encoding','UTF-8','--release','8','-cp',"$Platform/android.jar;$zxing",'-d',"$BuildDirectory/classes")+$sources)
 Run "$Jdk/bin/jar.exe" @("-J-Djava.io.tmpdir=$BuildDirectory",'cf',"$BuildDirectory/classes.jar",'-C',"$BuildDirectory/classes",'.')
-Run "$Jdk/bin/java.exe" @('-cp',"$BuildTools/lib/d8.jar",'com.android.tools.r8.D8','--min-api','26','--lib',"$Platform/android.jar",'--output',"$BuildDirectory/dex","$BuildDirectory/classes.jar")
+Run "$Jdk/bin/java.exe" @('-cp',"$BuildTools/lib/d8.jar",'com.android.tools.r8.D8','--min-api','26','--lib',"$Platform/android.jar",'--output',"$BuildDirectory/dex","$BuildDirectory/classes.jar",$zxing)
 $manifest=[IO.File]::ReadAllText("$PSScriptRoot/app/src/main/AndroidManifest.xml").Replace('<manifest xmlns:','<manifest package="br.com.lume.aquario" xmlns:')
 [IO.File]::WriteAllText("$BuildDirectory/AndroidManifest.xml",$manifest)
 Run "$BuildTools/aapt2.exe" @('compile','--dir',"$PSScriptRoot/app/src/main/res",'-o',"$BuildDirectory/resources.zip")
-Run "$BuildTools/aapt2.exe" @('link','-o',"$BuildDirectory/base.apk",'--manifest',"$BuildDirectory/AndroidManifest.xml",'-I',"$Platform/android.jar",'-A',"$PSScriptRoot/app/src/main/assets",'--min-sdk-version','26','--target-sdk-version','36','--version-code','120','--version-name','1.2.0',"$BuildDirectory/resources.zip")
+Run "$BuildTools/aapt2.exe" @('link','-o',"$BuildDirectory/base.apk",'--manifest',"$BuildDirectory/AndroidManifest.xml",'-I',"$Platform/android.jar",'-A',"$PSScriptRoot/app/src/main/assets",'--min-sdk-version','26','--target-sdk-version','36','--version-code','130','--version-name','1.3.0',"$BuildDirectory/resources.zip")
 Add-Type -AssemblyName System.IO.Compression.FileSystem
 $apk=[IO.Compression.ZipFile]::Open("$BuildDirectory/base.apk",'Update')
 try{[IO.Compression.ZipFileExtensions]::CreateEntryFromFile($apk,"$BuildDirectory/dex/classes.dex",'classes.dex')|Out-Null}finally{$apk.Dispose()}
